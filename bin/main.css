@@ -10,6 +10,9 @@ section.device.eq div.controls {
 section.device.eq div.controls > div.logo h1 {
   font-size: 35px;
 }
+section.device.eq div.controls > div.logo h2 {
+  padding-bottom: 20px;
+}
 section.device.eq div.controls > div.logo h1, section.device.eq div.controls > div.logo h2 {
   margin: 0;
   text-align: center;
@@ -163,7 +166,7 @@ section.device div.controls label.checkbox > input[type=checkbox] {
   display: none;
 }
 section.device div.controls label.checkbox.vertical {
-  font-size: 20px;
+  font-size: 18px;
 }
 section.device div.controls label.checkbox.vertical:before {
   content: attr(data-top-name);
