@@ -1,0 +1,183 @@
+@mixin scale9($url, $top, $left, $bottom, $right)
+  border-top: $top + px transparent solid
+  border-left: $left + px transparent solid
+  border-bottom: $bottom + px transparent solid
+  border-right: $right + px transparent solid
+  border-image: $url $top $left $bottom $right fill stretch
+
+$green: #358F6F
+
+*
+  user-select: none
+
+section.device
+  position: relative
+  font-family: 'Labrador A', serif
+  color: #888888
+  //transform: scale(0.5)
+
+  &.eq
+    width: 965px
+    height: 461px
+    @include scale9(url("/assets/background.png"), 50, 16, 50, 16)
+
+  div.controls
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    position: absolute
+    //border: 1px orange dashed
+    display: flex
+
+    div.knob
+      //border: 1px green dashed
+      display: flex
+      flex-direction: column
+      align-items: center
+      position: relative
+      width: var(--size)
+      pointer-events: none
+      font-size: 22px
+
+      &:before
+        content: attr(data-name)
+
+      &.big
+        --size: 86px
+
+        img
+          bottom: -10px
+
+          &.scale
+            transform: translate(-50%, -21px)
+
+      &.mid
+        --size: 64px
+
+        img
+          bottom: -2px
+
+          &.scale
+            transform: translate(-50%, -12px)
+
+      &.small
+        --size: 52px
+
+        img
+          bottom: -5px
+
+          &.scale
+            transform: translate(-50%, -13px)
+
+      > div
+        height: 78px
+        position: relative
+
+        > img
+          position: absolute
+          transform: translate(-50%, 0)
+
+          &.filmstrip
+            --frame: 0
+            width: var(--size)
+            height: var(--size)
+            object-fit: none
+            object-position: 0 calc(var(--size) * var(--frame) * -1)
+            pointer-events: all
+
+      > input[type='text']
+        appearance: none
+        padding: 0 4px
+        box-sizing: border-box
+        font-size: 12px
+        color: $green
+        outline: none
+        border: none
+        width: 46px
+        height: 20px
+        background-image: url("/assets/value_screen_small.png")
+        pointer-events: bounding-box
+        background-color: transparent
+        text-align: center
+        font-family: 'Labrador A', serif
+
+    label.checkbox
+      border: none
+      outline: none
+      white-space: nowrap
+      appearance: none
+      margin: 0
+      padding: 0
+      position: relative
+      font-size: 20px
+      line-height: 15px
+      color: #888888
+      display: flex
+      flex-direction: column
+      text-align: center
+
+      &:before
+        content: attr(data-top-name)
+
+      &:after
+        content: attr(data-bottom-name)
+
+      > input[type=checkbox]
+        appearance: none
+        display: none
+
+      > img
+        flex: 0 0 50px
+        object-fit: none
+        position: relative
+
+      > img:nth-of-type(1)
+        display: flex
+
+      > img:nth-of-type(2)
+        display: none
+        top: 4px
+
+      & input[type=checkbox]:checked
+        ~ img:nth-of-type(1)
+          display: none !important
+
+        ~ img:nth-of-type(2)
+          display: flex !important
+
+  div.decoration
+    width: 100%
+    height: 100%
+    position: relative
+
+    > img.vent
+      position: absolute
+
+      &.tl
+        top: -36px
+        left: 64px
+
+      &.tr
+        top: -36px
+        right: 64px
+
+    > img.screw
+      position: absolute
+
+      &.tl
+        top: -32px
+        left: 4px
+
+      &.tr
+        top: -32px
+        right: 4px
+
+      &.bl
+        left: 4px
+        bottom: -32px
+
+      &.br
+        right: 4px
+        bottom: -32px
+

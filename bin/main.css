@@ -1,0 +1,191 @@
+* {
+  user-select: none;
+}
+
+section.device {
+  position: relative;
+  font-family: "Labrador A", serif;
+  color: #888888;
+}
+section.device.eq {
+  width: 965px;
+  height: 461px;
+  border-top: 50px transparent solid;
+  border-left: 16px transparent solid;
+  border-bottom: 50px transparent solid;
+  border-right: 16px transparent solid;
+  border-image: url("/assets/background.png") 50 16 50 16 fill stretch;
+}
+section.device div.controls {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+}
+section.device div.controls div.knob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: var(--size);
+  pointer-events: none;
+  font-size: 22px;
+}
+section.device div.controls div.knob:before {
+  content: attr(data-name);
+}
+section.device div.controls div.knob.big {
+  --size: 86px;
+}
+section.device div.controls div.knob.big img {
+  bottom: -10px;
+}
+section.device div.controls div.knob.big img.scale {
+  transform: translate(-50%, -21px);
+}
+section.device div.controls div.knob.mid {
+  --size: 64px;
+}
+section.device div.controls div.knob.mid img {
+  bottom: -2px;
+}
+section.device div.controls div.knob.mid img.scale {
+  transform: translate(-50%, -12px);
+}
+section.device div.controls div.knob.small {
+  --size: 52px;
+}
+section.device div.controls div.knob.small img {
+  bottom: -5px;
+}
+section.device div.controls div.knob.small img.scale {
+  transform: translate(-50%, -13px);
+}
+section.device div.controls div.knob > div {
+  height: 78px;
+  position: relative;
+}
+section.device div.controls div.knob > div > img {
+  position: absolute;
+  transform: translate(-50%, 0);
+}
+section.device div.controls div.knob > div > img.filmstrip {
+  --frame: 0;
+  width: var(--size);
+  height: var(--size);
+  object-fit: none;
+  object-position: 0 calc(var(--size) * var(--frame) * -1);
+  pointer-events: all;
+}
+section.device div.controls div.knob > input[type=text] {
+  appearance: none;
+  padding: 0 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: #358F6F;
+  outline: none;
+  border: none;
+  width: 46px;
+  height: 20px;
+  background-image: url("/assets/value_screen_small.png");
+  pointer-events: bounding-box;
+  background-color: transparent;
+  text-align: center;
+  font-family: "Labrador A", serif;
+}
+section.device div.controls label.checkbox {
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-size: 20px;
+  line-height: 15px;
+  color: #888888;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+section.device div.controls label.checkbox:before {
+  content: attr(data-top-name);
+}
+section.device div.controls label.checkbox:after {
+  content: attr(data-bottom-name);
+}
+section.device div.controls label.checkbox > input[type=checkbox] {
+  appearance: none;
+  display: none;
+}
+section.device div.controls label.checkbox > img {
+  flex: 0 0 50px;
+  object-fit: none;
+  position: relative;
+}
+section.device div.controls label.checkbox > img:nth-of-type(1) {
+  display: flex;
+}
+section.device div.controls label.checkbox > img:nth-of-type(2) {
+  display: none;
+  top: 4px;
+}
+section.device div.controls label.checkbox input[type=checkbox]:checked ~ img:nth-of-type(1) {
+  display: none !important;
+}
+section.device div.controls label.checkbox input[type=checkbox]:checked ~ img:nth-of-type(2) {
+  display: flex !important;
+}
+section.device div.decoration {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+section.device div.decoration > img.vent {
+  position: absolute;
+}
+section.device div.decoration > img.vent.tl {
+  top: -36px;
+  left: 64px;
+}
+section.device div.decoration > img.vent.tr {
+  top: -36px;
+  right: 64px;
+}
+section.device div.decoration > img.screw {
+  position: absolute;
+}
+section.device div.decoration > img.screw.tl {
+  top: -32px;
+  left: 4px;
+}
+section.device div.decoration > img.screw.tr {
+  top: -32px;
+  right: 4px;
+}
+section.device div.decoration > img.screw.bl {
+  left: 4px;
+  bottom: -32px;
+}
+section.device div.decoration > img.screw.br {
+  right: 4px;
+  bottom: -32px;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #1A1A1A;
+}
+
+/*# sourceMappingURL=main.css.map */

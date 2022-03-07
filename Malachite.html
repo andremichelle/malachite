@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Malachite</title>
+    <link href="./bin/main.css" rel="stylesheet"/>
+    <link href="font/style.css" rel="stylesheet"/>
+    <script src="bin/main.js" type="module"></script>
+</head>
+<body>
+<section class="device eq">
+    <div class="decoration">
+        <img class="screw tl" src="assets/screw.png">
+        <img class="screw tr" src="assets/screw.png">
+        <img class="screw bl" src="assets/screw.png">
+        <img class="screw br" src="assets/screw.png">
+        <img class="vent tl" src="assets/vent.png">
+        <img class="vent tr" src="assets/vent.png">
+    </div>
+    <div class="controls">
+        <div class="knob mid" data-name="FREQ">
+            <div>
+                <img class="scale" src="assets/scale_knob_mid_A.png">
+                <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
+            </div>
+            <input type="text">
+        </div>
+        <div class="knob small" data-name="Q">
+            <div>
+                <img class="scale" src="assets/scale_knob_small_A.png">
+                <img class="filmstrip" src="assets/knobs/knob_small_black.png">
+            </div>
+            <input type="text">
+        </div>
+        <div class="knob big" data-name="GAIN">
+            <div>
+                <img class="scale" src="assets/scale_knob_mid.png">
+                <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+            </div>
+            <input type="text">
+        </div>
+        <label class="checkbox" data-top-name="On" data-bottom-name="Off">
+            <input type="checkbox">
+            <img src="/assets/switch_vertical_A.png">
+            <img src="/assets/switch_vertical_B.png">
+        </label>
+        <label class="checkbox" data-top-name="On" data-bottom-name="Off">
+            <input type="checkbox" checked>
+            <img src="/assets/switch_vertical_A.png">
+            <img src="/assets/switch_vertical_B.png">
+        </label>
+    </div>
+</section>
+</body>
+</html>
