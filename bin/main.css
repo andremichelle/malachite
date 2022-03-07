@@ -1,15 +1,53 @@
+section.device.eq {
+  width: 848px;
+  height: 480px;
+}
+section.device.eq div.controls {
+  padding: 20px 0 20px 20px;
+  display: grid;
+  grid-template: min-content 1fr/min-content 1fr;
+}
+section.device.eq div.controls > div.logo h1 {
+  font-size: 35px;
+}
+section.device.eq div.controls > div.logo h1, section.device.eq div.controls > div.logo h2 {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 2px;
+}
+section.device.eq div.controls > div.filters {
+  margin: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+section.device.eq div.controls > div.filters > div.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.device.eq div.controls > div.filters > div.filter > div.pair {
+  display: flex;
+}
+section.device.eq div.controls > div.master-controls {
+  padding: 48px 0 0 20px;
+  display: flex;
+}
+section.device.eq div.controls > div.master-controls div.volume {
+  padding: 16px 10px 0 0;
+  display: flex;
+}
+
 * {
   user-select: none;
 }
 
 section.device {
-  position: relative;
-  font-family: "Labrador A", serif;
-  color: #888888;
-}
-section.device.eq {
   width: 965px;
   height: 461px;
+  position: relative;
+  font-family: "Labrador A", serif;
+  font-weight: 100;
+  color: #777777;
   border-top: 50px transparent solid;
   border-left: 16px transparent solid;
   border-bottom: 50px transparent solid;
@@ -23,21 +61,27 @@ section.device div.controls {
   bottom: 0;
   position: absolute;
   display: flex;
+  flex-wrap: wrap;
 }
 section.device div.controls div.knob {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: var(--size);
+  min-width: var(--size);
+  max-width: var(--size);
   pointer-events: none;
-  font-size: 22px;
+  font-size: 20px;
+  margin-bottom: 8px;
 }
 section.device div.controls div.knob:before {
   content: attr(data-name);
 }
 section.device div.controls div.knob.big {
   --size: 86px;
+}
+section.device div.controls div.knob.big > div {
+  height: 78px;
 }
 section.device div.controls div.knob.big img {
   bottom: -10px;
@@ -48,6 +92,9 @@ section.device div.controls div.knob.big img.scale {
 section.device div.controls div.knob.mid {
   --size: 64px;
 }
+section.device div.controls div.knob.mid > div {
+  height: 58px;
+}
 section.device div.controls div.knob.mid img {
   bottom: -2px;
 }
@@ -57,6 +104,9 @@ section.device div.controls div.knob.mid img.scale {
 section.device div.controls div.knob.small {
   --size: 52px;
 }
+section.device div.controls div.knob.small > div {
+  height: 58px;
+}
 section.device div.controls div.knob.small img {
   bottom: -5px;
 }
@@ -64,7 +114,6 @@ section.device div.controls div.knob.small img.scale {
   transform: translate(-50%, -13px);
 }
 section.device div.controls div.knob > div {
-  height: 78px;
   position: relative;
 }
 section.device div.controls div.knob > div > img {
@@ -103,40 +152,94 @@ section.device div.controls label.checkbox {
   margin: 0;
   padding: 0;
   position: relative;
-  font-size: 20px;
   line-height: 15px;
   color: #888888;
   display: flex;
   flex-direction: column;
-  text-align: center;
-}
-section.device div.controls label.checkbox:before {
-  content: attr(data-top-name);
-}
-section.device div.controls label.checkbox:after {
-  content: attr(data-bottom-name);
+  align-items: center;
 }
 section.device div.controls label.checkbox > input[type=checkbox] {
   appearance: none;
   display: none;
 }
-section.device div.controls label.checkbox > img {
-  flex: 0 0 50px;
-  object-fit: none;
+section.device div.controls label.checkbox.vertical {
+  font-size: 20px;
+}
+section.device div.controls label.checkbox.vertical:before {
+  content: attr(data-top-name);
+}
+section.device div.controls label.checkbox.vertical:after {
+  content: attr(data-bottom-name);
+}
+section.device div.controls label.checkbox.vertical > span {
+  width: 30px;
+  height: 50px;
+  background-image: url("/assets/switch_vertical_A.png");
+}
+section.device div.controls label.checkbox.vertical input[type=checkbox]:checked ~ span {
+  background-position-y: 3px;
+  background-image: url("/assets/switch_vertical_B.png");
+}
+section.device div.controls label.checkbox.button {
+  font-size: 19px;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 31px;
+  color: rgba(255, 255, 255, 0.4);
+}
+section.device div.controls label.checkbox.button.big {
+  --w: 82px;
+  --h: 38px;
+  --checked: url("/assets/button_big_on.png");
+  --unchecked: url("/assets/button_big_off.png");
+}
+section.device div.controls label.checkbox.button.mid {
+  --w: 65px;
+  --h: 38px;
+  --checked: url("/assets/button_mid_on.png");
+  --unchecked: url("/assets/button_mid_off.png");
+}
+section.device div.controls label.checkbox.button.small {
+  --w: 48px;
+  --h: 38px;
+  --checked: url("/assets/button_small_on.png");
+  --unchecked: url("/assets/button_small_off.png");
+}
+section.device div.controls label.checkbox.button > span {
+  width: var(--w);
+  height: var(--h);
+  background-repeat: no-repeat;
+  background-image: var(--unchecked);
+}
+section.device div.controls label.checkbox.button input[type=checkbox]:checked ~ span {
+  color: rgba(0, 0, 0, 0.8);
+  background-position-x: 6px;
+  background-position-y: 2px;
+  background-image: var(--checked);
+}
+section.device div.controls canvas.screen {
+  width: 650px;
+  height: 171px;
+  box-sizing: border-box;
+  background-image: url("/assets/value_screen_big.png");
+}
+section.device div.controls div.meter {
+  width: 16px;
+  height: 80px;
+  background-image: url("/assets/meter_slot.png");
   position: relative;
+  --value: 0.0;
 }
-section.device div.controls label.checkbox > img:nth-of-type(1) {
-  display: flex;
-}
-section.device div.controls label.checkbox > img:nth-of-type(2) {
-  display: none;
-  top: 4px;
-}
-section.device div.controls label.checkbox input[type=checkbox]:checked ~ img:nth-of-type(1) {
-  display: none !important;
-}
-section.device div.controls label.checkbox input[type=checkbox]:checked ~ img:nth-of-type(2) {
-  display: flex !important;
+section.device div.controls div.meter:before {
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  content: "";
+  clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%);
+  background-repeat: no-repeat;
+  background-image: url("/assets/meter_fill.png");
+  position: absolute;
 }
 section.device div.decoration {
   width: 100%;

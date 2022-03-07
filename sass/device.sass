@@ -1,3 +1,7 @@
+@import "eq"
+
+$green: #358F6F
+
 @mixin scale9($url, $top, $left, $bottom, $right)
   border-top: $top + px transparent solid
   border-left: $left + px transparent solid
@@ -5,21 +9,18 @@
   border-right: $right + px transparent solid
   border-image: $url $top $left $bottom $right fill stretch
 
-$green: #358F6F
-
 *
   user-select: none
 
 section.device
+  // original background size
+  width: 965px
+  height: 461px
   position: relative
   font-family: 'Labrador A', serif
-  color: #888888
-  //transform: scale(0.5)
-
-  &.eq
-    width: 965px
-    height: 461px
-    @include scale9(url("/assets/background.png"), 50, 16, 50, 16)
+  font-weight: 100
+  color: #777777
+  @include scale9(url("/assets/background.png"), 50, 16, 50, 16)
 
   div.controls
     top: 0
@@ -27,24 +28,28 @@ section.device
     right: 0
     bottom: 0
     position: absolute
-    //border: 1px orange dashed
     display: flex
+    flex-wrap: wrap
 
     div.knob
-      //border: 1px green dashed
       display: flex
       flex-direction: column
       align-items: center
       position: relative
-      width: var(--size)
+      min-width: var(--size)
+      max-width: var(--size)
       pointer-events: none
-      font-size: 22px
+      font-size: 20px
+      margin-bottom: 8px
 
       &:before
         content: attr(data-name)
 
       &.big
         --size: 86px
+
+        > div
+          height: 78px
 
         img
           bottom: -10px
@@ -55,6 +60,9 @@ section.device
       &.mid
         --size: 64px
 
+        > div
+          height: 58px
+
         img
           bottom: -2px
 
@@ -64,6 +72,9 @@ section.device
       &.small
         --size: 52px
 
+        > div
+          height: 58px
+
         img
           bottom: -5px
 
@@ -71,7 +82,6 @@ section.device
             transform: translate(-50%, -13px)
 
       > div
-        height: 78px
         position: relative
 
         > img
@@ -110,41 +120,96 @@ section.device
       margin: 0
       padding: 0
       position: relative
-      font-size: 20px
       line-height: 15px
       color: #888888
       display: flex
       flex-direction: column
-      text-align: center
-
-      &:before
-        content: attr(data-top-name)
-
-      &:after
-        content: attr(data-bottom-name)
+      align-items: center
 
       > input[type=checkbox]
         appearance: none
         display: none
 
-      > img
-        flex: 0 0 50px
-        object-fit: none
-        position: relative
+      &.vertical
+        font-size: 20px
 
-      > img:nth-of-type(1)
-        display: flex
+        &:before
+          content: attr(data-top-name)
 
-      > img:nth-of-type(2)
-        display: none
-        top: 4px
+        &:after
+          content: attr(data-bottom-name)
 
-      & input[type=checkbox]:checked
-        ~ img:nth-of-type(1)
-          display: none !important
+        > span
+          width: 30px
+          height: 50px
+          background-image: url("/assets/switch_vertical_A.png")
 
-        ~ img:nth-of-type(2)
-          display: flex !important
+        & input[type=checkbox]:checked
+          ~ span
+            background-position-y: 3px
+            background-image: url("/assets/switch_vertical_B.png")
+
+      &.button
+        font-size: 19px
+        text-align: center
+        white-space: nowrap
+        line-height: 31px
+        color: rgba(white, 0.4)
+
+        &.big
+          --w: 82px
+          --h: 38px
+          --checked: url("/assets/button_big_on.png")
+          --unchecked: url("/assets/button_big_off.png")
+
+        &.mid
+          --w: 65px
+          --h: 38px
+          --checked: url("/assets/button_mid_on.png")
+          --unchecked: url("/assets/button_mid_off.png")
+
+        &.small
+          --w: 48px
+          --h: 38px
+          --checked: url("/assets/button_small_on.png")
+          --unchecked: url("/assets/button_small_off.png")
+
+        > span
+          width: var(--w)
+          height: var(--h)
+          background-repeat: no-repeat
+          background-image: var(--unchecked)
+
+        & input[type=checkbox]:checked
+          ~ span
+            color: rgba(black, 0.8)
+            background-position-x: 6px
+            background-position-y: 2px
+            background-image: var(--checked)
+
+    canvas.screen
+      width: 650px
+      height: 171px
+      box-sizing: border-box
+      background-image: url("/assets/value_screen_big.png")
+
+    div.meter
+      width: 16px
+      height: 80px
+      background-image: url("/assets/meter_slot.png")
+      position: relative
+      --value: 0.0
+
+      &:before
+        top: 3px
+        bottom: 3px
+        left: 3px
+        right: 3px
+        content: ""
+        clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%)
+        background-repeat: no-repeat
+        background-image: url("/assets/meter_fill.png")
+        position: absolute
 
   div.decoration
     width: 100%
@@ -180,4 +245,3 @@ section.device
       &.br
         right: 4px
         bottom: -32px
-

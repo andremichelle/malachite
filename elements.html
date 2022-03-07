@@ -8,7 +8,7 @@
     <script src="bin/main.js" type="module"></script>
 </head>
 <body>
-<section class="device eq">
+<section class="device">
     <div class="decoration">
         <img class="screw tl" src="assets/screw.png">
         <img class="screw tr" src="assets/screw.png">
@@ -18,6 +18,7 @@
         <img class="vent tr" src="assets/vent.png">
     </div>
     <div class="controls">
+        <canvas class="screen"></canvas>
         <div class="knob mid" data-name="FREQ">
             <div>
                 <img class="scale" src="assets/scale_knob_mid_A.png">
@@ -39,16 +40,35 @@
             </div>
             <input type="text">
         </div>
-        <label class="checkbox" data-top-name="On" data-bottom-name="Off">
+        <label class="checkbox vertical" data-top-name="On" data-bottom-name="Off">
             <input type="checkbox">
-            <img src="/assets/switch_vertical_A.png">
-            <img src="/assets/switch_vertical_B.png">
+            <span></span>
         </label>
-        <label class="checkbox" data-top-name="On" data-bottom-name="Off">
-            <input type="checkbox" checked>
-            <img src="/assets/switch_vertical_A.png">
-            <img src="/assets/switch_vertical_B.png">
+        <label class="checkbox vertical" data-top-name="On" data-bottom-name="Off">
+            <input type="checkbox">
+            <span></span>
         </label>
+        <label class="checkbox button big">
+            <input type="checkbox">
+            <span>RESET</span>
+        </label>
+        <label class="checkbox button mid">
+            <input type="checkbox">
+            <span>L/R</span>
+        </label>
+        <label class="checkbox button small">
+            <input type="checkbox">
+            <span>X</span>
+        </label>
+        <label class="checkbox button small">
+            <input type="checkbox">
+            <span>⥰</span>
+        </label>
+        <div class="meter" style="--value: 0.0"></div>
+        <div class="meter" style="--value: 0.25"></div>
+        <div class="meter" style="--value: 0.5"></div>
+        <div class="meter" style="--value: 0.75"></div>
+        <div class="meter" style="--value: 1.0"></div>
     </div>
 </section>
 </body>

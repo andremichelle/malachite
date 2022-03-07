@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Malachite</title>
+    <link href="./bin/main.css" rel="stylesheet"/>
+    <link href="font/style.css" rel="stylesheet"/>
+    <script src="bin/main.js" type="module"></script>
+</head>
+<body>
+<section class="device eq">
+    <div class="decoration">
+        <img class="screw tl" src="assets/screw.png">
+        <img class="screw tr" src="assets/screw.png">
+        <img class="screw bl" src="assets/screw.png">
+        <img class="screw br" src="assets/screw.png">
+        <img class="vent tl" src="assets/vent.png">
+        <img class="vent tr" src="assets/vent.png">
+    </div>
+    <div class="controls">
+        <canvas class="screen"></canvas>
+        <div class="logo">
+            <h1>Malachite</h1>
+            <h2>FILTER BANK</h2>
+        </div>
+        <div class="filters">
+            <div class="filter highpass">
+                <label class="checkbox button mid">
+                    <input type="checkbox">
+                    <span>HP</span>
+                </label>
+                <div class="knob big" data-name="FREQ">
+                    <div>
+                        <img class="scale" src="assets/scale_knob_mid.png">
+                        <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+                    </div>
+                    <input type="text">
+                </div>
+                <div class="pair">
+                    <div class="knob mid" data-name="ORDER">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_mid_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                    <div class="knob small" data-name="Q">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_small_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_small_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="filter lowshelf">
+                <label class="checkbox button mid">
+                    <input type="checkbox">
+                    <span>LS</span>
+                </label>
+                <div class="knob big" data-name="FREQ">
+                    <div>
+                        <img class="scale" src="assets/scale_knob_mid.png">
+                        <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+                    </div>
+                    <input type="text">
+                </div>
+                <div class="pair">
+                    <div class="knob mid" data-name="GAIN">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_mid_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="filter peak">
+                <label class="checkbox button mid">
+                    <input type="checkbox">
+                    <span>PE</span>
+                </label>
+                <div class="knob big" data-name="FREQ">
+                    <div>
+                        <img class="scale" src="assets/scale_knob_mid.png">
+                        <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+                    </div>
+                    <input type="text">
+                </div>
+                <div class="pair">
+                    <div class="knob mid" data-name="GAIN">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_mid_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                    <div class="knob small" data-name="Q">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_small_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_small_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="filter highshelf">
+                <label class="checkbox button mid">
+                    <input type="checkbox">
+                    <span>HS</span>
+                </label>
+                <div class="knob big" data-name="FREQ">
+                    <div>
+                        <img class="scale" src="assets/scale_knob_mid.png">
+                        <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+                    </div>
+                    <input type="text">
+                </div>
+                <div class="pair">
+                    <div class="knob mid" data-name="GAIN">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_mid_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="filter lowpass">
+                <label class="checkbox button mid">
+                    <input type="checkbox">
+                    <span>LP</span>
+                </label>
+                <div class="knob big" data-name="FREQ">
+                    <div>
+                        <img class="scale" src="assets/scale_knob_mid.png">
+                        <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+                    </div>
+                    <input type="text">
+                </div>
+                <div class="pair">
+                    <div class="knob mid" data-name="ORDER">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_mid_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                    <div class="knob small" data-name="Q">
+                        <div>
+                            <img class="scale" src="assets/scale_knob_small_A.png">
+                            <img class="filmstrip" src="assets/knobs/knob_small_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="master-controls">
+            <div class="volume">
+                <div class="meter" style="--value: 0.25"></div>
+                <div class="meter" style="--value: 0.75"></div>
+            </div>
+            <div class="knob big" data-name="GAIN">
+                <div>
+                    <img class="scale" src="assets/scale_knob_mid.png">
+                    <img class="filmstrip" src="assets/knobs/knob_big_black.png">
+                </div>
+                <input type="text">
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
