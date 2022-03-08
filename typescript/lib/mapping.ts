@@ -96,6 +96,8 @@ export class Exp implements ValueMapping<number>, Range {
 }
 
 export class Boolean implements ValueMapping<boolean> {
+    static Instance: Boolean = new Boolean()
+
     x(y: boolean): number {
         return y ? 1.0 : 0.0
     }

@@ -68,6 +68,7 @@ export class Boolean {
         return y;
     }
 }
+Boolean.Instance = new Boolean();
 export class Volume {
     constructor(min, mid, max) {
         this.min = min;

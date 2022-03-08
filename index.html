@@ -22,18 +22,18 @@
         <div class="logo">
             <h1>Malachite</h1>
             <h2>FILTER BANK</h2>
-            <label class="checkbox vertical" data-top-name="ON" data-bottom-name="BYPASS">
+            <label class="checkbox vertical" data-top-name="ON" data-bottom-name="BYPASS" data-parameter="main-bypass">
                 <input type="checkbox">
                 <span></span>
             </label>
         </div>
         <div class="filters">
-            <div class="filter highpass">
-                <label class="checkbox button mid">
+            <div class="filter highpass" data-parameter-group="highpass">
+                <label class="checkbox button mid" data-parameter="enabled">
                     <input type="checkbox">
                     <span>HP</span>
                 </label>
-                <div class="knob big" data-name="FREQ">
+                <div class="knob big" data-name="FREQ" data-parameter="frequency">
                     <div>
                         <img class="scale" src="assets/scale_knob_mid.png">
                         <img class="filmstrip" src="assets/knobs/knob_big_black.png">
@@ -41,14 +41,14 @@
                     <input type="text">
                 </div>
                 <div class="pair">
-                    <div class="knob mid" data-name="ORDER">
+                    <div class="knob mid" data-name="ORDER" data-parameter="order">
                         <div>
                             <img class="scale" src="assets/scale_knob_mid_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
                         </div>
                         <input type="text">
                     </div>
-                    <div class="knob small" data-name="Q">
+                    <div class="knob small" data-name="Q" data-parameter="q">
                         <div>
                             <img class="scale" src="assets/scale_knob_small_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_small_black.png">
@@ -57,12 +57,12 @@
                     </div>
                 </div>
             </div>
-            <div class="filter lowshelf">
-                <label class="checkbox button mid">
+            <div class="filter lowshelf" data-parameter-group="lowshelf">
+                <label class="checkbox button mid" data-parameter="enabled">
                     <input type="checkbox">
                     <span>LS</span>
                 </label>
-                <div class="knob big" data-name="FREQ">
+                <div class="knob big" data-name="FREQ" data-parameter="frequency">
                     <div>
                         <img class="scale" src="assets/scale_knob_mid.png">
                         <img class="filmstrip" src="assets/knobs/knob_big_black.png">
@@ -70,7 +70,7 @@
                     <input type="text">
                 </div>
                 <div class="pair">
-                    <div class="knob mid" data-name="GAIN">
+                    <div class="knob mid" data-name="GAIN" data-parameter="gain">
                         <div>
                             <img class="scale" src="assets/scale_knob_mid_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
@@ -79,12 +79,12 @@
                     </div>
                 </div>
             </div>
-            <div class="filter peak">
-                <label class="checkbox button mid">
+            <div class="filter peak" data-parameter-group="peak">
+                <label class="checkbox button mid" data-parameter="enabled">
                     <input type="checkbox">
                     <span>PE</span>
                 </label>
-                <div class="knob big" data-name="FREQ">
+                <div class="knob big" data-name="FREQ" data-parameter="frequency">
                     <div>
                         <img class="scale" src="assets/scale_knob_mid.png">
                         <img class="filmstrip" src="assets/knobs/knob_big_black.png">
@@ -92,14 +92,14 @@
                     <input type="text">
                 </div>
                 <div class="pair">
-                    <div class="knob mid" data-name="GAIN">
+                    <div class="knob mid" data-name="GAIN" data-parameter="gain">
                         <div>
                             <img class="scale" src="assets/scale_knob_mid_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
                         </div>
                         <input type="text">
                     </div>
-                    <div class="knob small" data-name="Q">
+                    <div class="knob small" data-name="Q" data-parameter="q">
                         <div>
                             <img class="scale" src="assets/scale_knob_small_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_small_black.png">
@@ -108,12 +108,12 @@
                     </div>
                 </div>
             </div>
-            <div class="filter highshelf">
-                <label class="checkbox button mid">
+            <div class="filter highshelf" data-parameter-group="highshelf">
+                <label class="checkbox button mid" data-parameter="enabled">
                     <input type="checkbox">
                     <span>HS</span>
                 </label>
-                <div class="knob big" data-name="FREQ">
+                <div class="knob big" data-name="FREQ" data-parameter="frequency">
                     <div>
                         <img class="scale" src="assets/scale_knob_mid.png">
                         <img class="filmstrip" src="assets/knobs/knob_big_black.png">
@@ -121,7 +121,7 @@
                     <input type="text">
                 </div>
                 <div class="pair">
-                    <div class="knob mid" data-name="GAIN">
+                    <div class="knob mid" data-name="GAIN" data-parameter="gain">
                         <div>
                             <img class="scale" src="assets/scale_knob_mid_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
@@ -130,12 +130,12 @@
                     </div>
                 </div>
             </div>
-            <div class="filter lowpass">
-                <label class="checkbox button mid">
+            <div class="filter lowpass" data-parameter-group="lowpass">
+                <label class="checkbox button mid" data-parameter="enabled">
                     <input type="checkbox">
                     <span>LP</span>
                 </label>
-                <div class="knob big" data-name="FREQ">
+                <div class="knob big" data-name="FREQ" data-parameter="frequency">
                     <div>
                         <img class="scale" src="assets/scale_knob_mid.png">
                         <img class="filmstrip" src="assets/knobs/knob_big_black.png">
@@ -143,14 +143,14 @@
                     <input type="text">
                 </div>
                 <div class="pair">
-                    <div class="knob mid" data-name="ORDER">
+                    <div class="knob mid" data-name="ORDER" data-parameter="order">
                         <div>
                             <img class="scale" src="assets/scale_knob_mid_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_mid_black.png">
                         </div>
                         <input type="text">
                     </div>
-                    <div class="knob small" data-name="Q">
+                    <div class="knob small" data-name="Q" data-parameter="q">
                         <div>
                             <img class="scale" src="assets/scale_knob_small_A.png">
                             <img class="filmstrip" src="assets/knobs/knob_small_black.png">
@@ -165,7 +165,7 @@
                 <div class="meter" style="--value: 0.25"></div>
                 <div class="meter" style="--value: 0.75"></div>
             </div>
-            <div class="knob big" data-name="GAIN">
+            <div class="knob big" data-name="GAIN" data-parameter="main-gain">
                 <div>
                     <img class="scale" src="assets/scale_knob_mid.png">
                     <img class="filmstrip" src="assets/knobs/knob_big_black.png">

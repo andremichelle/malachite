@@ -191,6 +191,7 @@ export declare class PrintMapping<Y> {
     private readonly printer;
     private readonly preUnit;
     private readonly postUnit;
+    static createBoolean(trueValue: string, falseValue: string): PrintMapping<boolean>;
     static UnipolarPercent: PrintMapping<number>;
     static RGB: PrintMapping<number>;
     static integer(postUnit: string): PrintMapping<number>;

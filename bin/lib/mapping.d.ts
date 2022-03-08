@@ -41,6 +41,7 @@ export declare class Exp implements ValueMapping<number>, Range {
     clamp(y: number): number;
 }
 export declare class Boolean implements ValueMapping<boolean> {
+    static Instance: Boolean;
     x(y: boolean): number;
     y(x: number): boolean;
     clamp(y: boolean): boolean;

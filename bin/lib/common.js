@@ -421,6 +421,11 @@ export class PrintMapping {
         this.preUnit = preUnit;
         this.postUnit = postUnit;
     }
+    static createBoolean(trueValue, falseValue) {
+        return new PrintMapping(text => {
+            return trueValue.toLowerCase() === text.toLowerCase();
+        }, value => value ? trueValue : falseValue);
+    }
     static integer(postUnit) {
         return new PrintMapping(text => {
             const value = parseInt(text, 10);
@@ -435,7 +440,15 @@ export class PrintMapping {
             if (isNaN(value))
                 return null;
             return value;
-        }, value => value.toFixed(numPrecision), preUnit, postUnit);
+        }, value => {
+            if (isNaN(value)) {
+                return "N/A";
+            }
+            if (!isFinite(value)) {
+                return value < 0.0 ? "-∞" : "∞";
+            }
+            return value.toFixed(numPrecision);
+        }, preUnit, postUnit);
     }
     static smallFloat(numPrecision, postUnit) {
         return new PrintMapping(text => {

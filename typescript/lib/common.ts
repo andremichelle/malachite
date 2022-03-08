@@ -535,6 +535,12 @@ export type Parser<Y> = (text: string) => Y | null
 export type Printer<Y> = (value: Y) => string
 
 export class PrintMapping<Y> {
+    static createBoolean(trueValue: string, falseValue: string) {
+        return new PrintMapping(text => {
+            return trueValue.toLowerCase() === text.toLowerCase()
+        }, value => value ? trueValue : falseValue)
+    }
+
     static UnipolarPercent = new PrintMapping(text => {
         const value = parseFloat(text)
         if (isNaN(value)) return null
@@ -564,7 +570,15 @@ export class PrintMapping<Y> {
             const value = parseFloat(text)
             if (isNaN(value)) return null
             return value
-        }, value => value.toFixed(numPrecision), preUnit, postUnit)
+        }, value => {
+            if(isNaN(value)) {
+                return "N/A"
+            }
+            if(!isFinite(value)) {
+                return value < 0.0 ? "-∞" : "∞"
+            }
+            return value.toFixed(numPrecision)
+        }, preUnit, postUnit)
     }
 
     static smallFloat(numPrecision: number, postUnit: string): PrintMapping<number> {

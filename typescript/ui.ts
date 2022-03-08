@@ -97,7 +97,7 @@ export class MalachiteKnob extends MalachiteUIElement {
     }
 
     private mouseMove = (event: MouseEvent) => {
-        const delta = (this.position - event.clientY) * 0.002
+        const delta = (this.position - event.clientY) * 0.004
         this.ifParameter(parameter =>
             parameter.setUnipolar(Math.max(0.0, Math.min(1.0, this.unipolar + delta))))
     }
