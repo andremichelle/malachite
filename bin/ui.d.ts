@@ -2,7 +2,7 @@ import { Parameter, Terminable } from "./lib/common.js";
 declare abstract class MalachiteUIElement implements Terminable {
     private parameterSubscription;
     private parameter;
-    with(parameter: Parameter<any>): void;
+    with(parameter: Parameter<any>): this;
     terminate(): void;
     protected hasParameter(): boolean;
     protected getUnipolar(): number;

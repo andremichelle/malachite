@@ -11,6 +11,7 @@ class MalachiteUIElement {
         this.parameterSubscription.terminate();
         this.parameterSubscription = parameter.addObserver(() => this.onChanged(parameter), true);
         this.parameter = Options.valueOf(parameter);
+        return this;
     }
     terminate() {
         this.parameterSubscription.terminate();

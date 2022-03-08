@@ -8,10 +8,11 @@ abstract class MalachiteUIElement implements Terminable {
     private parameterSubscription: Terminable = TerminableVoid.Instance
     private parameter: Option<Parameter<any>> = Options.None
 
-    with(parameter: Parameter<any>): void {
+    with(parameter: Parameter<any>): this {
         this.parameterSubscription.terminate()
         this.parameterSubscription = parameter.addObserver(() => this.onChanged(parameter), true)
         this.parameter = Options.valueOf(parameter)
+        return this
     }
 
     terminate(): void {
