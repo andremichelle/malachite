@@ -7,9 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { createPreset } from "./filter-bank-preset.js";
+import { initPreset } from "./filter-bank-preset.js";
 import { FilterBankUI } from "./filter-bank-ui.js";
+import { FilterBankNodes } from "./filter-bank-nodes.js";
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    new FilterBankUI(createPreset());
+    const context = new AudioContext();
+    const preset = initPreset();
+    const filterBankNodes = new FilterBankNodes(context, preset);
+    const filterBankUI = new FilterBankUI(preset, filterBankNodes);
 }))();
 //# sourceMappingURL=main.js.map

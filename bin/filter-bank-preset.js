@@ -1,6 +1,6 @@
 import { Boolean, Exp, Linear, LinearInteger, Volume } from "./lib/mapping.js";
 import { Parameter, PrintMapping } from "./lib/common.js";
-export const createPreset = () => {
+export const initPreset = () => {
     const GAIN_PRINT = PrintMapping.float(1, "", "db");
     const MAIN_GAIN_MAPPING = new Volume(-72.0, 0.0, 6.0);
     const FILTER_FREQ_MAPPING = new Exp(20.0, 20000.0);
@@ -30,7 +30,7 @@ export const createPreset = () => {
                 frequency: new Parameter(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.25)),
                 gain: new Parameter(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0)
             },
-            peak: {
+            peaking: {
                 enabled: new Parameter(Boolean.Instance, FILTER_ENABLED_PRINT, true),
                 frequency: new Parameter(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.5)),
                 gain: new Parameter(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0),

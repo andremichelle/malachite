@@ -1,4 +1,5 @@
 import {Option, Options, Parameter, Terminable, TerminableVoid} from "./lib/common.js"
+import {ValueMapping} from "./lib/mapping.js"
 
 class Events {
     static preventDefault = event => event.preventDefault()
@@ -114,5 +115,40 @@ export class MalachiteKnob extends MalachiteUIElement {
     private installMouseInteraction() {
         this.element.addEventListener("mousedown", this.mouseDown)
         this.element.addEventListener("dragstart", Events.preventDefault)
+    }
+}
+
+export class MalachiteScreen {
+    readonly context: CanvasRenderingContext2D = this.canvas.getContext("2d")
+
+    constructor(readonly canvas: HTMLCanvasElement,
+                readonly xAxis: ValueMapping<number>,
+                readonly yAxis: ValueMapping<number>) {
+        const w = this.canvas.width = this.canvas.clientWidth
+        const h = this.canvas.height = this.canvas.clientHeight
+    }
+
+    width(): number {
+        return this.canvas.clientWidth
+    }
+
+    height(): number {
+        return this.canvas.clientHeight
+    }
+
+    xToUnit(x: number): number {
+        return this.xAxis.y(x / this.width())
+    }
+
+    unitToX(value: number): number {
+        return this.xAxis.x(value) * this.width()
+    }
+
+    yToUnit(y: number): number {
+        return this.yAxis.y(y / this.height())
+    }
+
+    unitToY(value: number): number {
+        return this.yAxis.x(value) * this.height()
     }
 }

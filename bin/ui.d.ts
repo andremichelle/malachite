@@ -1,4 +1,5 @@
 import { Parameter, Terminable } from "./lib/common.js";
+import { ValueMapping } from "./lib/mapping.js";
 declare abstract class MalachiteUIElement implements Terminable {
     private parameterSubscription;
     private parameter;
@@ -32,5 +33,18 @@ export declare class MalachiteKnob extends MalachiteUIElement {
     private mouseMove;
     private mouseDown;
     private installMouseInteraction;
+}
+export declare class MalachiteScreen {
+    readonly canvas: HTMLCanvasElement;
+    readonly xAxis: ValueMapping<number>;
+    readonly yAxis: ValueMapping<number>;
+    readonly context: CanvasRenderingContext2D;
+    constructor(canvas: HTMLCanvasElement, xAxis: ValueMapping<number>, yAxis: ValueMapping<number>);
+    width(): number;
+    height(): number;
+    xToUnit(x: number): number;
+    unitToX(value: number): number;
+    yToUnit(y: number): number;
+    unitToY(value: number): number;
 }
 export {};

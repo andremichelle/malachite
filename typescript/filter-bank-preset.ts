@@ -18,7 +18,7 @@ export type Preset = {
             frequency: Parameter<number>
             gain: Parameter<number>
         },
-        peak: {
+        peaking: {
             enabled: Parameter<boolean>
             frequency: Parameter<number>
             gain: Parameter<number>
@@ -38,7 +38,7 @@ export type Preset = {
     }
 }
 
-export const createPreset = (): Preset => {
+export const initPreset = (): Preset => {
     const GAIN_PRINT = PrintMapping.float(1, "", "db")
     const MAIN_GAIN_MAPPING = new Volume(-72.0, 0.0, 6.0)
     const FILTER_FREQ_MAPPING = new Exp(20.0, 20000.0)
@@ -68,7 +68,7 @@ export const createPreset = (): Preset => {
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.25)),
                 gain: new Parameter<number>(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0)
             },
-            peak: {
+            peaking: {
                 enabled: new Parameter<boolean>(Boolean.Instance, FILTER_ENABLED_PRINT, true),
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.5)),
                 gain: new Parameter<number>(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0),

@@ -95,4 +95,32 @@ export class MalachiteKnob extends MalachiteUIElement {
         this.element.addEventListener("dragstart", Events.preventDefault);
     }
 }
+export class MalachiteScreen {
+    constructor(canvas, xAxis, yAxis) {
+        this.canvas = canvas;
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
+        this.context = this.canvas.getContext("2d");
+        const w = this.canvas.width = this.canvas.clientWidth;
+        const h = this.canvas.height = this.canvas.clientHeight;
+    }
+    width() {
+        return this.canvas.clientWidth;
+    }
+    height() {
+        return this.canvas.clientHeight;
+    }
+    xToUnit(x) {
+        return this.xAxis.y(x / this.width());
+    }
+    unitToX(value) {
+        return this.xAxis.x(value) * this.width();
+    }
+    yToUnit(y) {
+        return this.yAxis.y(y / this.height());
+    }
+    unitToY(value) {
+        return this.yAxis.x(value) * this.height();
+    }
+}
 //# sourceMappingURL=ui.js.map

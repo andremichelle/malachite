@@ -16,7 +16,7 @@ export declare type Preset = {
             frequency: Parameter<number>;
             gain: Parameter<number>;
         };
-        peak: {
+        peaking: {
             enabled: Parameter<boolean>;
             frequency: Parameter<number>;
             gain: Parameter<number>;
@@ -35,4 +35,4 @@ export declare type Preset = {
         };
     };
 };
-export declare const createPreset: () => Preset;
+export declare const initPreset: () => Preset;

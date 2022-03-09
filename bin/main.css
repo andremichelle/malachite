@@ -224,6 +224,7 @@ section.device div.controls canvas.screen {
   width: 650px;
   height: 171px;
   box-sizing: border-box;
+  padding: 2px;
   background-image: url("/assets/value_screen_big.png");
 }
 section.device div.controls div.meter {
