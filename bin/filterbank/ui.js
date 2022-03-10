@@ -69,7 +69,7 @@ export class FilterBankResponseRenderer {
         context.stroke();
     }
 }
-FilterBankResponseRenderer.Colors = ["#672770", "#943156", "#96A637", "#699A33", "#92C060"];
+FilterBankResponseRenderer.Colors = ["#89C9B2", "#56A78A", "#1E7B5A", "#0B6243", "#358F6F"];
 export class FilterBankUI {
     constructor(preset, nodes) {
         this.terminator = new Terminator();

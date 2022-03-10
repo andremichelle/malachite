@@ -5,7 +5,7 @@ import {Exp, Linear} from "../lib/mapping.js"
 import {FilterBankNodes, FilterNode, gainToDb} from "./nodes.js"
 
 export class FilterBankResponseRenderer {
-    private static Colors: string[] = ["#672770", "#943156", "#96A637", "#699A33", "#92C060"]
+    private static Colors: string[] = ["#89C9B2", "#56A78A", "#1E7B5A", "#0B6243", "#358F6F"]
 
     private readonly frequencyHz: Float32Array
     private readonly phaseResponse: Float32Array
