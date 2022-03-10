@@ -19,7 +19,7 @@ const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
     parameterDemo.addObserver(async running => {
         if (running) {
             await context.resume()
-            demoAudio.play()
+            await demoAudio.play()
         } else {
             await demoAudio.pause()
             demoAudio.currentTime = 0.0
