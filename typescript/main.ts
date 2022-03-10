@@ -5,6 +5,19 @@ import {FilterBankUI} from "./filterbank/ui.js"
 import {MalachiteSwitch} from "./ui.js"
 import {BooleanMapping} from "./lib/mapping.js"
 
+const preloadImagesOfCssFile = async (path: string): Promise<void> => {
+    const urls = await fetch(path)
+        .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
+            .map(url => url.replace(/url\(/, "").slice(1, -1)))
+    const promises = urls.map(url => new Promise<void>((resolve, reject) => {
+        const image = new Image()
+        image.onload = () => resolve()
+        image.onerror = (error) => reject(error)
+        image.src = unescape(url)
+    }))
+    return Promise.all(promises).then(() => Promise.resolve())
+}
+
 const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
     const demoAudio = new Audio()
     demoAudio.src = "kepz.126.mp3"
@@ -59,6 +72,7 @@ const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
 
 (async () => {
     document.body.classList.add("invisible")
+    await preloadImagesOfCssFile("main.css")
     const context = new AudioContext()
     const preset = initPreset()
     const nodes = await FilterBankNodes.create(context, preset)

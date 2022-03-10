@@ -330,7 +330,7 @@ html, body {
   height: 100%;
   color: #43b48c;
   background-color: #1A1A1A;
-  background-image: url("/background.jpg");
+  background-image: url("../background.jpg");
   background-position: center;
   background-size: cover;
   font-family: "Labrador A", serif;
