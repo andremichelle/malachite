@@ -1,0 +1,388 @@
+section.device.eq {
+  width: var(--device-width);
+  height: var(--device-height);
+  grid-area: 2/2;
+  transform: scale(var(--device-scale));
+  transform-origin: left top;
+  box-shadow: 0 32px 32px 0 rgba(0, 0, 0, 0.4), 0 8px 8px 0 rgba(0, 0, 0, 0.8);
+}
+section.device.eq div.controls {
+  padding: 20px 0 20px 20px;
+  display: grid;
+  grid-template: min-content 1fr/min-content 1fr;
+}
+section.device.eq div.controls > div.logo h1 {
+  font-size: 35px;
+}
+section.device.eq div.controls > div.logo h2 {
+  padding-bottom: 20px;
+}
+section.device.eq div.controls > div.logo h1, section.device.eq div.controls > div.logo h2 {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 2px;
+}
+section.device.eq div.controls > div.filters {
+  margin: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+section.device.eq div.controls > div.filters > div.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.device.eq div.controls > div.filters > div.filter > div.pair {
+  display: flex;
+}
+section.device.eq div.controls > div.master-controls {
+  padding: 48px 0 0 20px;
+  display: flex;
+}
+section.device.eq div.controls > div.master-controls div.volume {
+  padding: 16px 10px 0 0;
+  display: flex;
+}
+
+* {
+  user-select: none;
+}
+
+section.device {
+  width: 965px;
+  height: 461px;
+  position: relative;
+  font-family: "Labrador A", serif;
+  font-weight: 100;
+  color: #777777;
+  border-top: 50px transparent solid;
+  border-left: 16px transparent solid;
+  border-bottom: 50px transparent solid;
+  border-right: 16px transparent solid;
+  border-image: url("./assets/background.png") 50 16 50 16 fill stretch;
+}
+section.device div.decoration {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+section.device div.decoration > div.top-bar {
+  top: -37px;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0);
+  display: flex;
+}
+section.device div.decoration > img.vent {
+  position: absolute;
+  pointer-events: none;
+}
+section.device div.decoration > img.vent.tl {
+  top: -36px;
+  left: 64px;
+}
+section.device div.decoration > img.vent.tr {
+  top: -36px;
+  right: 64px;
+}
+section.device div.decoration > img.screw {
+  position: absolute;
+  pointer-events: none;
+}
+section.device div.decoration > img.screw.tl {
+  top: -32px;
+  left: 4px;
+}
+section.device div.decoration > img.screw.tr {
+  top: -32px;
+  right: 4px;
+}
+section.device div.decoration > img.screw.bl {
+  left: 4px;
+  bottom: -32px;
+}
+section.device div.decoration > img.screw.br {
+  right: 4px;
+  bottom: -32px;
+}
+section.device div.controls {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+}
+section.device div.knob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-width: var(--size);
+  max-width: var(--size);
+  pointer-events: none;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+section.device div.knob:before {
+  content: attr(data-name);
+}
+section.device div.knob.big {
+  --size: 86px;
+}
+section.device div.knob.big > div {
+  height: 78px;
+}
+section.device div.knob.big img {
+  bottom: -10px;
+}
+section.device div.knob.big img.scale {
+  transform: translate(-50%, -21px);
+}
+section.device div.knob.mid {
+  --size: 64px;
+}
+section.device div.knob.mid > div {
+  height: 58px;
+}
+section.device div.knob.mid img {
+  bottom: -2px;
+}
+section.device div.knob.mid img.scale {
+  transform: translate(-50%, -12px);
+}
+section.device div.knob.small {
+  --size: 52px;
+}
+section.device div.knob.small > div {
+  height: 58px;
+}
+section.device div.knob.small img {
+  bottom: -5px;
+}
+section.device div.knob.small img.scale {
+  transform: translate(-50%, -13px);
+}
+section.device div.knob > div {
+  position: relative;
+}
+section.device div.knob > div > img {
+  position: absolute;
+  transform: translate(-50%, 0);
+}
+section.device div.knob > div > img.filmstrip {
+  --frame: 0;
+  width: var(--size);
+  height: var(--size);
+  object-fit: none;
+  object-position: 0 calc(var(--size) * var(--frame) * -1);
+  pointer-events: all;
+}
+section.device div.knob > input[type=text] {
+  appearance: none;
+  padding: 0 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: #358F6F;
+  outline: none;
+  border: none;
+  width: 46px;
+  height: 20px;
+  background-image: url("./assets/value_screen_small.png");
+  pointer-events: bounding-box;
+  background-color: transparent;
+  text-align: center;
+  font-family: "Labrador A", serif;
+}
+section.device label.checkbox {
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  line-height: 15px;
+  color: #888888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.device label.checkbox > input[type=checkbox] {
+  appearance: none;
+  display: none;
+}
+section.device label.checkbox.vertical {
+  font-size: 18px;
+}
+section.device label.checkbox.vertical:before {
+  content: attr(data-top-name);
+}
+section.device label.checkbox.vertical:after {
+  content: attr(data-bottom-name);
+}
+section.device label.checkbox.vertical > span {
+  width: 30px;
+  height: 50px;
+  background-image: url("./assets/switch_vertical_A.png");
+}
+section.device label.checkbox.vertical input[type=checkbox]:checked ~ span {
+  background-position-y: 3px;
+  background-image: url("./assets/switch_vertical_B.png");
+}
+section.device label.checkbox.button {
+  font-size: 18px;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 31px;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: bounding-box;
+}
+section.device label.checkbox.button.big {
+  --w: 82px;
+  --h: 38px;
+  --checked: url("./assets/button_big_on.png");
+  --unchecked: url("./assets/button_big_off.png");
+}
+section.device label.checkbox.button.mid {
+  --w: 65px;
+  --h: 38px;
+  --checked: url("./assets/button_mid_on.png");
+  --unchecked: url("./assets/button_mid_off.png");
+}
+section.device label.checkbox.button.small {
+  --w: 48px;
+  --h: 38px;
+  --checked: url("./assets/button_small_on.png");
+  --unchecked: url("./assets/button_small_off.png");
+}
+section.device label.checkbox.button > span {
+  width: var(--w);
+  height: var(--h);
+  background-repeat: no-repeat;
+  background-image: var(--unchecked);
+  stroke: currentColor;
+  stroke-width: 2px;
+  fill: transparent;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+section.device label.checkbox.button > span > svg {
+  top: -4px;
+  width: 19px;
+  position: relative;
+}
+section.device label.checkbox.button input[type=checkbox]:checked ~ span {
+  color: rgba(0, 0, 0, 0.8);
+  background-position-x: 6px;
+  background-position-y: 2px;
+  background-image: var(--checked);
+}
+section.device div.screen-wrapper {
+  width: 650px;
+  height: 171px;
+  position: relative;
+  background-image: url("./assets/value_screen_big.png");
+}
+section.device div.screen-wrapper * {
+  position: absolute;
+}
+section.device div.screen-wrapper > canvas.screen {
+  top: 0;
+  left: 0;
+  width: 650px;
+  height: 171px;
+  box-sizing: border-box;
+  padding: 2px;
+  pointer-events: none;
+}
+section.device div.meter {
+  width: 16px;
+  height: 80px;
+  background-image: url("./assets/meter_slot.png");
+  position: relative;
+  --value: 0.0;
+  pointer-events: none;
+}
+section.device div.meter:before {
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  content: "";
+  clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%);
+  background-repeat: no-repeat;
+  background-image: url("./assets/meter_fill.png");
+  position: absolute;
+}
+section.device div.meter:after {
+  left: 4px;
+  bottom: -16px;
+  font-size: 13px;
+  content: attr(data-name);
+  position: absolute;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  color: #43b48c;
+  background-color: #1A1A1A;
+  background-image: url("../background.jpg");
+  background-position: center;
+  background-size: cover;
+  font-family: "Labrador A", serif;
+}
+html a, body a {
+  color: #8ad3b9;
+}
+
+:root {
+  --device-width: 848px;
+  --device-height: 480px;
+  --device-scale: 0.75;
+}
+@media only screen and (max-width: 1200px) {
+  :root {
+    --device-scale: 0.5;
+  }
+}
+@media only screen and (max-width: 800px) {
+  :root {
+    --device-scale: 0.25;
+  }
+}
+
+h3, h5 {
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr/1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr;
+  overflow: hidden;
+}
+body > div.info {
+  grid-area: 2/1;
+  padding: 0 2.4vw 0 1.2vw;
+}
+body > div.credits {
+  grid-area: 2/3;
+  padding: 0 1.2vw 0 2.4vw;
+}
+body > div.info > *, body > div.credits > * {
+  width: fit-content;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+/*# sourceMappingURL=main.css.map */
