@@ -1,7 +1,7 @@
 @import "eq"
 
-$green: #358F6F
 // 53 143 111
+$green: #358F6F
 
 @mixin scale9($url, $top, $left, $bottom, $right)
   border-top: $top + px transparent solid
@@ -21,7 +21,7 @@ section.device
   font-family: 'Labrador A', serif
   font-weight: 100
   color: #777777
-  @include scale9(url("./assets/background.png"), 50, 16, 50, 16)
+  @include scale9(url("../assets/background.png"), 50, 16, 50, 16)
 
   div.decoration
     width: 100%
@@ -151,7 +151,7 @@ section.device
       border: none
       width: 46px
       height: 20px
-      background-image: url("./assets/value_screen_small.png")
+      background-image: url("../assets/value_screen_small.png")
       pointer-events: bounding-box
       background-color: transparent
       text-align: center
@@ -187,12 +187,12 @@ section.device
       > span
         width: 30px
         height: 50px
-        background-image: url("./assets/switch_vertical_A.png")
+        background-image: url("../assets/switch_vertical_A.png")
 
       & input[type=checkbox]:checked
         ~ span
           background-position-y: 3px
-          background-image: url("./assets/switch_vertical_B.png")
+          background-image: url("../assets/switch_vertical_B.png")
 
     &.button
       font-size: 18px
@@ -207,39 +207,38 @@ section.device
         --h: 38px
 
         > span
-          background-image: url("./assets/button_big_off.png")
+          background-image: url("../assets/button_big_off.png")
 
         & input[type=checkbox]:checked
           ~ span
-            background-image: url("./assets/button_big_on.png")
+            background-image: url("../assets/button_big_on.png")
 
       &.mid
         --w: 65px
         --h: 38px
 
         > span
-          background-image: url("./assets/button_mid_on.png")
+          background-image: url("../assets/button_mid_off.png")
 
         & input[type=checkbox]:checked
           ~ span
-            background-image: url("./assets/button_mid_off.png")
+            background-image: url("../assets/button_mid_on.png")
 
       &.small
         --w: 48px
         --h: 38px
 
         > span
-          background-image: url("./assets/button_small_on.png")
+          background-image: url("../assets/button_small_off.png")
 
         & input[type=checkbox]:checked
           ~ span
-            background-image: url("./assets/button_small_off.png")
+            background-image: url("../assets/button_small_on.png")
 
       > span
         width: var(--w)
         height: var(--h)
         background-repeat: no-repeat
-        background-image: var(--unchecked)
         stroke: currentColor
         stroke-width: 2px
         fill: transparent
@@ -262,7 +261,7 @@ section.device
     width: 650px
     height: 171px
     position: relative
-    background-image: url("./assets/value_screen_big.png")
+    background-image: url("../assets/value_screen_big.png")
 
     *
       position: absolute
@@ -279,7 +278,7 @@ section.device
   div.meter
     width: 16px
     height: 80px
-    background-image: url("./assets/meter_slot.png")
+    background-image: url("../assets/meter_slot.png")
     position: relative
     --value: 0.0
     pointer-events: none
@@ -292,7 +291,7 @@ section.device
       content: ""
       clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%)
       background-repeat: no-repeat
-      background-image: url("./assets/meter_fill.png")
+      background-image: url("../assets/meter_fill.png")
       position: absolute
 
     &:after

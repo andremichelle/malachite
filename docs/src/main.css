@@ -242,26 +242,37 @@ section.device label.checkbox.button {
 section.device label.checkbox.button.big {
   --w: 82px;
   --h: 38px;
-  --checked: url("../assets/button_big_on.png");
-  --unchecked: url("../assets/button_big_off.png");
+}
+section.device label.checkbox.button.big > span {
+  background-image: url("../assets/button_big_off.png");
+}
+section.device label.checkbox.button.big input[type=checkbox]:checked ~ span {
+  background-image: url("../assets/button_big_on.png");
 }
 section.device label.checkbox.button.mid {
   --w: 65px;
   --h: 38px;
-  --checked: url("../assets/button_mid_on.png");
-  --unchecked: url("../assets/button_mid_off.png");
+}
+section.device label.checkbox.button.mid > span {
+  background-image: url("../assets/button_mid_off.png");
+}
+section.device label.checkbox.button.mid input[type=checkbox]:checked ~ span {
+  background-image: url("../assets/button_mid_on.png");
 }
 section.device label.checkbox.button.small {
   --w: 48px;
   --h: 38px;
-  --checked: url("../assets/button_small_on.png");
-  --unchecked: url("../assets/button_small_off.png");
+}
+section.device label.checkbox.button.small > span {
+  background-image: url("../assets/button_small_off.png");
+}
+section.device label.checkbox.button.small input[type=checkbox]:checked ~ span {
+  background-image: url("../assets/button_small_on.png");
 }
 section.device label.checkbox.button > span {
   width: var(--w);
   height: var(--h);
   background-repeat: no-repeat;
-  background-image: var(--unchecked);
   stroke: currentColor;
   stroke-width: 2px;
   fill: transparent;
@@ -278,7 +289,6 @@ section.device label.checkbox.button input[type=checkbox]:checked ~ span {
   color: rgba(0, 0, 0, 0.8);
   background-position-x: 6px;
   background-position-y: 2px;
-  background-image: var(--checked);
 }
 section.device div.screen-wrapper {
   width: 650px;
