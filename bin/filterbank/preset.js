@@ -1,5 +1,5 @@
-import { Boolean, Exp, Linear, LinearInteger, Volume } from "./lib/mapping.js";
-import { Parameter, PrintMapping } from "./lib/common.js";
+import { Boolean, Exp, Linear, LinearInteger, Volume } from "../lib/mapping.js";
+import { Parameter, PrintMapping } from "../lib/common.js";
 export const initPreset = () => {
     const GAIN_PRINT = PrintMapping.float(1, "", "db");
     const MAIN_GAIN_MAPPING = new Volume(-72.0, 0.0, 6.0);
@@ -50,4 +50,4 @@ export const initPreset = () => {
         }
     };
 };
-//# sourceMappingURL=filter-bank-preset.js.map
+//# sourceMappingURL=preset.js.map

@@ -1,7 +1,7 @@
-import { Terminable } from "./lib/common.js";
-import { MalachiteScreen } from "./ui.js";
-import { Preset } from "./filter-bank-preset.js";
-import { FilterBankNodes, FilterNode } from "./filter-bank-nodes.js";
+import { Terminable } from "../lib/common.js";
+import { MalachiteScreen } from "../ui.js";
+import { Preset } from "./preset.js";
+import { FilterBankNodes, FilterNode } from "./nodes.js";
 export declare class FilterBankResponseRenderer {
     private readonly screen;
     private static Colors;
@@ -16,6 +16,9 @@ export declare class FilterBankUI implements Terminable {
     private readonly terminator;
     private readonly screen;
     private readonly response;
+    private readonly meterL;
+    private readonly meterR;
     constructor(preset: Preset, nodes: FilterBankNodes);
+    setMeterValues(values: Float32Array[]): void;
     terminate(): void;
 }

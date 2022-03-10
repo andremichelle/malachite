@@ -118,6 +118,15 @@ export class MalachiteKnob extends MalachiteUIElement {
     }
 }
 
+export class MalachiteMeter {
+    constructor(private readonly element: HTMLDivElement) {
+    }
+
+    setValue(value: number): void {
+        this.element.style.setProperty("--value", value.toFixed(2))
+    }
+}
+
 export class MalachiteScreen {
     readonly context: CanvasRenderingContext2D = this.canvas.getContext("2d")
 

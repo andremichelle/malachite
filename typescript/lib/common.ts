@@ -1,5 +1,35 @@
-import {BitArray, Bits, Random} from "./math.js"
+import {Random} from "./math.js"
 import {Linear, Range, ValueMapping} from "./mapping.js"
+
+export const RENDER_QUANTUM: number = 128 | 0
+
+export class RMS {
+    private readonly values: Float32Array
+    private readonly inv: number
+    private sum: number
+    private index: number
+
+    constructor(private readonly n: number) {
+        this.values = new Float32Array(n)
+        this.inv = 1.0 / n
+        this.sum = 0.0
+        this.index = 0 | 0
+    }
+
+    pushPop(squared: number): number {
+        this.sum -= this.values[this.index]
+        this.sum += squared
+        this.values[this.index] = squared
+        if (++this.index === this.n) this.index = 0
+        return 0.0 >= this.sum ? 0.0 : Math.sqrt(this.sum * this.inv)
+    }
+
+    clear(): void {
+        this.values.fill(0.0)
+        this.sum = 0.0
+        this.index = 0 | 0
+    }
+}
 
 export type NoArgType<T> = { new(): T }
 
@@ -164,56 +194,6 @@ export class ObservableImpl<T> implements Observable<T> {
 
     terminate(): void {
         this.observers.splice(0, this.observers.length)
-    }
-}
-
-export class ObservableBits implements Bits, Observable<ObservableBits>, Serializer<number[]> {
-    private readonly bits: BitArray
-    private readonly observable = new ObservableImpl<ObservableBits>()
-
-    constructor(numBits: number) {
-        this.bits = new BitArray(numBits)
-    }
-
-    addObserver(observer: Observer<ObservableBits>): Terminable {
-        return this.observable.addObserver(observer)
-    }
-
-    removeObserver(observer: Observer<ObservableBits>): boolean {
-        return this.observable.removeObserver(observer)
-    }
-
-    setBit(index: number, value: boolean): boolean {
-        const changed = this.bits.setBit(index, value)
-        if (changed) {
-            this.observable.notify(this)
-        }
-        return changed
-    }
-
-    getBit(index: number): boolean {
-        return this.bits.getBit(index)
-    }
-
-    randomise(random: Random, chance: number = 1.0): void {
-        this.bits.randomise(random, chance)
-    }
-
-    clear(): void {
-        this.bits.clear()
-    }
-
-    deserialize(format: number[]): ObservableBits {
-        this.bits.deserialize(format)
-        return this
-    }
-
-    serialize(): number[] {
-        return this.bits.serialize()
-    }
-
-    terminate(): void {
-        this.observable.terminate()
     }
 }
 
@@ -571,10 +551,10 @@ export class PrintMapping<Y> {
             if (isNaN(value)) return null
             return value
         }, value => {
-            if(isNaN(value)) {
+            if (isNaN(value)) {
                 return "N/A"
             }
-            if(!isFinite(value)) {
+            if (!isFinite(value)) {
                 return value < 0.0 ? "-∞" : "∞"
             }
             return value.toFixed(numPrecision)

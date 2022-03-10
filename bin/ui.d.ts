@@ -34,6 +34,11 @@ export declare class MalachiteKnob extends MalachiteUIElement {
     private mouseDown;
     private installMouseInteraction;
 }
+export declare class MalachiteMeter {
+    private readonly element;
+    constructor(element: HTMLDivElement);
+    setValue(value: number): void;
+}
 export declare class MalachiteScreen {
     readonly canvas: HTMLCanvasElement;
     readonly xAxis: ValueMapping<number>;

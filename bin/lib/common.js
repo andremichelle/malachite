@@ -1,5 +1,27 @@
-import { BitArray } from "./math.js";
 import { Linear } from "./mapping.js";
+export const RENDER_QUANTUM = 128 | 0;
+export class RMS {
+    constructor(n) {
+        this.n = n;
+        this.values = new Float32Array(n);
+        this.inv = 1.0 / n;
+        this.sum = 0.0;
+        this.index = 0 | 0;
+    }
+    pushPop(squared) {
+        this.sum -= this.values[this.index];
+        this.sum += squared;
+        this.values[this.index] = squared;
+        if (++this.index === this.n)
+            this.index = 0;
+        return 0.0 >= this.sum ? 0.0 : Math.sqrt(this.sum * this.inv);
+    }
+    clear() {
+        this.values.fill(0.0);
+        this.sum = 0.0;
+        this.index = 0 | 0;
+    }
+}
 export class TerminableVoid {
     terminate() {
     }
@@ -122,44 +144,6 @@ export class ObservableImpl {
     }
     terminate() {
         this.observers.splice(0, this.observers.length);
-    }
-}
-export class ObservableBits {
-    constructor(numBits) {
-        this.observable = new ObservableImpl();
-        this.bits = new BitArray(numBits);
-    }
-    addObserver(observer) {
-        return this.observable.addObserver(observer);
-    }
-    removeObserver(observer) {
-        return this.observable.removeObserver(observer);
-    }
-    setBit(index, value) {
-        const changed = this.bits.setBit(index, value);
-        if (changed) {
-            this.observable.notify(this);
-        }
-        return changed;
-    }
-    getBit(index) {
-        return this.bits.getBit(index);
-    }
-    randomise(random, chance = 1.0) {
-        this.bits.randomise(random, chance);
-    }
-    clear() {
-        this.bits.clear();
-    }
-    deserialize(format) {
-        this.bits.deserialize(format);
-        return this;
-    }
-    serialize() {
-        return this.bits.serialize();
-    }
-    terminate() {
-        this.observable.terminate();
     }
 }
 export class ObservableValueVoid {

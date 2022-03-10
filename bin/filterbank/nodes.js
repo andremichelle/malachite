@@ -1,4 +1,14 @@
-import { ArrayUtils, ObservableImpl, Options, Terminator } from "./lib/common.js";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { ArrayUtils, ObservableImpl, Options, Terminator } from "../lib/common.js";
+import { NoUIMeterWorklet } from "../meter/worklet.js";
 const LogDb = Math.log(10.0) / 20.0;
 export const dbToGain = (db) => Math.exp(db * LogDb);
 export const gainToDb = (gain) => Math.log(gain) / LogDb;
@@ -63,8 +73,13 @@ class FilterNodeFactory {
                 return parameters.q.get();
             }
             connect(input) {
-                this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => connectWithBypassSwitch(context, input, node, this.output)));
-                return this.output;
+                this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => {
+                    const output = context.createGain();
+                    const bypassSwitch = connectWithBypassSwitch(context, input, node, output);
+                    input = output;
+                    return bypassSwitch;
+                }));
+                return input.connect(this.output);
             }
             getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
                 this.nodes[0].getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
@@ -206,10 +221,27 @@ export class FilterBankNodes {
         this.filters.push(this.lowShelfFilter);
         this.filters.push(this.lowPassFilter);
         this.outputGain = context.createGain();
-        this.connect(this.inputGain).connect(this.outputGain);
+        this.meterNode = new NoUIMeterWorklet(context, 1, 2);
+        this.connect(this.inputGain).connect(this.outputGain).connect(this.meterNode);
+        this.controlVolume(preset.main);
+    }
+    static create(context, preset) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield context.audioWorklet.addModule("bin/meter/processor.js");
+            return new FilterBankNodes(context, preset);
+        });
+    }
+    input() {
+        return this.inputGain;
+    }
+    output() {
+        return this.outputGain;
     }
     getFilters() {
         return this.filters;
+    }
+    peaks() {
+        return this.meterNode.peaks;
     }
     addObserver(observer) {
         return this.observable.addObserver(observer);
@@ -224,5 +256,7 @@ export class FilterBankNodes {
         this.filters.forEach(filter => output = filter.connect(output));
         return output;
     }
+    controlVolume(setting) {
+    }
 }
-//# sourceMappingURL=filter-bank-nodes.js.map
+//# sourceMappingURL=nodes.js.map

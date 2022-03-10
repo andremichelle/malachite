@@ -1,4 +1,4 @@
-import { Parameter } from "./lib/common.js";
+import { Parameter } from "../lib/common.js";
 export declare type Preset = {
     main: {
         gain: Parameter<number>;

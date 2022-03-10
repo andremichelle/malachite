@@ -1,7 +1,7 @@
-import { Terminator } from "./lib/common.js";
-import { MalachiteKnob, MalachiteScreen, MalachiteSwitch } from "./ui.js";
-import { Exp, Linear } from "./lib/mapping.js";
-import { gainToDb } from "./filter-bank-nodes.js";
+import { Terminator } from "../lib/common.js";
+import { MalachiteKnob, MalachiteMeter, MalachiteScreen, MalachiteSwitch } from "../ui.js";
+import { Exp, Linear } from "../lib/mapping.js";
+import { gainToDb } from "./nodes.js";
 export class FilterBankResponseRenderer {
     constructor(screen) {
         this.screen = screen;
@@ -132,11 +132,17 @@ export class FilterBankUI {
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='q']")))
                 .with(preset.filter.lowPass.q);
         }
-        nodes.addObserver(nodes => this.response.render(nodes.getFilters()));
+        this.terminator.with(nodes.addObserver(nodes => this.response.render(nodes.getFilters())));
         this.response.render(nodes.getFilters());
+        this.meterL = new MalachiteMeter(document.querySelector("div.meter.left"));
+        this.meterR = new MalachiteMeter(document.querySelector("div.meter.right"));
+    }
+    setMeterValues(values) {
+        this.meterL.setValue(values[0][0]);
+        this.meterR.setValue(values[0][1]);
     }
     terminate() {
         this.terminator.terminate();
     }
 }
-//# sourceMappingURL=filter-bank-ui.js.map
+//# sourceMappingURL=ui.js.map

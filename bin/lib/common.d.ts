@@ -1,5 +1,16 @@
-import { Bits, Random } from "./math.js";
+import { Random } from "./math.js";
 import { Range, ValueMapping } from "./mapping.js";
+export declare const RENDER_QUANTUM: number;
+export declare class RMS {
+    private readonly n;
+    private readonly values;
+    private readonly inv;
+    private sum;
+    private index;
+    constructor(n: number);
+    pushPop(squared: number): number;
+    clear(): void;
+}
 export declare type NoArgType<T> = {
     new (): T;
 };
@@ -69,20 +80,6 @@ export declare class ObservableImpl<T> implements Observable<T> {
     notify(value: T): void;
     addObserver(observer: Observer<T>): Terminable;
     removeObserver(observer: Observer<T>): boolean;
-    terminate(): void;
-}
-export declare class ObservableBits implements Bits, Observable<ObservableBits>, Serializer<number[]> {
-    private readonly bits;
-    private readonly observable;
-    constructor(numBits: number);
-    addObserver(observer: Observer<ObservableBits>): Terminable;
-    removeObserver(observer: Observer<ObservableBits>): boolean;
-    setBit(index: number, value: boolean): boolean;
-    getBit(index: number): boolean;
-    randomise(random: Random, chance?: number): void;
-    clear(): void;
-    deserialize(format: number[]): ObservableBits;
-    serialize(): number[];
     terminate(): void;
 }
 export interface Serializer<T> {

@@ -10,8 +10,9 @@ import {
     Parameter,
     Terminable,
     Terminator
-} from "./lib/common.js"
-import {Preset} from "./filter-bank-preset.js"
+} from "../lib/common.js"
+import {Preset} from "./preset.js"
+import {NoUIMeterWorklet} from "../meter/worklet.js"
 
 const LogDb = Math.log(10.0) / 20.0
 export const dbToGain = (db: number): number => Math.exp(db * LogDb)
@@ -103,8 +104,13 @@ class FilterNodeFactory {
             }
 
             connect(input: AudioNode): AudioNode {
-                this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => connectWithBypassSwitch(context, input, node, this.output)))
-                return this.output
+                this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => {
+                    const output = context.createGain()
+                    const bypassSwitch = connectWithBypassSwitch(context, input, node, output)
+                    input = output
+                    return bypassSwitch
+                }))
+                return input.connect(this.output)
             }
 
             getFrequencyResponse(frequencyHz: Float32Array, magResponse: Float32Array, phaseResponse: Float32Array): void {
@@ -265,11 +271,17 @@ class FilterNodeFactory {
 }
 
 export class FilterBankNodes implements Observable<FilterBankNodes> {
+    static async create(context: AudioContext, preset: Preset): Promise<FilterBankNodes> {
+        await context.audioWorklet.addModule("bin/meter/processor.js")
+        return new FilterBankNodes(context, preset)
+    }
+
     private readonly terminator = new Terminator()
     private readonly observable: ObservableImpl<FilterBankNodes> = this.terminator.with(new ObservableImpl())
 
     private readonly inputGain: GainNode
     private readonly outputGain: GainNode
+    private readonly meterNode: NoUIMeterWorklet
 
     private readonly filters: FilterNode[] = []
     private readonly highPassFilter: FilterNode
@@ -293,11 +305,25 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
         this.filters.push(this.lowShelfFilter)
         this.filters.push(this.lowPassFilter)
         this.outputGain = context.createGain()
-        this.connect(this.inputGain).connect(this.outputGain)
+        this.meterNode = new NoUIMeterWorklet(context, 1, 2)
+        this.connect(this.inputGain).connect(this.outputGain).connect(this.meterNode)
+        this.controlVolume(preset.main)
+    }
+
+    input(): AudioNode {
+        return this.inputGain
+    }
+
+    output(): AudioNode {
+        return this.outputGain
     }
 
     getFilters(): FilterNode[] {
         return this.filters
+    }
+
+    peaks(): Float32Array[] {
+        return this.meterNode.peaks
     }
 
     addObserver(observer: Observer<FilterBankNodes>): Terminable {
@@ -315,5 +341,13 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
     private connect(output: AudioNode): AudioNode {
         this.filters.forEach(filter => output = filter.connect(output))
         return output
+    }
+
+    // TODO
+    private controlVolume(setting: {
+        gain: Parameter<number>,
+        bypass: Parameter<boolean>
+    }) {
+
     }
 }

@@ -95,6 +95,14 @@ export class MalachiteKnob extends MalachiteUIElement {
         this.element.addEventListener("dragstart", Events.preventDefault);
     }
 }
+export class MalachiteMeter {
+    constructor(element) {
+        this.element = element;
+    }
+    setValue(value) {
+        this.element.style.setProperty("--value", value.toFixed(2));
+    }
+}
 export class MalachiteScreen {
     constructor(canvas, xAxis, yAxis) {
         this.canvas = canvas;

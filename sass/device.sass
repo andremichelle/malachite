@@ -22,200 +22,17 @@ section.device
   color: #777777
   @include scale9(url("/assets/background.png"), 50, 16, 50, 16)
 
-  div.controls
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    position: absolute
-    display: flex
-    flex-wrap: wrap
-
-    div.knob
-      display: flex
-      flex-direction: column
-      align-items: center
-      position: relative
-      min-width: var(--size)
-      max-width: var(--size)
-      pointer-events: none
-      font-size: 20px
-      margin-bottom: 8px
-
-      &:before
-        content: attr(data-name)
-
-      &.big
-        --size: 86px
-
-        > div
-          height: 78px
-
-        img
-          bottom: -10px
-
-          &.scale
-            transform: translate(-50%, -21px)
-
-      &.mid
-        --size: 64px
-
-        > div
-          height: 58px
-
-        img
-          bottom: -2px
-
-          &.scale
-            transform: translate(-50%, -12px)
-
-      &.small
-        --size: 52px
-
-        > div
-          height: 58px
-
-        img
-          bottom: -5px
-
-          &.scale
-            transform: translate(-50%, -13px)
-
-      > div
-        position: relative
-
-        > img
-          position: absolute
-          transform: translate(-50%, 0)
-
-          &.filmstrip
-            --frame: 0
-            width: var(--size)
-            height: var(--size)
-            object-fit: none
-            object-position: 0 calc(var(--size) * var(--frame) * -1)
-            pointer-events: all
-
-      > input[type='text']
-        appearance: none
-        padding: 0 4px
-        box-sizing: border-box
-        font-size: 12px
-        color: $green
-        outline: none
-        border: none
-        width: 46px
-        height: 20px
-        background-image: url("/assets/value_screen_small.png")
-        pointer-events: bounding-box
-        background-color: transparent
-        text-align: center
-        font-family: 'Labrador A', serif
-
-    label.checkbox
-      border: none
-      outline: none
-      white-space: nowrap
-      appearance: none
-      margin: 0
-      padding: 0
-      position: relative
-      line-height: 15px
-      color: #888888
-      display: flex
-      flex-direction: column
-      align-items: center
-
-      > input[type=checkbox]
-        appearance: none
-        display: none
-
-      &.vertical
-        font-size: 18px
-
-        &:before
-          content: attr(data-top-name)
-
-        &:after
-          content: attr(data-bottom-name)
-
-        > span
-          width: 30px
-          height: 50px
-          background-image: url("/assets/switch_vertical_A.png")
-
-        & input[type=checkbox]:checked
-          ~ span
-            background-position-y: 3px
-            background-image: url("/assets/switch_vertical_B.png")
-
-      &.button
-        font-size: 19px
-        text-align: center
-        white-space: nowrap
-        line-height: 31px
-        color: rgba(white, 0.4)
-
-        &.big
-          --w: 82px
-          --h: 38px
-          --checked: url("/assets/button_big_on.png")
-          --unchecked: url("/assets/button_big_off.png")
-
-        &.mid
-          --w: 65px
-          --h: 38px
-          --checked: url("/assets/button_mid_on.png")
-          --unchecked: url("/assets/button_mid_off.png")
-
-        &.small
-          --w: 48px
-          --h: 38px
-          --checked: url("/assets/button_small_on.png")
-          --unchecked: url("/assets/button_small_off.png")
-
-        > span
-          width: var(--w)
-          height: var(--h)
-          background-repeat: no-repeat
-          background-image: var(--unchecked)
-
-        & input[type=checkbox]:checked
-          ~ span
-            color: rgba(black, 0.8)
-            background-position-x: 6px
-            background-position-y: 2px
-            background-image: var(--checked)
-
-    canvas.screen
-      width: 650px
-      height: 171px
-      box-sizing: border-box
-      padding: 2px
-      background-image: url("/assets/value_screen_big.png")
-
-    div.meter
-      width: 16px
-      height: 80px
-      background-image: url("/assets/meter_slot.png")
-      position: relative
-      --value: 0.0
-
-      &:before
-        top: 3px
-        bottom: 3px
-        left: 3px
-        right: 3px
-        content: ""
-        clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%)
-        background-repeat: no-repeat
-        background-image: url("/assets/meter_fill.png")
-        position: absolute
-
   div.decoration
     width: 100%
     height: 100%
     position: relative
+
+    > div.top-bar
+      top: -37px
+      left: 50%
+      position: absolute
+      transform: translate(-50%, 0)
+      display: flex
 
     > img.vent
       position: absolute
@@ -246,3 +63,193 @@ section.device
       &.br
         right: 4px
         bottom: -32px
+
+  div.controls
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    position: absolute
+    display: flex
+    flex-wrap: wrap
+
+  div.knob
+    display: flex
+    flex-direction: column
+    align-items: center
+    position: relative
+    min-width: var(--size)
+    max-width: var(--size)
+    pointer-events: none
+    font-size: 20px
+    margin-bottom: 8px
+
+    &:before
+      content: attr(data-name)
+
+    &.big
+      --size: 86px
+
+      > div
+        height: 78px
+
+      img
+        bottom: -10px
+
+        &.scale
+          transform: translate(-50%, -21px)
+
+    &.mid
+      --size: 64px
+
+      > div
+        height: 58px
+
+      img
+        bottom: -2px
+
+        &.scale
+          transform: translate(-50%, -12px)
+
+    &.small
+      --size: 52px
+
+      > div
+        height: 58px
+
+      img
+        bottom: -5px
+
+        &.scale
+          transform: translate(-50%, -13px)
+
+    > div
+      position: relative
+
+      > img
+        position: absolute
+        transform: translate(-50%, 0)
+
+        &.filmstrip
+          --frame: 0
+          width: var(--size)
+          height: var(--size)
+          object-fit: none
+          object-position: 0 calc(var(--size) * var(--frame) * -1)
+          pointer-events: all
+
+    > input[type='text']
+      appearance: none
+      padding: 0 4px
+      box-sizing: border-box
+      font-size: 12px
+      color: $green
+      outline: none
+      border: none
+      width: 46px
+      height: 20px
+      background-image: url("/assets/value_screen_small.png")
+      pointer-events: bounding-box
+      background-color: transparent
+      text-align: center
+      font-family: 'Labrador A', serif
+
+  label.checkbox
+    border: none
+    outline: none
+    white-space: nowrap
+    appearance: none
+    margin: 0
+    padding: 0
+    position: relative
+    line-height: 15px
+    color: #888888
+    display: flex
+    flex-direction: column
+    align-items: center
+
+    > input[type=checkbox]
+      appearance: none
+      display: none
+
+    &.vertical
+      font-size: 18px
+
+      &:before
+        content: attr(data-top-name)
+
+      &:after
+        content: attr(data-bottom-name)
+
+      > span
+        width: 30px
+        height: 50px
+        background-image: url("/assets/switch_vertical_A.png")
+
+      & input[type=checkbox]:checked
+        ~ span
+          background-position-y: 3px
+          background-image: url("/assets/switch_vertical_B.png")
+
+    &.button
+      font-size: 18px
+      text-align: center
+      white-space: nowrap
+      line-height: 31px
+      color: rgba(white, 0.4)
+
+      &.big
+        --w: 82px
+        --h: 38px
+        --checked: url("/assets/button_big_on.png")
+        --unchecked: url("/assets/button_big_off.png")
+
+      &.mid
+        --w: 65px
+        --h: 38px
+        --checked: url("/assets/button_mid_on.png")
+        --unchecked: url("/assets/button_mid_off.png")
+
+      &.small
+        --w: 48px
+        --h: 38px
+        --checked: url("/assets/button_small_on.png")
+        --unchecked: url("/assets/button_small_off.png")
+
+      > span
+        width: var(--w)
+        height: var(--h)
+        background-repeat: no-repeat
+        background-image: var(--unchecked)
+
+      & input[type=checkbox]:checked
+        ~ span
+          color: rgba(black, 0.8)
+          background-position-x: 6px
+          background-position-y: 2px
+          background-image: var(--checked)
+
+  canvas.screen
+    width: 650px
+    height: 171px
+    box-sizing: border-box
+    padding: 2px
+    background-image: url("/assets/value_screen_big.png")
+
+  div.meter
+    width: 16px
+    height: 80px
+    background-image: url("/assets/meter_slot.png")
+    position: relative
+    --value: 0.0
+
+    &:before
+      top: 3px
+      bottom: 3px
+      left: 3px
+      right: 3px
+      content: ""
+      clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%)
+      background-repeat: no-repeat
+      background-image: url("/assets/meter_fill.png")
+      position: absolute

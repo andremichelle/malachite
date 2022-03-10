@@ -57,198 +57,17 @@ section.device {
   border-right: 16px transparent solid;
   border-image: url("/assets/background.png") 50 16 50 16 fill stretch;
 }
-section.device div.controls {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-}
-section.device div.controls div.knob {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  min-width: var(--size);
-  max-width: var(--size);
-  pointer-events: none;
-  font-size: 20px;
-  margin-bottom: 8px;
-}
-section.device div.controls div.knob:before {
-  content: attr(data-name);
-}
-section.device div.controls div.knob.big {
-  --size: 86px;
-}
-section.device div.controls div.knob.big > div {
-  height: 78px;
-}
-section.device div.controls div.knob.big img {
-  bottom: -10px;
-}
-section.device div.controls div.knob.big img.scale {
-  transform: translate(-50%, -21px);
-}
-section.device div.controls div.knob.mid {
-  --size: 64px;
-}
-section.device div.controls div.knob.mid > div {
-  height: 58px;
-}
-section.device div.controls div.knob.mid img {
-  bottom: -2px;
-}
-section.device div.controls div.knob.mid img.scale {
-  transform: translate(-50%, -12px);
-}
-section.device div.controls div.knob.small {
-  --size: 52px;
-}
-section.device div.controls div.knob.small > div {
-  height: 58px;
-}
-section.device div.controls div.knob.small img {
-  bottom: -5px;
-}
-section.device div.controls div.knob.small img.scale {
-  transform: translate(-50%, -13px);
-}
-section.device div.controls div.knob > div {
-  position: relative;
-}
-section.device div.controls div.knob > div > img {
-  position: absolute;
-  transform: translate(-50%, 0);
-}
-section.device div.controls div.knob > div > img.filmstrip {
-  --frame: 0;
-  width: var(--size);
-  height: var(--size);
-  object-fit: none;
-  object-position: 0 calc(var(--size) * var(--frame) * -1);
-  pointer-events: all;
-}
-section.device div.controls div.knob > input[type=text] {
-  appearance: none;
-  padding: 0 4px;
-  box-sizing: border-box;
-  font-size: 12px;
-  color: #358F6F;
-  outline: none;
-  border: none;
-  width: 46px;
-  height: 20px;
-  background-image: url("/assets/value_screen_small.png");
-  pointer-events: bounding-box;
-  background-color: transparent;
-  text-align: center;
-  font-family: "Labrador A", serif;
-}
-section.device div.controls label.checkbox {
-  border: none;
-  outline: none;
-  white-space: nowrap;
-  appearance: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  line-height: 15px;
-  color: #888888;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-section.device div.controls label.checkbox > input[type=checkbox] {
-  appearance: none;
-  display: none;
-}
-section.device div.controls label.checkbox.vertical {
-  font-size: 18px;
-}
-section.device div.controls label.checkbox.vertical:before {
-  content: attr(data-top-name);
-}
-section.device div.controls label.checkbox.vertical:after {
-  content: attr(data-bottom-name);
-}
-section.device div.controls label.checkbox.vertical > span {
-  width: 30px;
-  height: 50px;
-  background-image: url("/assets/switch_vertical_A.png");
-}
-section.device div.controls label.checkbox.vertical input[type=checkbox]:checked ~ span {
-  background-position-y: 3px;
-  background-image: url("/assets/switch_vertical_B.png");
-}
-section.device div.controls label.checkbox.button {
-  font-size: 19px;
-  text-align: center;
-  white-space: nowrap;
-  line-height: 31px;
-  color: rgba(255, 255, 255, 0.4);
-}
-section.device div.controls label.checkbox.button.big {
-  --w: 82px;
-  --h: 38px;
-  --checked: url("/assets/button_big_on.png");
-  --unchecked: url("/assets/button_big_off.png");
-}
-section.device div.controls label.checkbox.button.mid {
-  --w: 65px;
-  --h: 38px;
-  --checked: url("/assets/button_mid_on.png");
-  --unchecked: url("/assets/button_mid_off.png");
-}
-section.device div.controls label.checkbox.button.small {
-  --w: 48px;
-  --h: 38px;
-  --checked: url("/assets/button_small_on.png");
-  --unchecked: url("/assets/button_small_off.png");
-}
-section.device div.controls label.checkbox.button > span {
-  width: var(--w);
-  height: var(--h);
-  background-repeat: no-repeat;
-  background-image: var(--unchecked);
-}
-section.device div.controls label.checkbox.button input[type=checkbox]:checked ~ span {
-  color: rgba(0, 0, 0, 0.8);
-  background-position-x: 6px;
-  background-position-y: 2px;
-  background-image: var(--checked);
-}
-section.device div.controls canvas.screen {
-  width: 650px;
-  height: 171px;
-  box-sizing: border-box;
-  padding: 2px;
-  background-image: url("/assets/value_screen_big.png");
-}
-section.device div.controls div.meter {
-  width: 16px;
-  height: 80px;
-  background-image: url("/assets/meter_slot.png");
-  position: relative;
-  --value: 0.0;
-}
-section.device div.controls div.meter:before {
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  right: 3px;
-  content: "";
-  clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%);
-  background-repeat: no-repeat;
-  background-image: url("/assets/meter_fill.png");
-  position: absolute;
-}
 section.device div.decoration {
   width: 100%;
   height: 100%;
   position: relative;
+}
+section.device div.decoration > div.top-bar {
+  top: -37px;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0);
+  display: flex;
 }
 section.device div.decoration > img.vent {
   position: absolute;
@@ -279,6 +98,194 @@ section.device div.decoration > img.screw.bl {
 section.device div.decoration > img.screw.br {
   right: 4px;
   bottom: -32px;
+}
+section.device div.controls {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+}
+section.device div.knob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-width: var(--size);
+  max-width: var(--size);
+  pointer-events: none;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+section.device div.knob:before {
+  content: attr(data-name);
+}
+section.device div.knob.big {
+  --size: 86px;
+}
+section.device div.knob.big > div {
+  height: 78px;
+}
+section.device div.knob.big img {
+  bottom: -10px;
+}
+section.device div.knob.big img.scale {
+  transform: translate(-50%, -21px);
+}
+section.device div.knob.mid {
+  --size: 64px;
+}
+section.device div.knob.mid > div {
+  height: 58px;
+}
+section.device div.knob.mid img {
+  bottom: -2px;
+}
+section.device div.knob.mid img.scale {
+  transform: translate(-50%, -12px);
+}
+section.device div.knob.small {
+  --size: 52px;
+}
+section.device div.knob.small > div {
+  height: 58px;
+}
+section.device div.knob.small img {
+  bottom: -5px;
+}
+section.device div.knob.small img.scale {
+  transform: translate(-50%, -13px);
+}
+section.device div.knob > div {
+  position: relative;
+}
+section.device div.knob > div > img {
+  position: absolute;
+  transform: translate(-50%, 0);
+}
+section.device div.knob > div > img.filmstrip {
+  --frame: 0;
+  width: var(--size);
+  height: var(--size);
+  object-fit: none;
+  object-position: 0 calc(var(--size) * var(--frame) * -1);
+  pointer-events: all;
+}
+section.device div.knob > input[type=text] {
+  appearance: none;
+  padding: 0 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  color: #358F6F;
+  outline: none;
+  border: none;
+  width: 46px;
+  height: 20px;
+  background-image: url("/assets/value_screen_small.png");
+  pointer-events: bounding-box;
+  background-color: transparent;
+  text-align: center;
+  font-family: "Labrador A", serif;
+}
+section.device label.checkbox {
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  line-height: 15px;
+  color: #888888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+section.device label.checkbox > input[type=checkbox] {
+  appearance: none;
+  display: none;
+}
+section.device label.checkbox.vertical {
+  font-size: 18px;
+}
+section.device label.checkbox.vertical:before {
+  content: attr(data-top-name);
+}
+section.device label.checkbox.vertical:after {
+  content: attr(data-bottom-name);
+}
+section.device label.checkbox.vertical > span {
+  width: 30px;
+  height: 50px;
+  background-image: url("/assets/switch_vertical_A.png");
+}
+section.device label.checkbox.vertical input[type=checkbox]:checked ~ span {
+  background-position-y: 3px;
+  background-image: url("/assets/switch_vertical_B.png");
+}
+section.device label.checkbox.button {
+  font-size: 18px;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 31px;
+  color: rgba(255, 255, 255, 0.4);
+}
+section.device label.checkbox.button.big {
+  --w: 82px;
+  --h: 38px;
+  --checked: url("/assets/button_big_on.png");
+  --unchecked: url("/assets/button_big_off.png");
+}
+section.device label.checkbox.button.mid {
+  --w: 65px;
+  --h: 38px;
+  --checked: url("/assets/button_mid_on.png");
+  --unchecked: url("/assets/button_mid_off.png");
+}
+section.device label.checkbox.button.small {
+  --w: 48px;
+  --h: 38px;
+  --checked: url("/assets/button_small_on.png");
+  --unchecked: url("/assets/button_small_off.png");
+}
+section.device label.checkbox.button > span {
+  width: var(--w);
+  height: var(--h);
+  background-repeat: no-repeat;
+  background-image: var(--unchecked);
+}
+section.device label.checkbox.button input[type=checkbox]:checked ~ span {
+  color: rgba(0, 0, 0, 0.8);
+  background-position-x: 6px;
+  background-position-y: 2px;
+  background-image: var(--checked);
+}
+section.device canvas.screen {
+  width: 650px;
+  height: 171px;
+  box-sizing: border-box;
+  padding: 2px;
+  background-image: url("/assets/value_screen_big.png");
+}
+section.device div.meter {
+  width: 16px;
+  height: 80px;
+  background-image: url("/assets/meter_slot.png");
+  position: relative;
+  --value: 0.0;
+}
+section.device div.meter:before {
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  content: "";
+  clip-path: inset(calc(100% - var(--value) * 100%) 0% 0% 0%);
+  background-repeat: no-repeat;
+  background-image: url("/assets/meter_fill.png");
+  position: absolute;
 }
 
 html, body {

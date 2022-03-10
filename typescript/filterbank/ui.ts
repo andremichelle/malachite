@@ -1,8 +1,8 @@
-import {Terminable, Terminator} from "./lib/common.js"
-import {MalachiteKnob, MalachiteScreen, MalachiteSwitch} from "./ui.js"
-import {Preset} from "./filter-bank-preset.js"
-import {Exp, Linear} from "./lib/mapping.js"
-import {FilterBankNodes, FilterNode, gainToDb} from "./filter-bank-nodes.js"
+import {Terminable, Terminator} from "../lib/common.js"
+import {MalachiteKnob, MalachiteMeter, MalachiteScreen, MalachiteSwitch} from "../ui.js"
+import {Preset} from "./preset.js"
+import {Exp, Linear} from "../lib/mapping.js"
+import {FilterBankNodes, FilterNode, gainToDb} from "./nodes.js"
 
 export class FilterBankResponseRenderer {
     private static Colors: string[] = ["#672770", "#943156", "#96A637", "#699A33", "#92C060"]
@@ -84,6 +84,9 @@ export class FilterBankUI implements Terminable {
     private readonly screen = new MalachiteScreen(document.querySelector("canvas.screen"), new Exp(20.0, 20000.0), new Linear(40.0, -40.0))
     private readonly response = new FilterBankResponseRenderer(this.screen)
 
+    private readonly meterL: MalachiteMeter
+    private readonly meterR: MalachiteMeter
+
     constructor(preset: Preset, nodes: FilterBankNodes) {
         {
             this.terminator.with(new MalachiteSwitch(document.querySelector("label.checkbox[data-parameter='main-bypass']")))
@@ -142,8 +145,16 @@ export class FilterBankUI implements Terminable {
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='q']")))
                 .with(preset.filter.lowPass.q)
         }
-        nodes.addObserver(nodes => this.response.render(nodes.getFilters()))
+        this.terminator.with(nodes.addObserver(nodes => this.response.render(nodes.getFilters())))
         this.response.render(nodes.getFilters())
+
+        this.meterL = new MalachiteMeter(document.querySelector("div.meter.left"))
+        this.meterR = new MalachiteMeter(document.querySelector("div.meter.right"))
+    }
+
+    setMeterValues(values: Float32Array[]) {
+        this.meterL.setValue(values[0][0])
+        this.meterR.setValue(values[0][1])
     }
 
     terminate(): void {

@@ -1,5 +1,5 @@
-import {Boolean, Exp, Linear, LinearInteger, Volume} from "./lib/mapping.js"
-import {Parameter, PrintMapping} from "./lib/common.js"
+import {Boolean, Exp, Linear, LinearInteger, Volume} from "../lib/mapping.js"
+import {Parameter, PrintMapping} from "../lib/common.js"
 
 export type Preset = {
     main: {
