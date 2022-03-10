@@ -72,7 +72,7 @@ const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
 
 (async () => {
     document.body.classList.add("invisible")
-    await preloadImagesOfCssFile("main.css")
+    await preloadImagesOfCssFile("./bin/main.css")
     const context = new AudioContext()
     const preset = initPreset()
     const nodes = await FilterBankNodes.create(context, preset)
