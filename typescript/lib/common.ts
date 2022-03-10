@@ -1,50 +1,10 @@
 import {Random} from "./math.js"
 import {Linear, Range, ValueMapping} from "./mapping.js"
 
-export const RENDER_QUANTUM: number = 128 | 0
-
 export const cosine = (y1: number, y2: number, mu: number): number => {
     const mu2 = (1.0 - Math.cos(mu * Math.PI)) * 0.5
     return y1 * (1.0 - mu2) + y2 * mu2
 }
-
-export class RMS {
-    private readonly values: Float32Array
-    private readonly inv: number
-    private sum: number
-    private index: number
-
-    constructor(private readonly n: number) {
-        this.values = new Float32Array(n)
-        this.inv = 1.0 / n
-        this.sum = 0.0
-        this.index = 0 | 0
-    }
-
-    pushPop(squared: number): number {
-        this.sum -= this.values[this.index]
-        this.sum += squared
-        this.values[this.index] = squared
-        if (++this.index === this.n) this.index = 0
-        return 0.0 >= this.sum ? 0.0 : Math.sqrt(this.sum * this.inv)
-    }
-
-    clear(): void {
-        this.values.fill(0.0)
-        this.sum = 0.0
-        this.index = 0 | 0
-    }
-}
-
-export const fetchMicrophone = (): Promise<MediaStream> => {
-    return new Promise((resolve, reject) => {
-        navigator.getUserMedia({audio: true},
-            (stream: MediaStream) => resolve(stream),
-            (error: MediaStreamError) => reject(error))
-    })
-}
-
-export type NoArgType<T> = { new(): T }
 
 export interface Terminable {
     terminate(): void

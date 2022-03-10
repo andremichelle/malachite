@@ -1,5 +1,9 @@
 import { Parameter, Terminable } from "./lib/common.js";
 import { ValueMapping } from "./lib/mapping.js";
+export declare class Events {
+    static preventDefault: (event: any) => any;
+    static toPromise<E extends Event>(target: EventTarget, type: string): Promise<E>;
+}
 declare abstract class MalachiteUIElement implements Terminable {
     private parameterSubscription;
     private parameter;

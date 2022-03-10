@@ -1,21 +1,6 @@
 import { Random } from "./math.js";
 import { Range, ValueMapping } from "./mapping.js";
-export declare const RENDER_QUANTUM: number;
 export declare const cosine: (y1: number, y2: number, mu: number) => number;
-export declare class RMS {
-    private readonly n;
-    private readonly values;
-    private readonly inv;
-    private sum;
-    private index;
-    constructor(n: number);
-    pushPop(squared: number): number;
-    clear(): void;
-}
-export declare const fetchMicrophone: () => Promise<MediaStream>;
-export declare type NoArgType<T> = {
-    new (): T;
-};
 export interface Terminable {
     terminate(): void;
 }

@@ -1,8 +1,12 @@
 import {Option, Options, Parameter, Terminable, TerminableVoid} from "./lib/common.js"
 import {ValueMapping} from "./lib/mapping.js"
 
-class Events {
+export class Events {
     static preventDefault = event => event.preventDefault()
+
+    static async toPromise<E extends Event>(target: EventTarget, type: string): Promise<E> {
+        return new Promise<E>(resolve => target.addEventListener(type, (event: E) => resolve(event), {once: true}))
+    }
 }
 
 abstract class MalachiteUIElement implements Terminable {

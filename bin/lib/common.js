@@ -1,35 +1,7 @@
 import { Linear } from "./mapping.js";
-export const RENDER_QUANTUM = 128 | 0;
 export const cosine = (y1, y2, mu) => {
     const mu2 = (1.0 - Math.cos(mu * Math.PI)) * 0.5;
     return y1 * (1.0 - mu2) + y2 * mu2;
-};
-export class RMS {
-    constructor(n) {
-        this.n = n;
-        this.values = new Float32Array(n);
-        this.inv = 1.0 / n;
-        this.sum = 0.0;
-        this.index = 0 | 0;
-    }
-    pushPop(squared) {
-        this.sum -= this.values[this.index];
-        this.sum += squared;
-        this.values[this.index] = squared;
-        if (++this.index === this.n)
-            this.index = 0;
-        return 0.0 >= this.sum ? 0.0 : Math.sqrt(this.sum * this.inv);
-    }
-    clear() {
-        this.values.fill(0.0);
-        this.sum = 0.0;
-        this.index = 0 | 0;
-    }
-}
-export const fetchMicrophone = () => {
-    return new Promise((resolve, reject) => {
-        navigator.getUserMedia({ audio: true }, (stream) => resolve(stream), (error) => reject(error));
-    });
 };
 export class TerminableVoid {
     terminate() {

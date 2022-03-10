@@ -7,18 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { fetchMicrophone, Parameter, PrintMapping } from "./lib/common.js";
+import { Parameter, PrintMapping } from "./lib/common.js";
 import { initPreset } from "./filterbank/preset.js";
 import { FilterBankNodes } from "./filterbank/nodes.js";
 import { FilterBankUI } from "./filterbank/ui.js";
-import { MalachiteSwitch } from "./ui.js";
+import { Events, MalachiteSwitch } from "./ui.js";
 import { BooleanMapping } from "./lib/mapping.js";
 const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
     const urls = yield fetch(path)
         .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
-        .map(path => path.replace(/url\(/, "").slice(1, -1)).map(path => new URL(path, location.href + "bin/")));
+        .map(path => path.replace(/url\(/, "").slice(1, -1))
+        .map(path => new URL(path, location.href + "bin/")));
     const promises = urls.map(url => new Promise((resolve, reject) => {
-        console.log(`href: ${location.href}, url: '${url}'`);
         const image = new Image();
         image.onload = () => resolve();
         image.onerror = (error) => reject(error);
@@ -26,36 +26,38 @@ const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, funct
     }));
     return Promise.all(promises).then(() => Promise.resolve());
 });
-const initSources = (context, nodes) => {
+const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, function* () {
     const demoAudio = new Audio();
     demoAudio.src = "kepz.126.mp3";
     demoAudio.preload = "auto";
     demoAudio.crossOrigin = "*";
+    demoAudio.load();
+    yield Events.toPromise(demoAudio, "canplaythrough");
     const mediaElementSource = context.createMediaElementSource(demoAudio);
     mediaElementSource.connect(nodes.input());
     const booleanPrintMapping = PrintMapping.createBoolean("Running", "None");
     const parameterDemo = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
     const parameterMicro = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
     const parameters = [parameterDemo, parameterMicro];
-    parameterDemo.addObserver((running) => __awaiter(void 0, void 0, void 0, function* () {
+    parameterDemo.addObserver(running => {
         if (running) {
             if (context.state !== "running") {
-                yield context.resume();
+                context.resume();
             }
-            yield demoAudio.play();
+            demoAudio.play();
         }
         else {
-            yield demoAudio.pause();
+            demoAudio.pause();
             demoAudio.currentTime = 0.0;
         }
-    }));
+    });
     parameterMicro.addObserver((() => {
         let stream;
         let streamSource;
         return (running) => __awaiter(void 0, void 0, void 0, function* () {
             if (running) {
                 yield context.resume();
-                stream = yield fetchMicrophone();
+                stream = yield navigator.mediaDevices.getUserMedia({ audio: true });
                 streamSource = context.createMediaStreamSource(stream);
                 streamSource.connect(nodes.input());
             }
@@ -78,14 +80,15 @@ const initSources = (context, nodes) => {
     parameters.forEach(parameter => parameter.addObserver(() => update(parameter)));
     new MalachiteSwitch(document.querySelector("label[data-action='demo']")).with(parameterDemo);
     new MalachiteSwitch(document.querySelector("label[data-action='micro']")).with(parameterMicro);
-};
+    return Promise.resolve();
+});
 (() => __awaiter(void 0, void 0, void 0, function* () {
     document.body.classList.add("invisible");
     yield preloadImagesOfCssFile("./bin/main.css");
     const context = new AudioContext();
     const preset = initPreset();
     const nodes = yield FilterBankNodes.create(context, preset);
-    initSources(context, nodes);
+    yield initSources(context, nodes);
     nodes.output().connect(context.destination);
     const ui = new FilterBankUI(nodes, preset);
     ui.run();
