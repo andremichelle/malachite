@@ -14,11 +14,14 @@ import { FilterBankUI } from "./filterbank/ui.js";
 import { Events, MalachiteSwitch } from "./ui.js";
 import { BooleanMapping } from "./lib/mapping.js";
 const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("preloadImagesOfCssFile...");
+    console.log(`${location.href + "bin/"}`);
     const urls = yield fetch(path)
         .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
         .map(path => path.replace(/url\(/, "").slice(1, -1))
         .map(path => new URL(path, location.href + "bin/")));
     const promises = urls.map(url => new Promise((resolve, reject) => {
+        console.log(`url: '${url}'`);
         const image = new Image();
         image.onload = () => resolve();
         image.onerror = (error) => reject(error);
