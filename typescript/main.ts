@@ -81,7 +81,6 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
 }
 
 (async () => {
-    document.body.classList.add("invisible")
     await preloadImagesOfCssFile("./bin/main.css")
     const context = new AudioContext()
     const preset = initPreset()
@@ -90,5 +89,6 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     nodes.output().connect(context.destination)
     const ui = new FilterBankUI(nodes, preset)
     ui.run()
-    document.body.classList.remove("invisible")
+
+    requestAnimationFrame(() => document.body.classList.remove("invisible"))
 })()
