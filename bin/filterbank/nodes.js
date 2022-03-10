@@ -257,6 +257,12 @@ export class FilterBankNodes {
         return output;
     }
     controlVolume(setting) {
+        const update = () => {
+            interpolateIfNecessary(this.context, this.outputGain.gain, setting.bypass.get() ? 0.0 : dbToGain(setting.gain.get()));
+        };
+        this.terminator.with(setting.gain.addObserver(update));
+        this.terminator.with(setting.bypass.addObserver(update));
+        update();
     }
 }
 //# sourceMappingURL=nodes.js.map

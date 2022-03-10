@@ -343,11 +343,15 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
         return output
     }
 
-    // TODO
     private controlVolume(setting: {
         gain: Parameter<number>,
         bypass: Parameter<boolean>
     }) {
-
+        const update = () => {
+            interpolateIfNecessary(this.context, this.outputGain.gain, setting.bypass.get() ? 0.0 : dbToGain(setting.gain.get()))
+        }
+        this.terminator.with(setting.gain.addObserver(update))
+        this.terminator.with(setting.bypass.addObserver(update))
+        update()
     }
 }
