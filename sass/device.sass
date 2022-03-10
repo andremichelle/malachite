@@ -1,6 +1,7 @@
 @import "eq"
 
-$green: #358F6F // 53 143 111
+$green: #358F6F
+// 53 143 111
 
 @mixin scale9($url, $top, $left, $bottom, $right)
   border-top: $top + px transparent solid
@@ -204,20 +205,35 @@ section.device
       &.big
         --w: 82px
         --h: 38px
-        --checked: url(./assets/button_big_on.png)
-        --unchecked: url(./assets/button_big_off.png)
+
+        > span
+          background-image: url("./assets/button_big_off.png")
+
+        & input[type=checkbox]:checked
+          ~ span
+            background-image: url("./assets/button_big_on.png")
 
       &.mid
         --w: 65px
         --h: 38px
-        --checked: url(./assets/button_mid_on.png)
-        --unchecked: url(./assets/button_mid_off.png)
+
+        > span
+          background-image: url("./assets/button_mid_on.png")
+
+        & input[type=checkbox]:checked
+          ~ span
+            background-image: url("./assets/button_mid_off.png")
 
       &.small
         --w: 48px
         --h: 38px
-        --checked: url(./assets/button_small_on.png)
-        --unchecked: url(./assets/button_small_off.png)
+
+        > span
+          background-image: url("./assets/button_small_on.png")
+
+        & input[type=checkbox]:checked
+          ~ span
+            background-image: url("./assets/button_small_off.png")
 
       > span
         width: var(--w)
@@ -241,7 +257,6 @@ section.device
           color: rgba(black, 0.8)
           background-position-x: 6px
           background-position-y: 2px
-          background-image: var(--checked)
 
   div.screen-wrapper
     width: 650px
