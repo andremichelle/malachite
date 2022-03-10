@@ -90,7 +90,6 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
     document.body.classList.add("invisible");
-    yield preloadImagesOfCssFile("./bin/main.css");
     const context = new AudioContext();
     const preset = initPreset();
     const nodes = yield FilterBankNodes.create(context, preset);
