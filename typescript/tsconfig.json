@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "removeComments": true,
-    "outDir": "../bin/src/",
+    "outDir": "../docs/src/",
     "sourceMap": true,
     "lib": [
       "es2020",
