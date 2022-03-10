@@ -1,4 +1,33 @@
-import { ArrayUtils, RENDER_QUANTUM, RMS } from "../lib/common.js";
+"use strict";
+class RMS {
+    constructor(n) {
+        this.n = n;
+        this.values = new Float32Array(n);
+        this.inv = 1.0 / n;
+        this.sum = 0.0;
+        this.index = 0 | 0;
+    }
+    pushPop(squared) {
+        this.sum -= this.values[this.index];
+        this.sum += squared;
+        this.values[this.index] = squared;
+        if (++this.index === this.n)
+            this.index = 0;
+        return 0.0 >= this.sum ? 0.0 : Math.sqrt(this.sum * this.inv);
+    }
+}
+class ArrayUtils {
+    static fill(n, factory) {
+        const array = [];
+        for (let i = 0; i < n; i++) {
+            array[i] = factory(i);
+        }
+        return array;
+    }
+    constructor() {
+    }
+}
+const RENDER_QUANTUM = 128 | 0;
 registerProcessor("dsp-meter", class extends AudioWorkletProcessor {
     constructor(options) {
         super(options);

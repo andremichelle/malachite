@@ -1,4 +1,44 @@
-import {ArrayUtils, RENDER_QUANTUM, RMS} from "../lib/common.js"
+// import {ArrayUtils, RENDER_QUANTUM, RMS} from "../lib/common.js"
+
+// FIREFOX DOES NOT ALLOW IMPORTS, SO WE REPEAT THE CODE HERE
+//
+class RMS {
+    private readonly values: Float32Array
+    private readonly inv: number
+    private sum: number
+    private index: number
+
+    constructor(private readonly n: number) {
+        this.values = new Float32Array(n)
+        this.inv = 1.0 / n
+        this.sum = 0.0
+        this.index = 0 | 0
+    }
+
+    pushPop(squared: number): number {
+        this.sum -= this.values[this.index]
+        this.sum += squared
+        this.values[this.index] = squared
+        if (++this.index === this.n) this.index = 0
+        return 0.0 >= this.sum ? 0.0 : Math.sqrt(this.sum * this.inv)
+    }
+}
+
+class ArrayUtils {
+    static fill<T>(n: number, factory: (index: number) => T): T[] {
+        const array: T[] = []
+        for (let i = 0; i < n; i++) {
+            array[i] = factory(i)
+        }
+        return array
+    }
+
+    // noinspection JSUnusedLocalSymbols
+    private constructor() {
+    }
+}
+
+const RENDER_QUANTUM: number = 128 | 0
 
 registerProcessor("dsp-meter", class extends AudioWorkletProcessor {
     private readonly numberOfLines: number

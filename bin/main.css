@@ -4,6 +4,7 @@ section.device.eq {
   grid-area: 2/2;
   transform: scale(var(--device-scale));
   transform-origin: left top;
+  box-shadow: 0 32px 32px 0 rgba(0, 0, 0, 0.4), 0 8px 8px 0 rgba(0, 0, 0, 0.8);
 }
 section.device.eq div.controls {
   padding: 20px 0 20px 20px;
@@ -329,6 +330,9 @@ html, body {
   height: 100%;
   color: #358F6F;
   background-color: #1A1A1A;
+  background-image: url("/background.jpg");
+  background-position: center;
+  background-size: cover;
   font-family: "Labrador A", serif;
 }
 html a, body a {
@@ -362,7 +366,7 @@ body {
 }
 
 div.info {
-  padding: 40px;
+  padding: 1.2vw;
   grid-area: 2/1;
 }
 
