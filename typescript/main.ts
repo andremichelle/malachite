@@ -6,12 +6,14 @@ import {Events, MalachiteSwitch} from "./ui.js"
 import {BooleanMapping} from "./lib/mapping.js"
 
 const preloadImagesOfCssFile = async (path: string): Promise<void> => {
-    console.log("preloadImagesOfCssFile...")
-    console.log(`${location.href + "bin/"}`)
+    const base = location.href + "bin/"
+    console.log(`preloadImagesOfCssFile... base: ${base}`)
     const urls = await fetch(path)
-        .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
-            .map(path => path.replace(/url\(/, "").slice(1, -1))
-            .map(path => new URL(path, location.href + "bin/")))
+        .then(x => x.text()).then(x => {
+            return x.match(/url\(.+(?=\))/g)
+                .map(path => path.replace(/url\(/, "").slice(1, -1))
+                .map(path => new URL(path, base))
+        })
     const promises = urls.map(url => new Promise<void>((resolve, reject) => {
         console.log(`url: '${url}'`)
         const image = new Image()
