@@ -242,20 +242,20 @@ section.device label.checkbox.button {
 section.device label.checkbox.button.big {
   --w: 82px;
   --h: 38px;
-  --checked: url("./assets/button_big_on.png");
-  --unchecked: url("./assets/button_big_off.png");
+  --checked: url(./assets/button_big_on.png);
+  --unchecked: url(./assets/button_big_off.png);
 }
 section.device label.checkbox.button.mid {
   --w: 65px;
   --h: 38px;
-  --checked: url("./assets/button_mid_on.png");
-  --unchecked: url("./assets/button_mid_off.png");
+  --checked: url(./assets/button_mid_on.png);
+  --unchecked: url(./assets/button_mid_off.png);
 }
 section.device label.checkbox.button.small {
   --w: 48px;
   --h: 38px;
-  --checked: url("./assets/button_small_on.png");
-  --unchecked: url("./assets/button_small_off.png");
+  --checked: url(./assets/button_small_on.png);
+  --unchecked: url(./assets/button_small_off.png);
 }
 section.device label.checkbox.button > span {
   width: var(--w);
