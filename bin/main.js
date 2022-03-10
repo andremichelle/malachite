@@ -89,7 +89,6 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     return Promise.resolve();
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    document.body.classList.add("invisible");
     yield preloadImagesOfCssFile("./bin/main.css");
     const context = new AudioContext();
     const preset = initPreset();
@@ -98,6 +97,6 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     nodes.output().connect(context.destination);
     const ui = new FilterBankUI(nodes, preset);
     ui.run();
-    document.body.classList.remove("invisible");
+    requestAnimationFrame(() => document.body.classList.remove("invisible"));
 }))();
 //# sourceMappingURL=main.js.map
