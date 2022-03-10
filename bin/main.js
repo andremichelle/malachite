@@ -14,18 +14,21 @@ import { FilterBankUI } from "./filterbank/ui.js";
 import { Events, MalachiteSwitch } from "./ui.js";
 import { BooleanMapping } from "./lib/mapping.js";
 const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("preloadImagesOfCssFile...");
-    console.log(`${location.href + "bin/"}`);
+    const base = location.href + "bin/";
+    console.log(`preloadImagesOfCssFile... base: ${base}`);
     const urls = yield fetch(path)
-        .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
-        .map(path => path.replace(/url\(/, "").slice(1, -1))
-        .map(path => new URL(path, location.href + "bin/")));
+        .then(x => x.text()).then(x => {
+        return x.match(/url\(.+(?=\))/g)
+            .map(path => path.replace(/url\(/, "").slice(1, -1))
+            .map(path => new URL(path, base));
+    });
     const promises = urls.map(url => new Promise((resolve, reject) => {
-        console.log(`url: '${url}'`);
+        const src = url.href;
+        console.log(`src: '${src}'`);
         const image = new Image();
         image.onload = () => resolve();
         image.onerror = (error) => reject(error);
-        image.src = url.toString();
+        image.src = src;
     }));
     return Promise.all(promises).then(() => Promise.resolve());
 });
