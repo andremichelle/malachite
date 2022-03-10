@@ -18,7 +18,9 @@ const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
     const parameters: Parameter<boolean>[] = [parameterDemo, parameterMicro]
     parameterDemo.addObserver(async running => {
         if (running) {
-            await context.resume()
+            if (context.state !== "running") {
+                await context.resume()
+            }
             await demoAudio.play()
         } else {
             await demoAudio.pause()

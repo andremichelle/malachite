@@ -26,8 +26,10 @@ const initSources = (context, nodes) => {
     const parameters = [parameterDemo, parameterMicro];
     parameterDemo.addObserver((running) => __awaiter(void 0, void 0, void 0, function* () {
         if (running) {
-            yield context.resume();
-            demoAudio.play();
+            if (context.state !== "running") {
+                yield context.resume();
+            }
+            yield demoAudio.play();
         }
         else {
             yield demoAudio.pause();
