@@ -5,10 +5,8 @@ import {FilterBankUI} from "./filterbank/ui.js"
 
 /**
  * TODO
- * Icons for different FilterTypes
  * Source switchable
  * Check license
- * Labels for meters
  * Responsive size
  */
 

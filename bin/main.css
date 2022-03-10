@@ -298,6 +298,13 @@ section.device div.meter:before {
   background-image: url("/assets/meter_fill.png");
   position: absolute;
 }
+section.device div.meter:after {
+  left: 4px;
+  bottom: -16px;
+  font-size: 13px;
+  content: attr(data-name);
+  position: absolute;
+}
 
 html, body {
   width: 100%;
