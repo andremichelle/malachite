@@ -10,7 +10,7 @@ const preloadImagesOfCssFile = async (path: string): Promise<void> => {
         .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
             .map(path => path.replace(/url\(/, "").slice(1, -1)).map(path => new URL(path, location.href)))
     const promises = urls.map(url => new Promise<void>((resolve, reject) => {
-        console.log(`'${url}'`)
+        console.log(`href: ${location.href}, url: '${url}'`)
         const image = new Image()
         image.onload = () => resolve()
         image.onerror = (error) => reject(error)
