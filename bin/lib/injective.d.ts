@@ -27,7 +27,7 @@ declare interface PowData {
 }
 export declare class PowInjective extends Injective<PowData> {
     private readonly range;
-    readonly exponent: import("./common.js").ObservableValue<number>;
+    readonly exponent: any;
     fx(x: number): number;
     fy(y: number): number;
     serialize(): SettingsFormat<PowData>;
@@ -40,7 +40,7 @@ declare interface CShapeData {
 }
 export declare class CShapeInjective extends Injective<CShapeData> {
     private readonly range;
-    readonly slope: import("./common.js").ObservableValue<number>;
+    readonly slope: any;
     private o;
     private c;
     constructor();
@@ -57,7 +57,7 @@ declare interface TShapeData {
 }
 export declare class TShapeInjective extends Injective<TShapeData> {
     private readonly range;
-    readonly shape: import("./common.js").ObservableValue<number>;
+    readonly shape: any;
     constructor();
     fx(x: number): number;
     fy(y: number): number;
@@ -71,8 +71,8 @@ declare interface SmoothStepData {
     edge1: number;
 }
 export declare class SmoothStepInjective extends Injective<SmoothStepData> {
-    readonly edge0: import("./common.js").ObservableValue<number>;
-    readonly edge1: import("./common.js").ObservableValue<number>;
+    readonly edge0: any;
+    readonly edge1: any;
     constructor();
     fx(x: number): number;
     fy(y: number): number;
@@ -89,10 +89,10 @@ declare interface MonoNoiseData {
 }
 export declare class MonoNoiseInjective extends Injective<MonoNoiseData> {
     static monotoneRandom(random: Random, n: number, roughness: number, strength: number): Float32Array;
-    readonly seed: import("./common.js").ObservableValue<number>;
-    readonly resolution: import("./common.js").ObservableValue<number>;
-    readonly roughness: import("./common.js").ObservableValue<number>;
-    readonly strength: import("./common.js").ObservableValue<number>;
+    readonly seed: any;
+    readonly resolution: any;
+    readonly roughness: any;
+    readonly strength: any;
     private values;
     constructor();
     fx(y: number): number;

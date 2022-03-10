@@ -82,7 +82,7 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
 
 (async () => {
     document.body.classList.add("invisible")
-    // await preloadImagesOfCssFile("./bin/main.css")
+    await preloadImagesOfCssFile("./bin/main.css")
     const context = new AudioContext()
     const preset = initPreset()
     const nodes = await FilterBankNodes.create(context, preset)

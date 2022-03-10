@@ -1,4 +1,3 @@
-import { Random } from "./math.js";
 import { Range, ValueMapping } from "./mapping.js";
 export declare const cosine: (y1: number, y2: number, mu: number) => number;
 export interface Terminable {
@@ -12,21 +11,6 @@ export declare class Terminator implements Terminable {
     private readonly terminables;
     with<T extends Terminable>(terminable: T): T;
     terminate(): void;
-}
-export declare class Boot implements Observable<Boot> {
-    private readonly observable;
-    private readonly completion;
-    private finishedTasks;
-    private totalTasks;
-    private completed;
-    addObserver(observer: Observer<Boot>): Terminable;
-    removeObserver(observer: Observer<Boot>): boolean;
-    terminate(): void;
-    registerProcess<T>(promise: Promise<T>): Promise<T>;
-    isCompleted(): boolean;
-    normalizedPercentage(): number;
-    percentage(): number;
-    waitForCompletion(): Promise<void>;
 }
 export interface Option<T> {
     get(): T;
@@ -79,47 +63,6 @@ export interface Value<T> {
 }
 export interface ObservableValue<T> extends Value<T>, Observable<T> {
 }
-export declare class ObservableValueVoid implements ObservableValue<any> {
-    static Instance: ObservableValueVoid;
-    addObserver(observer: Observer<any>): Terminable;
-    get(): any;
-    removeObserver(observer: Observer<any>): boolean;
-    set(value: any): boolean;
-    terminate(): void;
-}
-export declare enum CollectionEventType {
-    Add = 0,
-    Remove = 1,
-    Order = 2
-}
-export declare class CollectionEvent<T> {
-    readonly collection: ObservableCollection<T>;
-    readonly type: CollectionEventType;
-    readonly item: T;
-    readonly index: number;
-    constructor(collection: ObservableCollection<T>, type: CollectionEventType, item?: T, index?: number);
-}
-export declare class ObservableCollection<T> implements Observable<CollectionEvent<T>> {
-    static observeNested<U extends Observable<U>>(collection: ObservableCollection<U>, observer: (collection: ObservableCollection<U>) => void): Terminable;
-    private readonly observable;
-    private readonly items;
-    add(value: T, index?: number): boolean;
-    addAll(values: T[]): void;
-    remove(value: T): boolean;
-    removeIndex(index: number): boolean;
-    clear(): void;
-    get(index: number): T;
-    first(): Option<T>;
-    indexOf(value: T): number;
-    size(): number;
-    map<U>(fn: (value: T, index: number, array: T[]) => U): U[];
-    forEach(fn: (item: T, index: number) => void): void;
-    move(fromIndex: number, toIndex: number): void;
-    reduce<U>(fn: (previousValue: U, currentValue: T, currentIndex: number) => U, initialValue: U): U;
-    addObserver(observer: Observer<CollectionEvent<T>>, notify?: boolean): Terminable;
-    removeObserver(observer: Observer<CollectionEvent<T>>): boolean;
-    terminate(): void;
-}
 export declare class ObservableValueImpl<T> implements ObservableValue<T> {
     private value?;
     private readonly observable;
@@ -156,18 +99,6 @@ export declare class Parameter<T> implements ObservableValue<T> {
     removeObserver(observer: Observer<T>): boolean;
     terminate(): void;
 }
-export interface Stepper {
-    decrease(value: ObservableValue<number>): void;
-    increase(value: ObservableValue<number>): void;
-}
-export declare class NumericStepper implements Stepper {
-    private readonly step;
-    static Integer: NumericStepper;
-    static Hundredth: NumericStepper;
-    constructor(step?: number);
-    decrease(value: ObservableValue<number>): void;
-    increase(value: ObservableValue<number>): void;
-}
 export declare type Parser<Y> = (text: string) => Y | null;
 export declare type Printer<Y> = (value: Y) => string;
 export declare class PrintMapping<Y> {
@@ -186,49 +117,7 @@ export declare class PrintMapping<Y> {
     print(value: Y): string;
 }
 export declare const binarySearch: (values: Float32Array, key: number) => number;
-export declare const readBinary: (url: string) => Promise<ArrayBuffer>;
-export declare const readAudio: (context: BaseAudioContext, url: string) => Promise<AudioBuffer>;
-export declare const decodeAudioData: (context: BaseAudioContext, buffer: ArrayBuffer) => Promise<AudioBuffer>;
-export declare const timeToString: (seconds: number) => string;
-export declare class Estimation {
-    private lastPercent;
-    private startTime;
-    update(progress: number): string;
-}
-export interface Iterator<T> {
-    hasNext(): boolean;
-    next(): T;
-}
-export declare const EmptyIterator: {
-    hasNext(): boolean;
-    next(): any;
-};
-export declare class GeneratorIterator<T> {
-    private readonly generator;
-    static wrap<T>(generator: Generator<T, void, T>): Iterator<T>;
-    private curr;
-    constructor(generator: Generator<T>);
-    hasNext(): boolean;
-    next(): T;
-}
 export declare class ArrayUtils {
     static fill<T>(n: number, factory: (index: number) => T): T[];
-    static shuffle(array: ArrayBufferLike, n: number, random: Random): void;
     private constructor();
-}
-export interface SettingsFormat<DATA> {
-    class: string;
-    data: DATA;
-}
-export declare abstract class Settings<DATA> implements Observable<Settings<DATA>>, Serializer<SettingsFormat<DATA>>, Terminable {
-    protected readonly terminator: Terminator;
-    protected readonly observable: ObservableImpl<Settings<DATA>>;
-    abstract deserialize(format: SettingsFormat<DATA>): Settings<DATA>;
-    abstract serialize(): SettingsFormat<DATA>;
-    protected pack(data?: DATA): SettingsFormat<DATA>;
-    protected unpack(format: SettingsFormat<DATA>): DATA;
-    protected bindValue<T>(property: ObservableValue<T>): ObservableValue<T>;
-    addObserver(observer: Observer<Settings<DATA>>): Terminable;
-    removeObserver(observer: Observer<Settings<DATA>>): boolean;
-    terminate(): void;
 }

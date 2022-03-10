@@ -22,54 +22,6 @@ export class Terminator {
         }
     }
 }
-export class Boot {
-    constructor() {
-        this.observable = new ObservableImpl();
-        this.completion = new Promise((resolve) => {
-            this.observable.addObserver(boot => {
-                if (boot.isCompleted()) {
-                    requestAnimationFrame(() => resolve());
-                    boot.terminate();
-                }
-            });
-        });
-        this.finishedTasks = 0 | 0;
-        this.totalTasks = 0 | 0;
-        this.completed = false;
-    }
-    addObserver(observer) {
-        return this.observable.addObserver(observer);
-    }
-    removeObserver(observer) {
-        return this.observable.removeObserver(observer);
-    }
-    terminate() {
-        this.observable.terminate();
-    }
-    registerProcess(promise) {
-        console.assert(!this.completed, "Cannot register processes when boot is already completed.");
-        promise.then(() => {
-            this.finishedTasks++;
-            if (this.isCompleted())
-                this.completed = true;
-            this.observable.notify(this);
-        });
-        this.totalTasks++;
-        return promise;
-    }
-    isCompleted() {
-        return this.finishedTasks === this.totalTasks;
-    }
-    normalizedPercentage() {
-        return this.finishedTasks / this.totalTasks;
-    }
-    percentage() {
-        return Math.round(this.normalizedPercentage() * 100.0);
-    }
-    waitForCompletion() {
-        return this.completion;
-    }
-}
 export class Options {
     static valueOf(value) {
         return null === value || undefined === value ? Options.None : new Options.Some(value);
@@ -125,148 +77,6 @@ export class ObservableImpl {
     }
     terminate() {
         this.observers.splice(0, this.observers.length);
-    }
-}
-export class ObservableValueVoid {
-    addObserver(observer) {
-        return TerminableVoid.Instance;
-    }
-    get() {
-    }
-    removeObserver(observer) {
-        return false;
-    }
-    set(value) {
-        return true;
-    }
-    terminate() {
-    }
-}
-ObservableValueVoid.Instance = new ObservableValueVoid();
-export var CollectionEventType;
-(function (CollectionEventType) {
-    CollectionEventType[CollectionEventType["Add"] = 0] = "Add";
-    CollectionEventType[CollectionEventType["Remove"] = 1] = "Remove";
-    CollectionEventType[CollectionEventType["Order"] = 2] = "Order";
-})(CollectionEventType || (CollectionEventType = {}));
-export class CollectionEvent {
-    constructor(collection, type, item = null, index = -1) {
-        this.collection = collection;
-        this.type = type;
-        this.item = item;
-        this.index = index;
-    }
-}
-export class ObservableCollection {
-    constructor() {
-        this.observable = new ObservableImpl();
-        this.items = [];
-    }
-    static observeNested(collection, observer) {
-        const itemObserver = _ => observer(collection);
-        const observers = new Map();
-        collection.forEach((observable) => observers.set(observable, observable.addObserver(itemObserver, false)));
-        collection.addObserver((event) => {
-            if (event.type === CollectionEventType.Add) {
-                observers.set(event.item, event.item.addObserver(itemObserver, false));
-            }
-            else if (event.type === CollectionEventType.Remove) {
-                const observer = observers.get(event.item);
-                console.assert(observer !== undefined);
-                observers.delete(event.item);
-                observer.terminate();
-            }
-            else if (event.type === CollectionEventType.Order) {
-            }
-            observer(collection);
-        });
-        return {
-            terminate() {
-                observers.forEach((value) => value.terminate());
-                observers.clear();
-            }
-        };
-    }
-    add(value, index = Number.MAX_SAFE_INTEGER) {
-        console.assert(0 <= index);
-        index = Math.min(index, this.items.length);
-        if (this.items.includes(value))
-            return false;
-        this.items.splice(index, 0, value);
-        this.observable.notify(new CollectionEvent(this, CollectionEventType.Add, value, index));
-        return true;
-    }
-    addAll(values) {
-        for (const value of values) {
-            this.add(value);
-        }
-    }
-    remove(value) {
-        return this.removeIndex(this.items.indexOf(value));
-    }
-    removeIndex(index) {
-        if (-1 === index)
-            return false;
-        const removed = this.items.splice(index, 1);
-        if (0 === removed.length)
-            return false;
-        this.observable.notify(new CollectionEvent(this, CollectionEventType.Remove, removed[0], index));
-        return true;
-    }
-    clear() {
-        for (let index = this.items.length - 1; index > -1; index--) {
-            this.removeIndex(index);
-        }
-    }
-    get(index) {
-        return this.items[index];
-    }
-    first() {
-        return 0 < this.items.length ? Options.valueOf(this.items[0]) : Options.None;
-    }
-    indexOf(value) {
-        return this.items.indexOf(value);
-    }
-    size() {
-        return this.items.length;
-    }
-    map(fn) {
-        const arr = [];
-        for (let i = 0; i < this.items.length; i++) {
-            arr[i] = fn(this.items[i], i, this.items);
-        }
-        return arr;
-    }
-    forEach(fn) {
-        for (let i = 0; i < this.items.length; i++) {
-            fn(this.items[i], i);
-        }
-    }
-    move(fromIndex, toIndex) {
-        if (fromIndex === toIndex)
-            return;
-        console.assert(0 <= toIndex && toIndex < this.size());
-        console.assert(0 <= fromIndex && fromIndex < this.size());
-        this.items.splice(toIndex, 0, this.items.splice(fromIndex, 1)[0]);
-        this.observable.notify(new CollectionEvent(this, CollectionEventType.Order));
-    }
-    reduce(fn, initialValue) {
-        let value = initialValue;
-        for (let i = 0; i < this.items.length; i++) {
-            value = fn(value, this.items[i], i);
-        }
-        return value;
-    }
-    addObserver(observer, notify = false) {
-        if (notify)
-            this.forEach((item, index) => observer(new CollectionEvent(this, CollectionEventType.Add, item, index)));
-        return this.observable.addObserver(observer);
-    }
-    removeObserver(observer) {
-        return this.observable.removeObserver(observer);
-    }
-    terminate() {
-        this.observable.terminate();
     }
 }
 export class ObservableValueImpl {
@@ -366,19 +176,6 @@ export class Parameter {
         this.observable.terminate();
     }
 }
-export class NumericStepper {
-    constructor(step = 1) {
-        this.step = step;
-    }
-    decrease(value) {
-        value.set(Math.round((value.get() - this.step) / this.step) * this.step);
-    }
-    increase(value) {
-        value.set(Math.round((value.get() + this.step) / this.step) * this.step);
-    }
-}
-NumericStepper.Integer = new NumericStepper(1);
-NumericStepper.Hundredth = new NumericStepper(0.01);
 export class PrintMapping {
     constructor(parser, printer, preUnit = "", postUnit = "") {
         this.parser = parser;
@@ -473,87 +270,6 @@ export const binarySearch = (values, key) => {
     }
     return high;
 };
-export const readBinary = (url) => {
-    return new Promise((resolve, reject) => {
-        const r = new XMLHttpRequest();
-        r.open("GET", url, true);
-        r.responseType = "arraybuffer";
-        r.onload = ignore => resolve(r.response);
-        r.onerror = event => reject(event);
-        r.send(null);
-    });
-};
-export const readAudio = (context, url) => {
-    return readBinary(url).then(buffer => decodeAudioData(context, buffer));
-};
-export const decodeAudioData = (context, buffer) => {
-    return context.decodeAudioData(buffer);
-};
-const plural = (count, name) => {
-    return `${count} ${1 < count ? `${name}s` : name}`;
-};
-export const timeToString = (seconds) => {
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1)
-        return plural(interval, "year");
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1)
-        return plural(interval, "month");
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1)
-        return plural(interval, "day");
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1)
-        return plural(interval, "hour");
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1)
-        return plural(interval, "minute");
-    return plural(Math.ceil(seconds), "second");
-};
-export class Estimation {
-    constructor() {
-        this.lastPercent = 0.0;
-        this.startTime = performance.now();
-    }
-    update(progress) {
-        const percent = Math.floor(progress * 10000.0);
-        if (this.lastPercent !== percent) {
-            const computationTime = (performance.now() - this.startTime) / 1000.0;
-            const remaining = (computationTime / progress) - computationTime;
-            this.lastPercent = percent;
-            return `${(percent / 100.0).toFixed(2)}%・${timeToString(remaining | 0)} remaining`;
-        }
-    }
-}
-export const EmptyIterator = new class {
-    hasNext() {
-        return false;
-    }
-    next() {
-        return null;
-    }
-};
-export class GeneratorIterator {
-    constructor(generator) {
-        this.generator = generator;
-        this.curr = null;
-        this.curr = generator.next();
-    }
-    static wrap(generator) {
-        return new GeneratorIterator(generator);
-    }
-    hasNext() {
-        return null !== this.curr && !this.curr.done;
-    }
-    next() {
-        if (this.hasNext()) {
-            const value = this.curr.value;
-            this.curr = this.generator.next();
-            return value;
-        }
-        return null;
-    }
-}
 export class ArrayUtils {
     static fill(n, factory) {
         const array = [];
@@ -562,44 +278,7 @@ export class ArrayUtils {
         }
         return array;
     }
-    static shuffle(array, n, random) {
-        for (let i = 0; i < n; i++) {
-            const element = array[i];
-            const randomIndex = random.nextInt(0, n - 1);
-            array[i] = array[randomIndex];
-            array[randomIndex] = element;
-        }
-    }
     constructor() {
-    }
-}
-export class Settings {
-    constructor() {
-        this.terminator = new Terminator();
-        this.observable = new ObservableImpl();
-    }
-    pack(data) {
-        return {
-            class: this.constructor.name,
-            data: data
-        };
-    }
-    unpack(format) {
-        console.assert(this.constructor.name === format.class);
-        return format.data;
-    }
-    bindValue(property) {
-        this.terminator.with(property.addObserver(() => this.observable.notify(this), false));
-        return this.terminator.with(property);
-    }
-    addObserver(observer) {
-        return this.observable.addObserver(observer);
-    }
-    removeObserver(observer) {
-        return this.observable.removeObserver(observer);
-    }
-    terminate() {
-        this.terminator.terminate();
     }
 }
 //# sourceMappingURL=common.js.map
