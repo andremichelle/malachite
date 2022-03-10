@@ -22,6 +22,11 @@ export class RMS {
         this.index = 0 | 0;
     }
 }
+export const fetchMicrophone = () => {
+    return new Promise((resolve, reject) => {
+        navigator.getUserMedia({ audio: true }, (stream) => resolve(stream), (error) => reject(error));
+    });
+};
 export class TerminableVoid {
     terminate() {
     }

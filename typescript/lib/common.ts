@@ -31,6 +31,14 @@ export class RMS {
     }
 }
 
+export const fetchMicrophone = (): Promise<MediaStream> => {
+    return new Promise((resolve, reject) => {
+        navigator.getUserMedia({audio: true},
+            (stream: MediaStream) => resolve(stream),
+            (error: MediaStreamError) => reject(error))
+    })
+}
+
 export type NoArgType<T> = { new(): T }
 
 export interface Terminable {

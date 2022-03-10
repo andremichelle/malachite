@@ -57,7 +57,7 @@ export class Exp {
         return Math.min(this.max, Math.max(this.min, y));
     }
 }
-export class Boolean {
+export class BooleanMapping {
     x(y) {
         return y ? 1.0 : 0.0;
     }
@@ -68,7 +68,7 @@ export class Boolean {
         return y;
     }
 }
-Boolean.Instance = new Boolean();
+BooleanMapping.Instance = new BooleanMapping();
 export class Volume {
     constructor(min, mid, max) {
         this.min = min;

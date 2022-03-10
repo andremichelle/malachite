@@ -1,6 +1,7 @@
 section.device.eq {
   width: 848px;
   height: 480px;
+  transform: scale(0.75);
 }
 section.device.eq div.controls {
   padding: 20px 0 20px 20px;
@@ -71,6 +72,7 @@ section.device div.decoration > div.top-bar {
 }
 section.device div.decoration > img.vent {
   position: absolute;
+  pointer-events: none;
 }
 section.device div.decoration > img.vent.tl {
   top: -36px;
@@ -82,6 +84,7 @@ section.device div.decoration > img.vent.tr {
 }
 section.device div.decoration > img.screw {
   position: absolute;
+  pointer-events: none;
 }
 section.device div.decoration > img.screw.tl {
   top: -32px;
@@ -231,6 +234,7 @@ section.device label.checkbox.button {
   white-space: nowrap;
   line-height: 31px;
   color: rgba(255, 255, 255, 0.4);
+  pointer-events: bounding-box;
 }
 section.device label.checkbox.button.big {
   --w: 82px;
@@ -279,6 +283,7 @@ section.device canvas.screen {
   box-sizing: border-box;
   padding: 2px;
   background-image: url("/assets/value_screen_big.png");
+  pointer-events: none;
 }
 section.device div.meter {
   width: 16px;
@@ -286,6 +291,7 @@ section.device div.meter {
   background-image: url("/assets/meter_slot.png");
   position: relative;
   --value: 0.0;
+  pointer-events: none;
 }
 section.device div.meter:before {
   top: 3px;
@@ -309,6 +315,7 @@ section.device div.meter:after {
 html, body {
   width: 100%;
   height: 100%;
+  background-color: #1A1A1A;
 }
 
 body {
@@ -317,7 +324,14 @@ body {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: #1A1A1A;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden !important;
 }
 
 /*# sourceMappingURL=main.css.map */

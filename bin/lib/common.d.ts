@@ -11,6 +11,7 @@ export declare class RMS {
     pushPop(squared: number): number;
     clear(): void;
 }
+export declare const fetchMicrophone: () => Promise<MediaStream>;
 export declare type NoArgType<T> = {
     new (): T;
 };

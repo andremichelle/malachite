@@ -40,8 +40,8 @@ export declare class Exp implements ValueMapping<number>, Range {
     y(x: number): number;
     clamp(y: number): number;
 }
-export declare class Boolean implements ValueMapping<boolean> {
-    static Instance: Boolean;
+export declare class BooleanMapping implements ValueMapping<boolean> {
+    static Instance: BooleanMapping;
     x(y: boolean): number;
     y(x: number): boolean;
     clamp(y: boolean): boolean;

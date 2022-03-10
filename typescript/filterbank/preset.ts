@@ -1,4 +1,4 @@
-import {Boolean, Exp, Linear, LinearInteger, Volume} from "../lib/mapping.js"
+import {BooleanMapping, Exp, Linear, LinearInteger, Volume} from "../lib/mapping.js"
 import {Parameter, PrintMapping} from "../lib/common.js"
 
 export type Preset = {
@@ -54,33 +54,33 @@ export const initPreset = (): Preset => {
     return {
         main: {
             gain: new Parameter<number>(MAIN_GAIN_MAPPING, GAIN_PRINT, 0.0),
-            bypass: new Parameter<boolean>(Boolean.Instance, MAIN_BYPASS_PRINT, false)
+            bypass: new Parameter<boolean>(BooleanMapping.Instance, MAIN_BYPASS_PRINT, false)
         },
         filter: {
             highPass: {
-                enabled: new Parameter<boolean>(Boolean.Instance, FILTER_ENABLED_PRINT, true),
+                enabled: new Parameter<boolean>(BooleanMapping.Instance, FILTER_ENABLED_PRINT, false),
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.min),
                 order: new Parameter<number>(FILTER_ORDER_MAPPING, FILTER_ORDER_PRINT, 4),
                 q: new Parameter<number>(FILTER_Q_MAPPING, FILTER_Q_PRINT, FILTER_DEFAULT_Q)
             },
             lowShelf: {
-                enabled: new Parameter<boolean>(Boolean.Instance, FILTER_ENABLED_PRINT, true),
+                enabled: new Parameter<boolean>(BooleanMapping.Instance, FILTER_ENABLED_PRINT, true),
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.25)),
                 gain: new Parameter<number>(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0)
             },
             peaking: {
-                enabled: new Parameter<boolean>(Boolean.Instance, FILTER_ENABLED_PRINT, true),
+                enabled: new Parameter<boolean>(BooleanMapping.Instance, FILTER_ENABLED_PRINT, true),
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.5)),
                 gain: new Parameter<number>(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0),
                 q: new Parameter<number>(FILTER_Q_MAPPING, FILTER_Q_PRINT, FILTER_DEFAULT_Q)
             },
             highShelf: {
-                enabled: new Parameter<boolean>(Boolean.Instance, FILTER_ENABLED_PRINT, true),
+                enabled: new Parameter<boolean>(BooleanMapping.Instance, FILTER_ENABLED_PRINT, true),
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.y(0.75)),
                 gain: new Parameter<number>(FILTER_GAIN_MAPPING, GAIN_PRINT, 0.0)
             },
             lowPass: {
-                enabled: new Parameter<boolean>(Boolean.Instance, FILTER_ENABLED_PRINT, true),
+                enabled: new Parameter<boolean>(BooleanMapping.Instance, FILTER_ENABLED_PRINT, false),
                 frequency: new Parameter<number>(FILTER_FREQ_MAPPING, FILTER_FREQ_PRINT, FILTER_FREQ_MAPPING.max),
                 order: new Parameter<number>(FILTER_ORDER_MAPPING, FILTER_ORDER_PRINT, 4),
                 q: new Parameter<number>(FILTER_Q_MAPPING, FILTER_Q_PRINT, FILTER_DEFAULT_Q)

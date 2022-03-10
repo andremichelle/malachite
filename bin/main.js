@@ -7,37 +7,76 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { readAudio, Terminator } from "./lib/common.js";
+import { fetchMicrophone, Parameter, PrintMapping } from "./lib/common.js";
 import { initPreset } from "./filterbank/preset.js";
 import { FilterBankNodes } from "./filterbank/nodes.js";
 import { FilterBankUI } from "./filterbank/ui.js";
+import { MalachiteSwitch } from "./ui.js";
+import { BooleanMapping } from "./lib/mapping.js";
+const initSources = (context, filterBankNodes) => {
+    const demoAudio = new Audio();
+    demoAudio.src = "goon.assberg.mp3";
+    demoAudio.preload = "auto";
+    demoAudio.crossOrigin = "*";
+    const mediaElementSource = context.createMediaElementSource(demoAudio);
+    mediaElementSource.connect(filterBankNodes.input());
+    const booleanPrintMapping = PrintMapping.createBoolean("Running", "None");
+    const parameterDemo = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
+    const parameterMicro = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
+    const parameters = [parameterDemo, parameterMicro];
+    parameterDemo.addObserver((running) => __awaiter(void 0, void 0, void 0, function* () {
+        if (running) {
+            yield context.resume();
+            yield demoAudio.play();
+        }
+        else {
+            yield demoAudio.pause();
+            demoAudio.currentTime = 0.0;
+        }
+    }));
+    parameterMicro.addObserver((() => {
+        let stream;
+        let streamSource;
+        return (running) => __awaiter(void 0, void 0, void 0, function* () {
+            if (running) {
+                yield context.resume();
+                stream = yield fetchMicrophone();
+                streamSource = context.createMediaStreamSource(stream);
+                streamSource.connect(filterBankNodes.input());
+            }
+            else {
+                streamSource.disconnect();
+                streamSource = null;
+            }
+        });
+    })());
+    const update = (() => {
+        let updatable = true;
+        return (parameter) => {
+            if (updatable) {
+                updatable = false;
+                parameters.filter(other => other !== parameter).forEach(parameter => parameter.set(false));
+                updatable = true;
+            }
+        };
+    })();
+    parameters.forEach(parameter => parameter.addObserver(() => update(parameter)));
+    new MalachiteSwitch(document.querySelector("label[data-action='demo']")).with(parameterDemo);
+    new MalachiteSwitch(document.querySelector("label[data-action='micro']")).with(parameterMicro);
+};
 (() => __awaiter(void 0, void 0, void 0, function* () {
+    document.body.classList.add("invisible");
     const context = new AudioContext();
     const preset = initPreset();
     const filterBankNodes = yield FilterBankNodes.create(context, preset);
     filterBankNodes.output().connect(context.destination);
     const filterBankUI = new FilterBankUI(preset, filterBankNodes);
+    initSources(context, filterBankNodes);
     const run = () => {
         filterBankUI.setMeterValues(filterBankNodes.peaks());
         requestAnimationFrame(run);
     };
-    requestAnimationFrame(run);
-    const terminator = new Terminator();
-    const buffer = yield readAudio(context, "samples/loop.wav");
-    document.querySelector("label[data-action='demo']").addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
-        terminator.terminate();
-        yield context.resume();
-        const bufferSource = context.createBufferSource();
-        bufferSource.buffer = buffer;
-        bufferSource.loop = true;
-        bufferSource.start();
-        bufferSource.connect(filterBankNodes.input());
-        terminator.with({
-            terminate() {
-                bufferSource.stop();
-                bufferSource.disconnect();
-            }
-        });
-    }));
+    run();
+    document.body.classList.remove("invisible");
 }))();
 //# sourceMappingURL=main.js.map

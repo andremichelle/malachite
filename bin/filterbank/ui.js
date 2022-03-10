@@ -1,7 +1,6 @@
 import { Terminator } from "../lib/common.js";
 import { MalachiteKnob, MalachiteMeter, MalachiteScreen, MalachiteSwitch } from "../ui.js";
 import { Exp, Linear } from "../lib/mapping.js";
-import { gainToDb } from "./nodes.js";
 export class FilterBankResponseRenderer {
     constructor(screen) {
         this.screen = screen;
@@ -30,14 +29,14 @@ export class FilterBankResponseRenderer {
             filter.getFrequencyResponse(this.frequencyHz, this.magResponse, this.phaseResponse);
             const xc = Math.floor(screen.unitToX(filter.frequency()));
             const apexDb = filter.apexDecibel();
-            const db0 = 0 == xc ? apexDb : gainToDb(this.magResponse[0]);
+            const db0 = 0 == xc ? apexDb : this.magResponse[0];
             this.magSum[0] += db0;
             const y0 = screen.unitToY(db0);
             context.beginPath();
             context.moveTo(0, y0);
             const xn = this.frequencyHz.length;
             for (let x = 1; x < xc; ++x) {
-                const db = gainToDb(this.magResponse[x]);
+                const db = this.magResponse[x];
                 this.magSum[x] += db;
                 const y1 = screen.unitToY(db);
                 context.lineTo(x, y1);
@@ -49,7 +48,7 @@ export class FilterBankResponseRenderer {
                 context.lineTo(xc, y1);
             }
             for (let x = xc + 1; x < xn; ++x) {
-                const db = gainToDb(this.magResponse[x]);
+                const db = this.magResponse[x];
                 this.magSum[x] += db;
                 const y1 = screen.unitToY(db);
                 context.lineTo(x, y1);

@@ -12,25 +12,27 @@ import { NoUIMeterWorklet } from "../meter/worklet.js";
 const LogDb = Math.log(10.0) / 20.0;
 export const dbToGain = (db) => Math.exp(db * LogDb);
 export const gainToDb = (gain) => Math.log(gain) / LogDb;
+export const SILENCE_GAIN = dbToGain(-192.0);
 export const DEFAULT_INTERPOLATION_TIME = 0.005;
 export const interpolateIfNecessary = (context, audioParam, value) => {
     if (context.state === "running") {
-        audioParam.value = value;
+        audioParam.cancelScheduledValues(context.currentTime);
+        audioParam.linearRampToValueAtTime(value, context.currentTime + DEFAULT_INTERPOLATION_TIME);
     }
     else {
-        audioParam.linearRampToValueAtTime(value, context.currentTime + DEFAULT_INTERPOLATION_TIME);
+        audioParam.value = value;
     }
 };
 const connectWithBypassSwitch = (context, input, processor, output) => {
     const dryNode = context.createGain();
     const wetNode = context.createGain();
-    dryNode.gain.value = 0.0;
+    dryNode.gain.value = SILENCE_GAIN;
     wetNode.gain.value = 1.0;
     input.connect(dryNode).connect(output);
     input.connect(wetNode).connect(processor).connect(output);
     return bypass => {
-        interpolateIfNecessary(context, dryNode.gain, bypass ? 1.0 : 0.0);
-        interpolateIfNecessary(context, wetNode.gain, bypass ? 0.0 : 1.0);
+        interpolateIfNecessary(context, dryNode.gain, bypass ? 1.0 : SILENCE_GAIN);
+        interpolateIfNecessary(context, wetNode.gain, bypass ? SILENCE_GAIN : 1.0);
     };
 };
 class FilterNodeFactory {
@@ -61,7 +63,6 @@ class FilterNodeFactory {
                     this.updateBypass();
                     anyChangeCallback();
                 }));
-                this.updateBypass();
             }
             enabled() {
                 return parameters.enabled.get();
@@ -70,7 +71,7 @@ class FilterNodeFactory {
                 return parameters.frequency.get();
             }
             apexDecibel() {
-                return parameters.q.get();
+                return 0.0;
             }
             connect(input) {
                 this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => {
@@ -79,14 +80,18 @@ class FilterNodeFactory {
                     input = output;
                     return bypassSwitch;
                 }));
+                this.updateBypass();
                 return input.connect(this.output);
             }
             getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
                 this.nodes[0].getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
+                for (let i = 0; i < magResponse.length; i++) {
+                    magResponse[i] = gainToDb(magResponse[i]);
+                }
                 const order = parameters.order.get();
                 if (order > 1) {
                     for (let i = 0; i < magResponse.length; i++) {
-                        magResponse[i] = Math.pow(magResponse[i], order);
+                        magResponse[i] *= order;
                     }
                 }
             }
@@ -142,6 +147,9 @@ class FilterNodeFactory {
             }
             getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
                 this.node.getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
+                for (let i = 0; i < magResponse.length; i++) {
+                    magResponse[i] = gainToDb(magResponse[i]);
+                }
             }
             terminate() {
                 this.terminator.terminate();
@@ -192,6 +200,9 @@ class FilterNodeFactory {
             }
             getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
                 this.node.getFrequencyResponse(frequencyHz, magResponse, phaseResponse);
+                for (let i = 0; i < magResponse.length; i++) {
+                    magResponse[i] = gainToDb(magResponse[i]);
+                }
             }
             terminate() {
                 this.terminator.terminate();

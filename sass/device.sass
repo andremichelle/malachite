@@ -36,6 +36,7 @@ section.device
 
     > img.vent
       position: absolute
+      pointer-events: none
 
       &.tl
         top: -36px
@@ -47,6 +48,7 @@ section.device
 
     > img.screw
       position: absolute
+      pointer-events: none
 
       &.tl
         top: -32px
@@ -197,6 +199,7 @@ section.device
       white-space: nowrap
       line-height: 31px
       color: rgba(white, 0.4)
+      pointer-events: bounding-box
 
       &.big
         --w: 82px
@@ -246,6 +249,7 @@ section.device
     box-sizing: border-box
     padding: 2px
     background-image: url("/assets/value_screen_big.png")
+    pointer-events: none
 
   div.meter
     width: 16px
@@ -253,6 +257,7 @@ section.device
     background-image: url("/assets/meter_slot.png")
     position: relative
     --value: 0.0
+    pointer-events: none
 
     &:before
       top: 3px
