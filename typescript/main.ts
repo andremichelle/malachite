@@ -8,7 +8,7 @@ import {BooleanMapping} from "./lib/mapping.js"
 const preloadImagesOfCssFile = async (path: string): Promise<void> => {
     const urls = await fetch(path)
         .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
-            .map(path => path.replace(/url\(/, "").slice(1, -1)).map(path => new URL(path, location.href)))
+            .map(path => path.replace(/url\(/, "").slice(1, -1)).map(path => new URL(path, location.href + "bin/")))
     const promises = urls.map(url => new Promise<void>((resolve, reject) => {
         console.log(`href: ${location.href}, url: '${url}'`)
         const image = new Image()

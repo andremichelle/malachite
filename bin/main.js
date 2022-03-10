@@ -16,7 +16,7 @@ import { BooleanMapping } from "./lib/mapping.js";
 const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
     const urls = yield fetch(path)
         .then(x => x.text()).then(x => x.match(/url\(.+(?=\))/g)
-        .map(path => path.replace(/url\(/, "").slice(1, -1)).map(path => new URL(path, location.href)));
+        .map(path => path.replace(/url\(/, "").slice(1, -1)).map(path => new URL(path, location.href + "bin/")));
     const promises = urls.map(url => new Promise((resolve, reject) => {
         console.log(`href: ${location.href}, url: '${url}'`);
         const image = new Image();
