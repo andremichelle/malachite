@@ -89,7 +89,7 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     return Promise.resolve();
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    yield preloadImagesOfCssFile("./bin/main.css");
+    yield preloadImagesOfCssFile("./src/main.css");
     const context = new AudioContext();
     const preset = initPreset();
     const nodes = yield FilterBankNodes.create(context, preset);
