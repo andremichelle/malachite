@@ -255,6 +255,17 @@ section.device label.checkbox.button > span {
   height: var(--h);
   background-repeat: no-repeat;
   background-image: var(--unchecked);
+  stroke: currentColor;
+  stroke-width: 2px;
+  fill: transparent;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+section.device label.checkbox.button > span > svg {
+  top: -4px;
+  width: 19px;
+  position: relative;
 }
 section.device label.checkbox.button input[type=checkbox]:checked ~ span {
   color: rgba(0, 0, 0, 0.8);

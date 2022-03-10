@@ -3,6 +3,15 @@ import {initPreset} from "./filterbank/preset.js"
 import {FilterBankNodes} from "./filterbank/nodes.js"
 import {FilterBankUI} from "./filterbank/ui.js"
 
+/**
+ * TODO
+ * Icons for different FilterTypes
+ * Source switchable
+ * Check license
+ * Labels for meters
+ * Responsive size
+ */
+
 (async () => {
     const context = new AudioContext()
     const preset = initPreset()

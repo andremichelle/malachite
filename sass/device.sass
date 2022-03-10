@@ -221,6 +221,17 @@ section.device
         height: var(--h)
         background-repeat: no-repeat
         background-image: var(--unchecked)
+        stroke: currentColor
+        stroke-width: 2px
+        fill: transparent
+        display: flex
+        justify-content: center
+        position: relative
+
+        > svg
+          top: -4px
+          width: 19px
+          position: relative
 
       & input[type=checkbox]:checked
         ~ span
