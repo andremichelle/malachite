@@ -3,18 +3,10 @@ import {initPreset} from "./filterbank/preset.js"
 import {FilterBankNodes} from "./filterbank/nodes.js"
 import {FilterBankUI} from "./filterbank/ui.js"
 import {MalachiteSwitch} from "./ui.js"
-import {BooleanMapping, Exp} from "./lib/mapping.js"
-
-/**
- * TODO
- * Check license
- * Firefox
- * Lowpass render glitch
- */
+import {BooleanMapping} from "./lib/mapping.js"
 
 const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
     const demoAudio = new Audio()
-    // https://www.audiotool.com/track/0dkqsw3m9ud/
     demoAudio.src = "kepz.126.mp3"
     demoAudio.preload = "auto"
     demoAudio.crossOrigin = "*"
@@ -27,7 +19,7 @@ const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
     parameterDemo.addObserver(async running => {
         if (running) {
             await context.resume()
-            await demoAudio.play()
+            demoAudio.play()
         } else {
             await demoAudio.pause()
             demoAudio.currentTime = 0.0

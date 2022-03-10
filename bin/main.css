@@ -328,7 +328,7 @@ section.device div.meter:after {
 html, body {
   width: 100%;
   height: 100%;
-  color: #358F6F;
+  color: #43b48c;
   background-color: #1A1A1A;
   background-image: url("/background.jpg");
   background-position: center;
@@ -336,7 +336,7 @@ html, body {
   font-family: "Labrador A", serif;
 }
 html a, body a {
-  color: #358F6F;
+  color: #8ad3b9;
 }
 
 :root {
@@ -364,10 +364,17 @@ body {
   grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr/1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr;
   overflow: hidden;
 }
-
-div.info {
-  padding: 1.2vw;
+body > div.info {
   grid-area: 2/1;
+  padding: 0 2.4vw 0 1.2vw;
+}
+body > div.credits {
+  grid-area: 2/3;
+  padding: 0 1.2vw 0 2.4vw;
+}
+body > div.info > *, body > div.credits > * {
+  width: fit-content;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .hidden {

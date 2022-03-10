@@ -101,8 +101,7 @@ class FilterNodeFactory {
             }
 
             apexDecibel(): number {
-                // TODO
-                return 0.0
+                return parameters.q.get() * parameters.order.get()
             }
 
             connect(input: AudioNode): AudioNode {

@@ -71,7 +71,7 @@ class FilterNodeFactory {
                 return parameters.frequency.get();
             }
             apexDecibel() {
-                return 0.0;
+                return parameters.q.get() * parameters.order.get();
             }
             connect(input) {
                 this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => {

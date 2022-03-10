@@ -27,7 +27,7 @@ const initSources = (context, nodes) => {
     parameterDemo.addObserver((running) => __awaiter(void 0, void 0, void 0, function* () {
         if (running) {
             yield context.resume();
-            yield demoAudio.play();
+            demoAudio.play();
         }
         else {
             yield demoAudio.pause();

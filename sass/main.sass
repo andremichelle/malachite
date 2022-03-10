@@ -3,7 +3,7 @@
 html, body
   width: 100%
   height: 100%
-  color: $green
+  color: lighten($green, 10%)
   background-color: #1A1A1A
   background-image: url("/background.jpg")
   background-position: center
@@ -11,7 +11,7 @@ html, body
   font-family: 'Labrador A', serif
 
   a
-    color: $green
+    color: lighten($green, 30%)
 
 \:root
   --device-width: 848px
@@ -30,9 +30,18 @@ body
   grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr / 1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr
   overflow: hidden
 
-div.info
-  padding: 1.2vw
-  grid-area: 2 / 1
+  > div.info
+    grid-area: 2 / 1
+    padding: 0 2.4vw 0 1.2vw
+
+  > div.credits
+    grid-area: 2 / 3
+    padding: 0 1.2vw 0 2.4vw
+
+  > div.info, > div.credits
+    > *
+      width: fit-content
+      background-color: rgba(black, 0.5)
 
 .hidden
   display: none !important
