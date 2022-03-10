@@ -277,7 +277,17 @@ section.device label.checkbox.button input[type=checkbox]:checked ~ span {
   background-position-y: 2px;
   background-image: var(--checked);
 }
-section.device canvas.screen {
+section.device div.screen-wrapper {
+  width: 650px;
+  height: 171px;
+  position: relative;
+}
+section.device div.screen-wrapper * {
+  position: absolute;
+}
+section.device div.screen-wrapper > canvas.screen {
+  top: 0;
+  left: 0;
   width: 650px;
   height: 171px;
   box-sizing: border-box;

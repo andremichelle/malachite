@@ -3,15 +3,15 @@ import {initPreset} from "./filterbank/preset.js"
 import {FilterBankNodes} from "./filterbank/nodes.js"
 import {FilterBankUI} from "./filterbank/ui.js"
 import {MalachiteSwitch} from "./ui.js"
-import {BooleanMapping} from "./lib/mapping.js"
+import {BooleanMapping, Exp} from "./lib/mapping.js"
 
 /**
  * TODO
  * Check license
- * Units on screen
  * Responsive size
  * Update curve next frame
  * Firefox
+ * Show spectrum
  */
 
 const initSources = (context: AudioContext, filterBankNodes: FilterBankNodes): void => {
@@ -69,12 +69,12 @@ const initSources = (context: AudioContext, filterBankNodes: FilterBankNodes): v
     document.body.classList.add("invisible")
     const context = new AudioContext()
     const preset = initPreset()
-    const filterBankNodes = await FilterBankNodes.create(context, preset)
-    filterBankNodes.output().connect(context.destination)
-    const filterBankUI = new FilterBankUI(preset, filterBankNodes)
-    initSources(context, filterBankNodes)
+    const nodes = await FilterBankNodes.create(context, preset)
+    nodes.output().connect(context.destination)
+    const ui = new FilterBankUI(preset, nodes)
+    initSources(context, nodes)
     const run = () => {
-        filterBankUI.setMeterValues(filterBankNodes.peaks())
+        ui.setMeterValues(nodes.peaks())
         requestAnimationFrame(run)
     }
     run()

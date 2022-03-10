@@ -28,7 +28,12 @@
         </div>
     </div>
     <div class="controls">
-        <canvas class="screen"></canvas>
+        <div class="screen-wrapper">
+            <canvas class="screen"></canvas>
+            <span style="left: 4px; top: 68px;">20Hz</span>
+            <span style="left: 50%; top: 68px; transform: translate(-50%, 0);">630Hz</span>
+            <span style="right: 4px; top: 68px;">20kHz</span>
+        </div>
         <div class="logo">
             <h1>Malachite</h1>
             <h2>FILTER BANK</h2>
@@ -43,7 +48,8 @@
                     <input type="checkbox">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                            <path transform="translate(0, -6)" d="M32,15.9c-8,0.1-12,0.1-20,0c-1.1,0-2.4-0.4-4,0.1c-5.2,1.7-7.1,9.7-8,16"/>
+                            <path transform="translate(0, -6)"
+                                  d="M32,15.9c-8,0.1-12,0.1-20,0c-1.1,0-2.4-0.4-4,0.1c-5.2,1.7-7.1,9.7-8,16"/>
                         </svg>
                     </span>
                 </label>
@@ -161,7 +167,8 @@
                     <input type="checkbox">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                            <path transform="translate(0, -6)" d="M0,15.9c8,0.1,12,0.1,20,0c1.1,0,2.4-0.4,4,0.1c5.2,1.7,7.1,9.7,8,16"/>
+                            <path transform="translate(0, -6)"
+                                  d="M0,15.9c8,0.1,12,0.1,20,0c1.1,0,2.4-0.4,4,0.1c5.2,1.7,7.1,9.7,8,16"/>
                         </svg>
                     </span>
                 </label>

@@ -243,13 +243,23 @@ section.device
           background-position-y: 2px
           background-image: var(--checked)
 
-  canvas.screen
+  div.screen-wrapper
     width: 650px
     height: 171px
-    box-sizing: border-box
-    padding: 2px
-    background-image: url("/assets/value_screen_big.png")
-    pointer-events: none
+    position: relative
+
+    *
+      position: absolute
+
+    > canvas.screen
+      top: 0
+      left: 0
+      width: 650px
+      height: 171px
+      box-sizing: border-box
+      padding: 2px
+      background-image: url("/assets/value_screen_big.png")
+      pointer-events: none
 
   div.meter
     width: 16px

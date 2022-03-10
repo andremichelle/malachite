@@ -68,12 +68,12 @@ const initSources = (context, filterBankNodes) => {
     document.body.classList.add("invisible");
     const context = new AudioContext();
     const preset = initPreset();
-    const filterBankNodes = yield FilterBankNodes.create(context, preset);
-    filterBankNodes.output().connect(context.destination);
-    const filterBankUI = new FilterBankUI(preset, filterBankNodes);
-    initSources(context, filterBankNodes);
+    const nodes = yield FilterBankNodes.create(context, preset);
+    nodes.output().connect(context.destination);
+    const ui = new FilterBankUI(preset, nodes);
+    initSources(context, nodes);
     const run = () => {
-        filterBankUI.setMeterValues(filterBankNodes.peaks());
+        ui.setMeterValues(nodes.peaks());
         requestAnimationFrame(run);
     };
     run();
