@@ -13,13 +13,13 @@ import { FilterBankNodes } from "./filterbank/nodes.js";
 import { FilterBankUI } from "./filterbank/ui.js";
 import { MalachiteSwitch } from "./ui.js";
 import { BooleanMapping } from "./lib/mapping.js";
-const initSources = (context, filterBankNodes) => {
+const initSources = (context, nodes) => {
     const demoAudio = new Audio();
-    demoAudio.src = "goon.assberg.mp3";
+    demoAudio.src = "kepz.126.mp3";
     demoAudio.preload = "auto";
     demoAudio.crossOrigin = "*";
     const mediaElementSource = context.createMediaElementSource(demoAudio);
-    mediaElementSource.connect(filterBankNodes.input());
+    mediaElementSource.connect(nodes.input());
     const booleanPrintMapping = PrintMapping.createBoolean("Running", "None");
     const parameterDemo = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
     const parameterMicro = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
@@ -42,7 +42,7 @@ const initSources = (context, filterBankNodes) => {
                 yield context.resume();
                 stream = yield fetchMicrophone();
                 streamSource = context.createMediaStreamSource(stream);
-                streamSource.connect(filterBankNodes.input());
+                streamSource.connect(nodes.input());
             }
             else {
                 streamSource.disconnect();
@@ -69,14 +69,10 @@ const initSources = (context, filterBankNodes) => {
     const context = new AudioContext();
     const preset = initPreset();
     const nodes = yield FilterBankNodes.create(context, preset);
-    nodes.output().connect(context.destination);
-    const ui = new FilterBankUI(preset, nodes);
     initSources(context, nodes);
-    const run = () => {
-        ui.setMeterValues(nodes.peaks());
-        requestAnimationFrame(run);
-    };
-    run();
+    nodes.output().connect(context.destination);
+    const ui = new FilterBankUI(nodes, preset);
+    ui.run();
     document.body.classList.remove("invisible");
 }))();
 //# sourceMappingURL=main.js.map

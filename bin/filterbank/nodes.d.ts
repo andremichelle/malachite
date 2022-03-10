@@ -20,6 +20,7 @@ export declare class FilterBankNodes implements Observable<FilterBankNodes> {
     private readonly inputGain;
     private readonly outputGain;
     private readonly meterNode;
+    private readonly analyser;
     private readonly filters;
     private readonly highPassFilter;
     private readonly lowShelfFilter;
@@ -32,6 +33,7 @@ export declare class FilterBankNodes implements Observable<FilterBankNodes> {
     output(): AudioNode;
     getFilters(): FilterNode[];
     peaks(): Float32Array[];
+    computeSpectrum(spectrum: Float32Array): number;
     addObserver(observer: Observer<FilterBankNodes>): Terminable;
     removeObserver(observer: Observer<FilterBankNodes>): boolean;
     terminate(): void;

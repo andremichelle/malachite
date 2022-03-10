@@ -109,8 +109,11 @@ export class MalachiteScreen {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         this.context = this.canvas.getContext("2d");
-        const w = this.canvas.width = this.canvas.clientWidth;
-        const h = this.canvas.height = this.canvas.clientHeight;
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientHeight;
+    }
+    clear() {
+        this.context.clearRect(0, 0, this.width(), this.height());
     }
     width() {
         return this.canvas.clientWidth;

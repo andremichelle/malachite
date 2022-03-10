@@ -133,8 +133,12 @@ export class MalachiteScreen {
     constructor(readonly canvas: HTMLCanvasElement,
                 readonly xAxis: ValueMapping<number>,
                 readonly yAxis: ValueMapping<number>) {
-        const w = this.canvas.width = this.canvas.clientWidth
-        const h = this.canvas.height = this.canvas.clientHeight
+        this.canvas.width = this.canvas.clientWidth
+        this.canvas.height = this.canvas.clientHeight
+    }
+
+    clear(): void {
+        this.context.clearRect(0, 0, this.width(), this.height())
     }
 
     width(): number {

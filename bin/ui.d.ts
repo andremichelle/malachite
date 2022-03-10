@@ -45,6 +45,7 @@ export declare class MalachiteScreen {
     readonly yAxis: ValueMapping<number>;
     readonly context: CanvasRenderingContext2D;
     constructor(canvas: HTMLCanvasElement, xAxis: ValueMapping<number>, yAxis: ValueMapping<number>);
+    clear(): void;
     width(): number;
     height(): number;
     xToUnit(x: number): number;

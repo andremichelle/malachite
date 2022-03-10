@@ -8,20 +8,18 @@ import {BooleanMapping, Exp} from "./lib/mapping.js"
 /**
  * TODO
  * Check license
- * Responsive size
- * Update curve next frame
  * Firefox
- * Show spectrum
+ * Lowpass render glitch
  */
 
-const initSources = (context: AudioContext, filterBankNodes: FilterBankNodes): void => {
+const initSources = (context: AudioContext, nodes: FilterBankNodes): void => {
     const demoAudio = new Audio()
-    // https://www.audiotool.com/track/a7twbfiog/
-    demoAudio.src = "goon.assberg.mp3"
+    // https://www.audiotool.com/track/0dkqsw3m9ud/
+    demoAudio.src = "kepz.126.mp3"
     demoAudio.preload = "auto"
     demoAudio.crossOrigin = "*"
     const mediaElementSource = context.createMediaElementSource(demoAudio)
-    mediaElementSource.connect(filterBankNodes.input())
+    mediaElementSource.connect(nodes.input())
     const booleanPrintMapping = PrintMapping.createBoolean("Running", "None")
     const parameterDemo = new Parameter<boolean>(BooleanMapping.Instance, booleanPrintMapping, false)
     const parameterMicro = new Parameter<boolean>(BooleanMapping.Instance, booleanPrintMapping, false)
@@ -43,7 +41,7 @@ const initSources = (context: AudioContext, filterBankNodes: FilterBankNodes): v
                 await context.resume()
                 stream = await fetchMicrophone()
                 streamSource = context.createMediaStreamSource(stream)
-                streamSource.connect(filterBankNodes.input())
+                streamSource.connect(nodes.input())
             } else {
                 streamSource.disconnect()
                 streamSource = null
@@ -70,13 +68,9 @@ const initSources = (context: AudioContext, filterBankNodes: FilterBankNodes): v
     const context = new AudioContext()
     const preset = initPreset()
     const nodes = await FilterBankNodes.create(context, preset)
-    nodes.output().connect(context.destination)
-    const ui = new FilterBankUI(preset, nodes)
     initSources(context, nodes)
-    const run = () => {
-        ui.setMeterValues(nodes.peaks())
-        requestAnimationFrame(run)
-    }
-    run()
+    nodes.output().connect(context.destination)
+    const ui = new FilterBankUI(nodes, preset)
+    ui.run()
     document.body.classList.remove("invisible")
 })()

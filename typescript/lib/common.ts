@@ -3,6 +3,11 @@ import {Linear, Range, ValueMapping} from "./mapping.js"
 
 export const RENDER_QUANTUM: number = 128 | 0
 
+export const cosine = (y1: number, y2: number, mu: number): number => {
+    const mu2 = (1.0 - Math.cos(mu * Math.PI)) * 0.5
+    return y1 * (1.0 - mu2) + y2 * mu2
+}
+
 export class RMS {
     private readonly values: Float32Array
     private readonly inv: number

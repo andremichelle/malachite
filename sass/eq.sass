@@ -1,7 +1,9 @@
 section.device.eq
-  width: 848px
-  height: 480px
-  transform: scale(0.75)
+  width: var(--device-width)
+  height: var(--device-height)
+  grid-area: 2 / 2
+  transform: scale(var(--device-scale))
+  transform-origin: left top
 
   div.controls
     padding: 20px 0 20px 20px

@@ -3,14 +3,33 @@
 html, body
   width: 100%
   height: 100%
+  color: $green
   background-color: #1A1A1A
+  font-family: 'Labrador A', serif
+
+  a
+    color: $green
+
+\:root
+  --device-width: 848px
+  --device-height: 480px
+  --device-scale: 0.75
+  @media only screen and (max-width: 1200px)
+    --device-scale: 0.5
+  @media only screen and (max-width: 800px)
+    --device-scale: 0.25
+
+h3, h5
+  margin: 0
 
 body
-  display: flex
+  display: grid
+  grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr / 1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr
   overflow: hidden
-  align-items: center
-  flex-direction: column
-  justify-content: center
+
+div.info
+  padding: 40px
+  grid-area: 2 / 1
 
 .hidden
   display: none !important

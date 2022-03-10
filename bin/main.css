@@ -1,7 +1,9 @@
 section.device.eq {
-  width: 848px;
-  height: 480px;
-  transform: scale(0.75);
+  width: var(--device-width);
+  height: var(--device-height);
+  grid-area: 2/2;
+  transform: scale(var(--device-scale));
+  transform-origin: left top;
 }
 section.device.eq div.controls {
   padding: 20px 0 20px 20px;
@@ -281,6 +283,7 @@ section.device div.screen-wrapper {
   width: 650px;
   height: 171px;
   position: relative;
+  background-image: url("/assets/value_screen_big.png");
 }
 section.device div.screen-wrapper * {
   position: absolute;
@@ -292,7 +295,6 @@ section.device div.screen-wrapper > canvas.screen {
   height: 171px;
   box-sizing: border-box;
   padding: 2px;
-  background-image: url("/assets/value_screen_big.png");
   pointer-events: none;
 }
 section.device div.meter {
@@ -325,15 +327,43 @@ section.device div.meter:after {
 html, body {
   width: 100%;
   height: 100%;
+  color: #358F6F;
   background-color: #1A1A1A;
+  font-family: "Labrador A", serif;
+}
+html a, body a {
+  color: #358F6F;
+}
+
+:root {
+  --device-width: 848px;
+  --device-height: 480px;
+  --device-scale: 0.75;
+}
+@media only screen and (max-width: 1200px) {
+  :root {
+    --device-scale: 0.5;
+  }
+}
+@media only screen and (max-width: 800px) {
+  :root {
+    --device-scale: 0.25;
+  }
+}
+
+h3, h5 {
+  margin: 0;
 }
 
 body {
-  display: flex;
+  display: grid;
+  grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr/1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr;
   overflow: hidden;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+}
+
+div.info {
+  padding: 40px;
+  grid-area: 2/1;
 }
 
 .hidden {

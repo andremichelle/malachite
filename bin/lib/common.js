@@ -1,5 +1,9 @@
 import { Linear } from "./mapping.js";
 export const RENDER_QUANTUM = 128 | 0;
+export const cosine = (y1, y2, mu) => {
+    const mu2 = (1.0 - Math.cos(mu * Math.PI)) * 0.5;
+    return y1 * (1.0 - mu2) + y2 * mu2;
+};
 export class RMS {
     constructor(n) {
         this.n = n;

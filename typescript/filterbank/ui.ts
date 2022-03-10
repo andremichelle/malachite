@@ -1,8 +1,60 @@
-import {Terminable, Terminator} from "../lib/common.js"
+import {cosine, Terminable, Terminator} from "../lib/common.js"
 import {MalachiteKnob, MalachiteMeter, MalachiteScreen, MalachiteSwitch} from "../ui.js"
 import {Preset} from "./preset.js"
 import {Exp, Linear} from "../lib/mapping.js"
-import {FilterBankNodes, FilterNode, gainToDb} from "./nodes.js"
+import {FilterBankNodes, FilterNode} from "./nodes.js"
+
+export class FilterSpectrumRenderer {
+    constructor(private readonly screen: MalachiteScreen) {
+    }
+
+    render(spectrum: Float32Array, step: number) {
+        const screen = this.screen
+        const width = screen.width()
+        const height = screen.height()
+        const context = screen.context
+        const numBins = spectrum.length
+        let x0 = 0
+        let lastEnergy = spectrum[0]
+        let currentEnergy = lastEnergy
+        context.strokeStyle = `rgba(${0x35}, ${0x8F}, ${0x6F}, 1.0)`
+        context.fillStyle = `rgba(${0x35}, ${0x8F}, ${0x6F}, 0.2)`
+        context.beginPath()
+        context.moveTo(-1, height)
+        context.lineTo(-1, screen.unitToY(lastEnergy))
+        for (let i = 1; i < numBins; ++i) {
+            const energy = spectrum[i]
+            if (currentEnergy > energy) {
+                currentEnergy = energy
+            }
+            let x1 = Math.floor(screen.unitToX(i * step))
+            if (x1 > width) {
+                i = numBins
+                x1 = width
+            }
+            if (x0 < x1) {
+                const xn = x1 - x0
+                if (2 >= xn) {
+                    context.lineTo(x1, screen.unitToY(currentEnergy))
+                } else {
+                    const scale = 1.0 / xn
+                    const y1 = screen.unitToY(lastEnergy)
+                    const y2 = screen.unitToY(currentEnergy)
+                    for (let x = 1; x <= xn; ++x) {
+                        context.lineTo(x0 + x, cosine(y1, y2, x * scale))
+                    }
+                }
+                lastEnergy = currentEnergy
+                currentEnergy = 0.0
+            }
+            x0 = x1
+        }
+        context.lineTo(width, height)
+        context.closePath()
+        context.fill()
+        context.stroke()
+    }
+}
 
 export class FilterBankResponseRenderer {
     private static Colors: string[] = ["#89C9B2", "#56A78A", "#1E7B5A", "#0B6243", "#358F6F"]
@@ -27,7 +79,6 @@ export class FilterBankResponseRenderer {
         const screen = this.screen
         const context = screen.context
         const width = screen.width()
-        context.clearRect(0, 0, width, screen.height())
         context.lineWidth = 0.0
         context.globalAlpha = 0.4
         context.globalCompositeOperation = "screen"
@@ -79,15 +130,21 @@ export class FilterBankResponseRenderer {
 }
 
 export class FilterBankUI implements Terminable {
+    private static SCREEN_FREQUENCY_RANGE = new Exp(20.0, 20000.0)
+
     private readonly terminator = new Terminator()
 
-    private readonly screen = new MalachiteScreen(document.querySelector("canvas.screen"), new Exp(20.0, 20000.0), new Linear(40.0, -40.0))
-    private readonly response = new FilterBankResponseRenderer(this.screen)
+    private readonly responseScreen = new MalachiteScreen(document.querySelector("canvas.screen.response"), FilterBankUI.SCREEN_FREQUENCY_RANGE, new Linear(40.0, -40.0))
+    private readonly spectrumScreen = new MalachiteScreen(document.querySelector("canvas.screen.spectrum"), FilterBankUI.SCREEN_FREQUENCY_RANGE, new Linear(-6.0, -72.0))
+    private readonly response = new FilterBankResponseRenderer(this.responseScreen)
+    private readonly spectrum = new FilterSpectrumRenderer(this.spectrumScreen)
 
     private readonly meterL: MalachiteMeter
     private readonly meterR: MalachiteMeter
 
-    constructor(preset: Preset, nodes: FilterBankNodes) {
+    private needsResponseUpdate: boolean = true
+
+    constructor(private readonly nodes: FilterBankNodes, preset: Preset) {
         {
             this.terminator.with(new MalachiteSwitch(document.querySelector("label.checkbox[data-parameter='main-bypass']")))
                 .with(preset.main.bypass)
@@ -145,8 +202,7 @@ export class FilterBankUI implements Terminable {
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='q']")))
                 .with(preset.filter.lowPass.q)
         }
-        this.terminator.with(nodes.addObserver(nodes => this.response.render(nodes.getFilters())))
-        this.response.render(nodes.getFilters())
+        this.terminator.with(nodes.addObserver(() => this.needsResponseUpdate = true))
 
         this.meterL = new MalachiteMeter(document.querySelector("div.meter.left"))
         this.meterR = new MalachiteMeter(document.querySelector("div.meter.right"))
@@ -159,5 +215,22 @@ export class FilterBankUI implements Terminable {
 
     terminate(): void {
         this.terminator.terminate()
+    }
+
+    run() {
+        const spectrum: Float32Array = new Float32Array(2048)
+        const nextFrame = () => {
+            this.setMeterValues(this.nodes.peaks())
+            if (this.needsResponseUpdate) {
+                this.responseScreen.clear()
+                this.response.render(this.nodes.getFilters())
+                this.needsResponseUpdate = false
+            }
+            const freqStep: number = this.nodes.computeSpectrum(spectrum)
+            this.spectrumScreen.clear()
+            this.spectrum.render(spectrum, freqStep)
+            requestAnimationFrame(nextFrame)
+        }
+        nextFrame()
     }
 }

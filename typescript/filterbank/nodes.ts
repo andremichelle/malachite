@@ -294,6 +294,7 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
     private readonly inputGain: GainNode
     private readonly outputGain: GainNode
     private readonly meterNode: NoUIMeterWorklet
+    private readonly analyser: AnalyserNode
 
     private readonly filters: FilterNode[] = []
     private readonly highPassFilter: FilterNode
@@ -318,7 +319,11 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
         this.filters.push(this.lowPassFilter)
         this.outputGain = context.createGain()
         this.meterNode = new NoUIMeterWorklet(context, 1, 2)
-        this.connect(this.inputGain).connect(this.outputGain).connect(this.meterNode)
+        this.analyser = context.createAnalyser()
+        this.analyser.minDecibels = -72.0
+        this.analyser.maxDecibels = -9.0
+        this.analyser.fftSize = 2048
+        this.connect(this.inputGain).connect(this.meterNode).connect(this.analyser).connect(this.outputGain)
         this.controlVolume(preset.main)
     }
 
@@ -336,6 +341,11 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
 
     peaks(): Float32Array[] {
         return this.meterNode.peaks
+    }
+
+    computeSpectrum(spectrum: Float32Array): number {
+        this.analyser.getFloatFrequencyData(spectrum)
+        return this.context.sampleRate / (this.analyser.frequencyBinCount << 1)
     }
 
     addObserver(observer: Observer<FilterBankNodes>): Terminable {

@@ -233,7 +233,11 @@ export class FilterBankNodes {
         this.filters.push(this.lowPassFilter);
         this.outputGain = context.createGain();
         this.meterNode = new NoUIMeterWorklet(context, 1, 2);
-        this.connect(this.inputGain).connect(this.outputGain).connect(this.meterNode);
+        this.analyser = context.createAnalyser();
+        this.analyser.minDecibels = -72.0;
+        this.analyser.maxDecibels = -9.0;
+        this.analyser.fftSize = 2048;
+        this.connect(this.inputGain).connect(this.meterNode).connect(this.analyser).connect(this.outputGain);
         this.controlVolume(preset.main);
     }
     static create(context, preset) {
@@ -253,6 +257,10 @@ export class FilterBankNodes {
     }
     peaks() {
         return this.meterNode.peaks;
+    }
+    computeSpectrum(spectrum) {
+        this.analyser.getFloatFrequencyData(spectrum);
+        return this.context.sampleRate / (this.analyser.frequencyBinCount << 1);
     }
     addObserver(observer) {
         return this.observable.addObserver(observer);

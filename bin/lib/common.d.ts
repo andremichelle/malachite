@@ -1,6 +1,7 @@
 import { Random } from "./math.js";
 import { Range, ValueMapping } from "./mapping.js";
 export declare const RENDER_QUANTUM: number;
+export declare const cosine: (y1: number, y2: number, mu: number) => number;
 export declare class RMS {
     private readonly n;
     private readonly values;
