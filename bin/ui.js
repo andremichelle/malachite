@@ -99,7 +99,7 @@ export class MalachiteKnob extends MalachiteUIElement {
         this.installInteraction();
     }
     onChanged(parameter) {
-        this.setValue(parameter.getUnipolar());
+        this.filmstrip.style.setProperty("--frame", `${(Math.round(parameter.getUnipolar() * 127))}`);
         this.textField.value = parameter.print();
     }
     terminate() {
@@ -107,9 +107,6 @@ export class MalachiteKnob extends MalachiteUIElement {
         this.terminator.terminate();
         this.element.removeEventListener("mousedown", this.mouseDown);
         this.element.removeEventListener("dragstart", Events.preventDefault);
-    }
-    setValue(value) {
-        this.filmstrip.style.setProperty("--frame", `${(Math.round(value * 127))}`);
     }
     installInteraction() {
         this.element.addEventListener("mousedown", this.mouseDown);
@@ -142,12 +139,16 @@ export class MalachiteKnob extends MalachiteUIElement {
                             if (null === number || !parameter.set(number)) {
                                 this.onChanged(parameter);
                             }
-                            blur();
                         });
+                        blur();
+                        break;
                     }
                 }
             };
-            this.textField.addEventListener("focusout", () => this.textField.removeEventListener("keydown", keyboardListener), { once: true });
+            this.textField.addEventListener("focusout", () => {
+                this.ifParameter(parameter => this.onChanged(parameter));
+                this.textField.removeEventListener("keydown", keyboardListener);
+            }, { once: true });
             this.textField.addEventListener("keydown", keyboardListener);
             window.addEventListener("mouseup", () => {
                 if (this.textField.selectionStart === this.textField.selectionEnd)
