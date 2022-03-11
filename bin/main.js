@@ -7,31 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Parameter, PrintMapping } from "./lib/common.js";
+import { Parameter, preloadImagesOfCssFile, PrintMapping } from "./lib/common.js";
 import { initPreset } from "./filterbank/preset.js";
 import { FilterBankNodes } from "./filterbank/nodes.js";
 import { FilterBankUI } from "./filterbank/ui.js";
 import { Events, MalachiteSwitch } from "./ui.js";
 import { BooleanMapping } from "./lib/mapping.js";
-const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
-    const base = location.href + "bin/";
-    console.log(`preloadImagesOfCssFile... base: ${base}`);
-    const urls = yield fetch(path)
-        .then(x => x.text()).then(x => {
-        return x.match(/url\(.+(?=\))/g)
-            .map(path => path.replace(/url\(/, "").slice(1, -1))
-            .map(path => new URL(path, base));
-    });
-    const promises = urls.map(url => new Promise((resolve, reject) => {
-        const src = url.href;
-        console.log(`src: '${src}'`);
-        const image = new Image();
-        image.onload = () => resolve();
-        image.onerror = (error) => reject(error);
-        image.src = src;
-    }));
-    return Promise.all(promises).then(() => Promise.resolve());
-});
 const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, function* () {
     const demoAudio = new Audio();
     demoAudio.src = "kepz.126.mp3";
@@ -45,11 +26,15 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     const parameterDemo = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
     const parameterMicro = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
     const parameters = [parameterDemo, parameterMicro];
-    parameterDemo.addObserver(running => {
+    const startAudioContext = () => {
+        if (context.state !== "running") {
+            document.querySelectorAll("svg.play-hint").forEach(svg => svg.remove());
+            context.resume();
+        }
+    };
+    parameterDemo.addObserver((running) => {
         if (running) {
-            if (context.state !== "running") {
-                context.resume();
-            }
+            startAudioContext();
             demoAudio.play();
         }
         else {
@@ -62,7 +47,7 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
         let streamSource;
         return (running) => __awaiter(void 0, void 0, void 0, function* () {
             if (running) {
-                yield context.resume();
+                startAudioContext();
                 stream = yield navigator.mediaDevices.getUserMedia({ audio: true });
                 streamSource = context.createMediaStreamSource(stream);
                 streamSource.connect(nodes.input());

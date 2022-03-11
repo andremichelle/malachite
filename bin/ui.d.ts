@@ -34,7 +34,6 @@ export declare class MalachiteKnob extends MalachiteUIElement {
     constructor(element: Element);
     protected onChanged(parameter: Parameter<any>): void;
     terminate(): void;
-    private setValue;
     private mouseUp;
     private mouseMove;
     private mouseDown;

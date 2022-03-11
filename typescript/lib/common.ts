@@ -1,4 +1,24 @@
-import {Linear, Range, ValueMapping} from "./mapping.js"
+import {ValueMapping} from "./mapping.js"
+
+export const preloadImagesOfCssFile = async (path: string): Promise<void> => {
+    const base = location.href + "bin/"
+    console.log(`preloadImagesOfCssFile... base: ${base}`)
+    const urls = await fetch(path)
+        .then(x => x.text()).then(x => {
+            return x.match(/url\(.+(?=\))/g)
+                .map(path => path.replace(/url\(/, "").slice(1, -1))
+                .map(path => new URL(path, base))
+        })
+    const promises = urls.map(url => new Promise<void>((resolve, reject) => {
+        const src = url.href
+        console.log(`src: '${src}'`)
+        const image = new Image()
+        image.onload = () => resolve()
+        image.onerror = (error) => reject(error)
+        image.src = src
+    }))
+    return Promise.all(promises).then(() => Promise.resolve())
+}
 
 export const cosine = (y1: number, y2: number, mu: number): number => {
     const mu2 = (1.0 - Math.cos(mu * Math.PI)) * 0.5
@@ -162,43 +182,6 @@ export class ObservableValueImpl<T> implements ObservableValue<T> {
     }
 }
 
-export class BoundNumericValue implements ObservableValue<number> {
-    private readonly observable = new ObservableImpl<number>()
-    private value: number
-
-    constructor(private readonly range: Range = Linear.Identity,
-                value: number = 0.0) {
-        this.set(value)
-    }
-
-    get(): number {
-        return this.value
-    }
-
-    set(value: number): boolean {
-        value = this.range.clamp(value)
-        if (this.value === value) {
-            return false
-        }
-        this.value = value
-        this.observable.notify(value)
-        return true
-    }
-
-    addObserver(observer: Observer<number>, notify: boolean = false): Terminable {
-        if (notify) observer(this.value)
-        return this.observable.addObserver(observer)
-    }
-
-    removeObserver(observer: Observer<number>): boolean {
-        return this.observable.removeObserver(observer)
-    }
-
-    terminate(): void {
-        this.observable.terminate()
-    }
-}
-
 export class Parameter<T> implements ObservableValue<T> {
     private readonly observable = new ObservableImpl<T>()
 
@@ -322,28 +305,6 @@ export class PrintMapping<Y> {
     print(value: Y): string {
         return undefined === value ? "" : `${this.preUnit}${this.printer(value)}${this.postUnit}`
     }
-}
-
-export const binarySearch = (values: Float32Array, key: number): number => {
-    let low = 0 | 0
-    let high = (values.length - 1) | 0
-    while (low <= high) {
-        const mid = (low + high) >>> 1
-        const midVal = values[mid]
-        if (midVal < key)
-            low = mid + 1
-        else if (midVal > key)
-            high = mid - 1
-        else {
-            if (midVal === key)
-                return mid
-            else if (midVal < key)
-                low = mid + 1
-            else
-                high = mid - 1
-        }
-    }
-    return high
 }
 
 export class ArrayUtils {

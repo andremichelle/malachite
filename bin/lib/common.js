@@ -1,4 +1,31 @@
-import { Linear } from "./mapping.js";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+export const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
+    const base = location.href + "bin/";
+    console.log(`preloadImagesOfCssFile... base: ${base}`);
+    const urls = yield fetch(path)
+        .then(x => x.text()).then(x => {
+        return x.match(/url\(.+(?=\))/g)
+            .map(path => path.replace(/url\(/, "").slice(1, -1))
+            .map(path => new URL(path, base));
+    });
+    const promises = urls.map(url => new Promise((resolve, reject) => {
+        const src = url.href;
+        console.log(`src: '${src}'`);
+        const image = new Image();
+        image.onload = () => resolve();
+        image.onerror = (error) => reject(error);
+        image.src = src;
+    }));
+    return Promise.all(promises).then(() => Promise.resolve());
+});
 export const cosine = (y1, y2, mu) => {
     const mu2 = (1.0 - Math.cos(mu * Math.PI)) * 0.5;
     return y1 * (1.0 - mu2) + y2 * mu2;
@@ -88,36 +115,6 @@ export class ObservableValueImpl {
         return this.value;
     }
     set(value) {
-        if (this.value === value) {
-            return false;
-        }
-        this.value = value;
-        this.observable.notify(value);
-        return true;
-    }
-    addObserver(observer, notify = false) {
-        if (notify)
-            observer(this.value);
-        return this.observable.addObserver(observer);
-    }
-    removeObserver(observer) {
-        return this.observable.removeObserver(observer);
-    }
-    terminate() {
-        this.observable.terminate();
-    }
-}
-export class BoundNumericValue {
-    constructor(range = Linear.Identity, value = 0.0) {
-        this.range = range;
-        this.observable = new ObservableImpl();
-        this.set(value);
-    }
-    get() {
-        return this.value;
-    }
-    set(value) {
-        value = this.range.clamp(value);
         if (this.value === value) {
             return false;
         }
@@ -249,27 +246,6 @@ PrintMapping.RGB = new PrintMapping(text => {
         return null;
     }
 }, value => value.toString(16).padStart(6, "0").toUpperCase(), "#", "");
-export const binarySearch = (values, key) => {
-    let low = 0 | 0;
-    let high = (values.length - 1) | 0;
-    while (low <= high) {
-        const mid = (low + high) >>> 1;
-        const midVal = values[mid];
-        if (midVal < key)
-            low = mid + 1;
-        else if (midVal > key)
-            high = mid - 1;
-        else {
-            if (midVal === key)
-                return mid;
-            else if (midVal < key)
-                low = mid + 1;
-            else
-                high = mid - 1;
-        }
-    }
-    return high;
-};
 export class ArrayUtils {
     static fill(n, factory) {
         const array = [];

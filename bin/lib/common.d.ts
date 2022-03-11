@@ -1,4 +1,5 @@
-import { Range, ValueMapping } from "./mapping.js";
+import { ValueMapping } from "./mapping.js";
+export declare const preloadImagesOfCssFile: (path: string) => Promise<void>;
 export declare const cosine: (y1: number, y2: number, mu: number) => number;
 export interface Terminable {
     terminate(): void;
@@ -73,17 +74,6 @@ export declare class ObservableValueImpl<T> implements ObservableValue<T> {
     removeObserver(observer: Observer<T>): boolean;
     terminate(): void;
 }
-export declare class BoundNumericValue implements ObservableValue<number> {
-    private readonly range;
-    private readonly observable;
-    private value;
-    constructor(range?: Range, value?: number);
-    get(): number;
-    set(value: number): boolean;
-    addObserver(observer: Observer<number>, notify?: boolean): Terminable;
-    removeObserver(observer: Observer<number>): boolean;
-    terminate(): void;
-}
 export declare class Parameter<T> implements ObservableValue<T> {
     readonly valueMapping: ValueMapping<T>;
     readonly printMapping: PrintMapping<T>;
@@ -116,7 +106,6 @@ export declare class PrintMapping<Y> {
     parse(text: string): Y | null;
     print(value: Y): string;
 }
-export declare const binarySearch: (values: Float32Array, key: number) => number;
 export declare class ArrayUtils {
     static fill<T>(n: number, factory: (index: number) => T): T[];
     private constructor();

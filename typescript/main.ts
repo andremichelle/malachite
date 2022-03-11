@@ -1,29 +1,9 @@
-import {Parameter, PrintMapping} from "./lib/common.js"
+import {Parameter, preloadImagesOfCssFile, PrintMapping} from "./lib/common.js"
 import {initPreset} from "./filterbank/preset.js"
 import {FilterBankNodes} from "./filterbank/nodes.js"
 import {FilterBankUI} from "./filterbank/ui.js"
 import {Events, MalachiteSwitch} from "./ui.js"
 import {BooleanMapping} from "./lib/mapping.js"
-
-const preloadImagesOfCssFile = async (path: string): Promise<void> => {
-    const base = location.href + "bin/"
-    console.log(`preloadImagesOfCssFile... base: ${base}`)
-    const urls = await fetch(path)
-        .then(x => x.text()).then(x => {
-            return x.match(/url\(.+(?=\))/g)
-                .map(path => path.replace(/url\(/, "").slice(1, -1))
-                .map(path => new URL(path, base))
-        })
-    const promises = urls.map(url => new Promise<void>((resolve, reject) => {
-        const src = url.href
-        console.log(`src: '${src}'`)
-        const image = new Image()
-        image.onload = () => resolve()
-        image.onerror = (error) => reject(error)
-        image.src = src
-    }))
-    return Promise.all(promises).then(() => Promise.resolve())
-}
 
 const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promise<void> => {
     const demoAudio = new Audio()
@@ -38,11 +18,15 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     const parameterDemo = new Parameter<boolean>(BooleanMapping.Instance, booleanPrintMapping, false)
     const parameterMicro = new Parameter<boolean>(BooleanMapping.Instance, booleanPrintMapping, false)
     const parameters: Parameter<boolean>[] = [parameterDemo, parameterMicro]
-    parameterDemo.addObserver(running => {
+    const startAudioContext = () => {
+        if (context.state !== "running") {
+            document.querySelectorAll("svg.play-hint").forEach(svg => svg.remove())
+            context.resume()
+        }
+    }
+    parameterDemo.addObserver((running: boolean) => {
         if (running) {
-            if (context.state !== "running") {
-                context.resume()
-            }
+            startAudioContext()
             demoAudio.play()
         } else {
             demoAudio.pause()
@@ -52,9 +36,9 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     parameterMicro.addObserver((() => {
         let stream: MediaStream
         let streamSource: MediaStreamAudioSourceNode
-        return async running => {
+        return async (running: boolean) => {
             if (running) {
-                await context.resume()
+                startAudioContext()
                 stream = await navigator.mediaDevices.getUserMedia({audio: true})
                 streamSource = context.createMediaStreamSource(stream)
                 streamSource.connect(nodes.input())
