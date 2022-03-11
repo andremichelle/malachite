@@ -283,7 +283,7 @@ class FilterNodeFactory {
 
 export class FilterBankNodes implements Observable<FilterBankNodes> {
     static async create(context: AudioContext, preset: Preset): Promise<FilterBankNodes> {
-        await context.audioWorklet.addModule("src/meter/processor.js")
+        await context.audioWorklet.addModule("bin/meter/processor.js")
         return new FilterBankNodes(context, preset)
     }
 

@@ -242,7 +242,7 @@ export class FilterBankNodes {
     }
     static create(context, preset) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield context.audioWorklet.addModule("src/meter/processor.js");
+            yield context.audioWorklet.addModule("bin/meter/processor.js");
             return new FilterBankNodes(context, preset);
         });
     }

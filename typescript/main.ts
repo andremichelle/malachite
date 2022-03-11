@@ -81,7 +81,7 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
 }
 
 (async () => {
-    await preloadImagesOfCssFile("./src/main.css")
+    await preloadImagesOfCssFile("./bin/main.css")
     const context = new AudioContext()
     const preset = initPreset()
     const nodes = await FilterBankNodes.create(context, preset)
