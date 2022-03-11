@@ -378,6 +378,9 @@ body > div.info {
   grid-area: 2/1;
   padding: 0 2.4vw 0 1.2vw;
 }
+body > div.info svg {
+  margin-top: 20px;
+}
 body > div.credits {
   grid-area: 2/3;
   padding: 0 1.2vw 0 2.4vw;

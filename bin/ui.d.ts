@@ -3,6 +3,7 @@ import { ValueMapping } from "./lib/mapping.js";
 export declare class Events {
     static preventDefault: (event: any) => any;
     static toPromise<E extends Event>(target: EventTarget, type: string): Promise<E>;
+    static bindEventListener(target: EventTarget, type: string, listener: EventListenerOrEventListenerObject, options?: AddEventListenerOptions): Terminable;
 }
 declare abstract class MalachiteUIElement implements Terminable {
     private parameterSubscription;
@@ -25,6 +26,7 @@ export declare class MalachiteSwitch extends MalachiteUIElement {
 }
 export declare class MalachiteKnob extends MalachiteUIElement {
     private readonly element;
+    private readonly terminator;
     private readonly filmstrip;
     private readonly textField;
     private position;
@@ -36,7 +38,7 @@ export declare class MalachiteKnob extends MalachiteUIElement {
     private mouseUp;
     private mouseMove;
     private mouseDown;
-    private installMouseInteraction;
+    private installInteraction;
 }
 export declare class MalachiteMeter {
     private readonly element;

@@ -1,11 +1,19 @@
-import {Option, Options, Parameter, Terminable, TerminableVoid} from "./lib/common.js"
+import {Option, Options, Parameter, Terminable, TerminableVoid, Terminator} from "./lib/common.js"
 import {ValueMapping} from "./lib/mapping.js"
 
 export class Events {
     static preventDefault = event => event.preventDefault()
 
     static async toPromise<E extends Event>(target: EventTarget, type: string): Promise<E> {
-        return new Promise<E>(resolve => target.addEventListener(type, (event: E) => resolve(event), {once: true}))
+        return new Promise<E>(resolve => target
+            .addEventListener(type, (event: E) => resolve(event), {once: true}))
+    }
+
+    static bindEventListener(target: EventTarget,
+                             type: string, listener: EventListenerOrEventListenerObject,
+                             options?: AddEventListenerOptions): Terminable {
+        target.addEventListener(type, listener, options)
+        return {terminate: () => target.removeEventListener(type, listener, options)}
     }
 }
 
@@ -70,6 +78,7 @@ export class MalachiteSwitch extends MalachiteUIElement {
 }
 
 export class MalachiteKnob extends MalachiteUIElement {
+    private readonly terminator = new Terminator()
     private readonly filmstrip: HTMLImageElement = this.element.querySelector("img.filmstrip")
     private readonly textField: HTMLInputElement = this.element.querySelector("input[type='text']")
 
@@ -78,7 +87,7 @@ export class MalachiteKnob extends MalachiteUIElement {
 
     constructor(private readonly element: Element) {
         super()
-        this.installMouseInteraction()
+        this.installInteraction()
     }
 
     protected onChanged(parameter: Parameter<any>) {
@@ -88,6 +97,7 @@ export class MalachiteKnob extends MalachiteUIElement {
 
     terminate(): void {
         super.terminate()
+        this.terminator.terminate()
         this.element.removeEventListener("mousedown", this.mouseDown)
         this.element.removeEventListener("dragstart", Events.preventDefault)
     }
@@ -116,9 +126,49 @@ export class MalachiteKnob extends MalachiteUIElement {
         window.addEventListener("mouseup", this.mouseUp, {once: true})
     }
 
-    private installMouseInteraction() {
+    private installInteraction() {
         this.element.addEventListener("mousedown", this.mouseDown)
         this.element.addEventListener("dragstart", Events.preventDefault)
+
+        this.terminator.with(Events.bindEventListener(this.textField, "focusin", (focusEvent: FocusEvent) => {
+            const blur = (() => {
+                const lastFocus: HTMLElement = focusEvent.relatedTarget as HTMLElement
+                return () => {
+                    this.textField.setSelectionRange(0, 0)
+                    if (lastFocus === null) {
+                        this.textField.blur()
+                    } else {
+                        lastFocus.focus()
+                    }
+                }
+            })()
+            const keyboardListener = (event: KeyboardEvent) => {
+                switch (event.key) {
+                    case "Escape": {
+                        event.preventDefault()
+                        this.ifParameter(parameter => this.onChanged(parameter))
+                        blur()
+                        break
+                    }
+                    case "Enter": {
+                        event.preventDefault()
+                        this.ifParameter(parameter => {
+                            const number = parameter.printMapping.parse(this.textField.value)
+                            if (null === number || !parameter.set(number)) {
+                                this.onChanged(parameter)
+                            }
+                            blur()
+                        })
+                    }
+                }
+            }
+            this.textField.addEventListener("focusout", () =>
+                this.textField.removeEventListener("keydown", keyboardListener), {once: true})
+            this.textField.addEventListener("keydown", keyboardListener)
+            window.addEventListener("mouseup", () => {
+                if (this.textField.selectionStart === this.textField.selectionEnd) this.textField.select()
+            }, {once: true})
+        }))
     }
 }
 

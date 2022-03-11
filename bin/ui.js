@@ -7,12 +7,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Options, TerminableVoid } from "./lib/common.js";
+import { Options, TerminableVoid, Terminator } from "./lib/common.js";
 export class Events {
     static toPromise(target, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            return new Promise(resolve => target.addEventListener(type, (event) => resolve(event), { once: true }));
+            return new Promise(resolve => target
+                .addEventListener(type, (event) => resolve(event), { once: true }));
         });
+    }
+    static bindEventListener(target, type, listener, options) {
+        target.addEventListener(type, listener, options);
+        return { terminate: () => target.removeEventListener(type, listener, options) };
     }
 }
 Events.preventDefault = event => event.preventDefault();
@@ -69,6 +74,7 @@ export class MalachiteKnob extends MalachiteUIElement {
     constructor(element) {
         super();
         this.element = element;
+        this.terminator = new Terminator();
         this.filmstrip = this.element.querySelector("img.filmstrip");
         this.textField = this.element.querySelector("input[type='text']");
         this.position = NaN;
@@ -90,7 +96,7 @@ export class MalachiteKnob extends MalachiteUIElement {
             window.addEventListener("mousemove", this.mouseMove);
             window.addEventListener("mouseup", this.mouseUp, { once: true });
         };
-        this.installMouseInteraction();
+        this.installInteraction();
     }
     onChanged(parameter) {
         this.setValue(parameter.getUnipolar());
@@ -98,15 +104,56 @@ export class MalachiteKnob extends MalachiteUIElement {
     }
     terminate() {
         super.terminate();
+        this.terminator.terminate();
         this.element.removeEventListener("mousedown", this.mouseDown);
         this.element.removeEventListener("dragstart", Events.preventDefault);
     }
     setValue(value) {
         this.filmstrip.style.setProperty("--frame", `${(Math.round(value * 127))}`);
     }
-    installMouseInteraction() {
+    installInteraction() {
         this.element.addEventListener("mousedown", this.mouseDown);
         this.element.addEventListener("dragstart", Events.preventDefault);
+        this.terminator.with(Events.bindEventListener(this.textField, "focusin", (focusEvent) => {
+            const blur = (() => {
+                const lastFocus = focusEvent.relatedTarget;
+                return () => {
+                    this.textField.setSelectionRange(0, 0);
+                    if (lastFocus === null) {
+                        this.textField.blur();
+                    }
+                    else {
+                        lastFocus.focus();
+                    }
+                };
+            })();
+            const keyboardListener = (event) => {
+                switch (event.key) {
+                    case "Escape": {
+                        event.preventDefault();
+                        this.ifParameter(parameter => this.onChanged(parameter));
+                        blur();
+                        break;
+                    }
+                    case "Enter": {
+                        event.preventDefault();
+                        this.ifParameter(parameter => {
+                            const number = parameter.printMapping.parse(this.textField.value);
+                            if (null === number || !parameter.set(number)) {
+                                this.onChanged(parameter);
+                            }
+                            blur();
+                        });
+                    }
+                }
+            };
+            this.textField.addEventListener("focusout", () => this.textField.removeEventListener("keydown", keyboardListener), { once: true });
+            this.textField.addEventListener("keydown", keyboardListener);
+            window.addEventListener("mouseup", () => {
+                if (this.textField.selectionStart === this.textField.selectionEnd)
+                    this.textField.select();
+            }, { once: true });
+        }));
     }
 }
 export class MalachiteMeter {
