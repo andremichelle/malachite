@@ -74,5 +74,6 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     const ui = new FilterBankUI(nodes, preset)
     ui.run()
 
-    requestAnimationFrame(() => document.body.classList.remove("invisible"))
+    document.querySelector(".preloader").remove()
+    requestAnimationFrame(() => document.querySelector("main").classList.remove("invisible"))
 })()

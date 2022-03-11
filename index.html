@@ -12,237 +12,240 @@
     <link href="./bin/main.css" rel="stylesheet"/>
     <script src="./bin/main.js" type="module"></script>
 </head>
-<body class="invisible">
-<section class="device eq">
-    <svg class="play-hint" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path d="m272 503.74 144.15-180.41c8.78-11 4.45-20-9.63-20H320V25.6A25.66 25.66 0 0 0 294.39 0h-76.78A25.68 25.68 0 0 0 192 25.6v277.73h-86.52c-14.09 0-18.41 9-9.61 20L240 503.74c8.79 11.01 23.19 11.01 32 0Z"
-              fill-rule="evenodd" fill="rgba(255, 255, 255, 0.2)" stroke="white" stroke-width="8"/>
-    </svg>
-    <div class="decoration">
-        <img class="screw tl" src="./assets/screw.png">
-        <img class="screw tr" src="./assets/screw.png">
-        <img class="screw bl" src="./assets/screw.png">
-        <img class="screw br" src="./assets/screw.png">
-        <img class="vent tl" src="./assets/vent.png">
-        <img class="vent tr" src="./assets/vent.png">
-        <div class="top-bar">
-            <label class="checkbox button big" data-action="demo">
-                <input type="checkbox">
-                <span>PLAY</span>
-            </label>
-            <label class="checkbox button big" data-action="micro">
-                <input type="checkbox">
-                <span>MICRO</span>
-            </label>
-        </div>
-    </div>
-    <div class="controls">
-        <div class="screen-wrapper">
-            <canvas class="screen spectrum"></canvas>
-            <canvas class="screen response"></canvas>
-            <span style="left: 4px; top: 68px;">20Hz</span>
-            <span style="left: 50%; top: 68px; transform: translate(-50%, 0);">630Hz</span>
-            <span style="right: 4px; top: 68px;">20kHz</span>
-        </div>
-        <div class="logo">
-            <h1>Malachite</h1>
-            <h2>FILTER BANK</h2>
-            <label class="checkbox vertical" data-top-name="ON" data-bottom-name="BYPASS" data-parameter="main-bypass">
-                <input type="checkbox">
-                <span></span>
-            </label>
-        </div>
-        <div class="filters">
-            <div class="filter highpass" data-parameter-group="highpass">
-                <label class="checkbox button small" data-parameter="enabled">
+<body>
+<main class="invisible">
+    <section class="device eq">
+        <svg class="play-hint" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="m272 503.74 144.15-180.41c8.78-11 4.45-20-9.63-20H320V25.6A25.66 25.66 0 0 0 294.39 0h-76.78A25.68 25.68 0 0 0 192 25.6v277.73h-86.52c-14.09 0-18.41 9-9.61 20L240 503.74c8.79 11.01 23.19 11.01 32 0Z"
+                  fill-rule="evenodd" fill="rgba(255, 255, 255, 0.2)" stroke="white" stroke-width="8"/>
+        </svg>
+        <div class="decoration">
+            <img class="screw tl" src="./assets/screw.png">
+            <img class="screw tr" src="./assets/screw.png">
+            <img class="screw bl" src="./assets/screw.png">
+            <img class="screw br" src="./assets/screw.png">
+            <img class="vent tl" src="./assets/vent.png">
+            <img class="vent tr" src="./assets/vent.png">
+            <div class="top-bar">
+                <label class="checkbox button big" data-action="demo">
                     <input type="checkbox">
-                    <span>
+                    <span>PLAY</span>
+                </label>
+                <label class="checkbox button big" data-action="micro">
+                    <input type="checkbox">
+                    <span>MICRO</span>
+                </label>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="screen-wrapper">
+                <canvas class="screen spectrum"></canvas>
+                <canvas class="screen response"></canvas>
+                <span style="left: 4px; top: 68px;">20Hz</span>
+                <span style="left: 50%; top: 68px; transform: translate(-50%, 0);">630Hz</span>
+                <span style="right: 4px; top: 68px;">20kHz</span>
+            </div>
+            <div class="logo">
+                <h1>Malachite</h1>
+                <h2>FILTER BANK</h2>
+                <label class="checkbox vertical" data-top-name="ON" data-bottom-name="BYPASS" data-parameter="main-bypass">
+                    <input type="checkbox">
+                    <span></span>
+                </label>
+            </div>
+            <div class="filters">
+                <div class="filter highpass" data-parameter-group="highpass">
+                    <label class="checkbox button small" data-parameter="enabled">
+                        <input type="checkbox">
+                        <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                             <path transform="translate(0, -6)"
                                   d="M32,15.9c-8,0.1-12,0.1-20,0c-1.1,0-2.4-0.4-4,0.1c-5.2,1.7-7.1,9.7-8,16"/>
                         </svg>
                     </span>
-                </label>
-                <div class="knob big" data-name="FREQ" data-parameter="frequency">
-                    <div>
-                        <img class="scale" src="./assets/scale_knob_mid.png">
-                        <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
-                    </div>
-                    <input type="text">
-                </div>
-                <div class="pair">
-                    <div class="knob mid" data-name="ORDER" data-parameter="order">
+                    </label>
+                    <div class="knob big" data-name="FREQ" data-parameter="frequency">
                         <div>
-                            <img class="scale" src="./assets/scale_knob_mid_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            <img class="scale" src="./assets/scale_knob_mid.png">
+                            <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
                         </div>
                         <input type="text">
                     </div>
-                    <div class="knob small" data-name="Q" data-parameter="q">
-                        <div>
-                            <img class="scale" src="./assets/scale_knob_small_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_small_black.png">
+                    <div class="pair">
+                        <div class="knob mid" data-name="ORDER" data-parameter="order">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_mid_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            </div>
+                            <input type="text">
                         </div>
-                        <input type="text">
+                        <div class="knob small" data-name="Q" data-parameter="q">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_small_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_small_black.png">
+                            </div>
+                            <input type="text">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="filter lowshelf" data-parameter-group="lowshelf">
-                <label class="checkbox button small" data-parameter="enabled">
-                    <input type="checkbox">
-                    <span>
+                <div class="filter lowshelf" data-parameter-group="lowshelf">
+                    <label class="checkbox button small" data-parameter="enabled">
+                        <input type="checkbox">
+                        <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                             <path transform="translate(0, 4)" d="M32,16l-8,0c0,0-4,0-8-4S8,8,8,8H0"/>
                         </svg>
                     </span>
-                </label>
-                <div class="knob big" data-name="FREQ" data-parameter="frequency">
-                    <div>
-                        <img class="scale" src="./assets/scale_knob_mid.png">
-                        <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
-                    </div>
-                    <input type="text">
-                </div>
-                <div class="pair">
-                    <div class="knob mid" data-name="GAIN" data-parameter="gain">
+                    </label>
+                    <div class="knob big" data-name="FREQ" data-parameter="frequency">
                         <div>
-                            <img class="scale" src="./assets/scale_knob_mid_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            <img class="scale" src="./assets/scale_knob_mid.png">
+                            <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
                         </div>
                         <input type="text">
                     </div>
+                    <div class="pair">
+                        <div class="knob mid" data-name="GAIN" data-parameter="gain">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_mid_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            </div>
+                            <input type="text">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="filter peak" data-parameter-group="peak">
-                <label class="checkbox button small" data-parameter="enabled">
-                    <input type="checkbox">
-                    <span>
+                <div class="filter peak" data-parameter-group="peak">
+                    <label class="checkbox button small" data-parameter="enabled">
+                        <input type="checkbox">
+                        <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                             <path transform="translate(0, 6)" d="M0,16l8,0c0,0,4-12,8-12s8,12,8,12l8,0.1"/>
                         </svg>
                     </span>
-                </label>
-                <div class="knob big" data-name="FREQ" data-parameter="frequency">
-                    <div>
-                        <img class="scale" src="./assets/scale_knob_mid.png">
-                        <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
-                    </div>
-                    <input type="text">
-                </div>
-                <div class="pair">
-                    <div class="knob mid" data-name="GAIN" data-parameter="gain">
+                    </label>
+                    <div class="knob big" data-name="FREQ" data-parameter="frequency">
                         <div>
-                            <img class="scale" src="./assets/scale_knob_mid_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            <img class="scale" src="./assets/scale_knob_mid.png">
+                            <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
                         </div>
                         <input type="text">
                     </div>
-                    <div class="knob small" data-name="Q" data-parameter="q">
-                        <div>
-                            <img class="scale" src="./assets/scale_knob_small_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_small_black.png">
+                    <div class="pair">
+                        <div class="knob mid" data-name="GAIN" data-parameter="gain">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_mid_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            </div>
+                            <input type="text">
                         </div>
-                        <input type="text">
+                        <div class="knob small" data-name="Q" data-parameter="q">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_small_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_small_black.png">
+                            </div>
+                            <input type="text">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="filter highshelf" data-parameter-group="highshelf">
-                <label class="checkbox button small" data-parameter="enabled">
-                    <input type="checkbox">
-                    <span>
+                <div class="filter highshelf" data-parameter-group="highshelf">
+                    <label class="checkbox button small" data-parameter="enabled">
+                        <input type="checkbox">
+                        <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                             <path transform="translate(0, 4)" d="M0,16l8,0c0,0,4,0,8-4s8-4,8-4h8"/>
                         </svg>
                     </span>
-                </label>
-                <div class="knob big" data-name="FREQ" data-parameter="frequency">
-                    <div>
-                        <img class="scale" src="./assets/scale_knob_mid.png">
-                        <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
-                    </div>
-                    <input type="text">
-                </div>
-                <div class="pair">
-                    <div class="knob mid" data-name="GAIN" data-parameter="gain">
+                    </label>
+                    <div class="knob big" data-name="FREQ" data-parameter="frequency">
                         <div>
-                            <img class="scale" src="./assets/scale_knob_mid_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            <img class="scale" src="./assets/scale_knob_mid.png">
+                            <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
                         </div>
                         <input type="text">
                     </div>
+                    <div class="pair">
+                        <div class="knob mid" data-name="GAIN" data-parameter="gain">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_mid_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            </div>
+                            <input type="text">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="filter lowpass" data-parameter-group="lowpass">
-                <label class="checkbox button small" data-parameter="enabled">
-                    <input type="checkbox">
-                    <span>
+                <div class="filter lowpass" data-parameter-group="lowpass">
+                    <label class="checkbox button small" data-parameter="enabled">
+                        <input type="checkbox">
+                        <span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                             <path transform="translate(0, -6)"
                                   d="M0,15.9c8,0.1,12,0.1,20,0c1.1,0,2.4-0.4,4,0.1c5.2,1.7,7.1,9.7,8,16"/>
                         </svg>
                     </span>
-                </label>
-                <div class="knob big" data-name="FREQ" data-parameter="frequency">
+                    </label>
+                    <div class="knob big" data-name="FREQ" data-parameter="frequency">
+                        <div>
+                            <img class="scale" src="./assets/scale_knob_mid.png">
+                            <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
+                        </div>
+                        <input type="text">
+                    </div>
+                    <div class="pair">
+                        <div class="knob mid" data-name="ORDER" data-parameter="order">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_mid_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
+                            </div>
+                            <input type="text">
+                        </div>
+                        <div class="knob small" data-name="Q" data-parameter="q">
+                            <div>
+                                <img class="scale" src="./assets/scale_knob_small_A.png">
+                                <img class="filmstrip" src="./assets/knobs/knob_small_black.png">
+                            </div>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="master-controls">
+                <div class="volume">
+                    <div class="meter left" style="--value: 0.0" data-name="L"></div>
+                    <div class="meter right" style="--value: 0.0" data-name="R"></div>
+                </div>
+                <div class="knob big" data-name="GAIN" data-parameter="main-gain">
                     <div>
                         <img class="scale" src="./assets/scale_knob_mid.png">
                         <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
                     </div>
                     <input type="text">
                 </div>
-                <div class="pair">
-                    <div class="knob mid" data-name="ORDER" data-parameter="order">
-                        <div>
-                            <img class="scale" src="./assets/scale_knob_mid_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_mid_black.png">
-                        </div>
-                        <input type="text">
-                    </div>
-                    <div class="knob small" data-name="Q" data-parameter="q">
-                        <div>
-                            <img class="scale" src="./assets/scale_knob_small_A.png">
-                            <img class="filmstrip" src="./assets/knobs/knob_small_black.png">
-                        </div>
-                        <input type="text">
-                    </div>
-                </div>
             </div>
         </div>
-        <div class="master-controls">
-            <div class="volume">
-                <div class="meter left" style="--value: 0.0" data-name="L"></div>
-                <div class="meter right" style="--value: 0.0" data-name="R"></div>
-            </div>
-            <div class="knob big" data-name="GAIN" data-parameter="main-gain">
-                <div>
-                    <img class="scale" src="./assets/scale_knob_mid.png">
-                    <img class="filmstrip" src="./assets/knobs/knob_big_black.png">
-                </div>
-                <input type="text">
-            </div>
-        </div>
+    </section>
+    <div class="info">
+        <h3>SOFT MALACHITE (interactive demo)</h3>
+        <h5>uimother</h5>
+        <p>This UI Kit will basically give you a chance to build an awesome product whatever you just want to, from a small
+            Kontakt library to a big VST synthesizer.
+            Soft Malachite PSD UI Kit allows you without questions to use one of our templates, vintage equalizer,
+            compressor, and synthesizer, tweak it and create a neat and clean VST UI design.</p>
+        <a href="https://uimother.com/collections/gui-kits/products/modern-audio" target="_blank">BUY UI-KIT HERE</a><br>
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="80">
+            <rect width="100%" height="50%" fill="#005BBB"></rect>
+            <rect width="100%" height="50%" y="50%" fill="#FFD500"></rect>
+        </svg>
     </div>
-</section>
-<div class="info">
-    <h3>SOFT MALACHITE (interactive demo)</h3>
-    <h5>uimother</h5>
-    <p>This UI Kit will basically give you a chance to build an awesome product whatever you just want to, from a small
-        Kontakt library to a big VST synthesizer.
-        Soft Malachite PSD UI Kit allows you without questions to use one of our templates, vintage equalizer,
-        compressor, and synthesizer, tweak it and create a neat and clean VST UI design.</p>
-    <a href="https://uimother.com/collections/gui-kits/products/modern-audio" target="_blank">BUY UI-KIT HERE</a><br>
-    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="80">
-        <rect width="100%" height="50%" fill="#005BBB"></rect>
-        <rect width="100%" height="50%" y="50%" fill="#FFD500"></rect>
-    </svg>
-</div>
-<div class="credits">
-    <h3>Credits</h3>
-    <p>
-        source code on <a href="https://github.com/andremichelle/malachite">github</a><br>
-        Wallpaper Vectors by <a href="https://www.vecteezy.com/free-vector/wallpaper">Vecteezy</a><br>
-        Demo track by <a href="https://www.audiotool.com/track/0dkqsw3m9ud/" target="_blank">Kepz</a><br>
-        coded by <a href="https://www.andremichelle.io">andré michelle</a><br>
-    </p>
-</div>
+    <div class="credits">
+        <h3>Credits</h3>
+        <p>
+            source code on <a href="https://github.com/andremichelle/malachite">github</a><br>
+            Wallpaper Vectors by <a href="https://www.vecteezy.com/free-vector/wallpaper">Vecteezy</a><br>
+            Demo track by <a href="https://www.audiotool.com/track/0dkqsw3m9ud/" target="_blank">Kepz</a><br>
+            coded by <a href="https://www.andremichelle.io">andré michelle</a><br>
+        </p>
+    </div>
+</main>
+<div class="preloader">loading...</div>
 </body>
 </html>

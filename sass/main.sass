@@ -5,10 +5,8 @@ html, body
   height: 100%
   color: lighten($green, 10%)
   background-color: #1A1A1A
-  background-image: url("../background.jpg")
-  background-position: center
-  background-size: cover
   font-family: 'Labrador A', serif
+  overflow: hidden
 
   a
     color: lighten($green, 30%)
@@ -16,7 +14,9 @@ html, body
 \:root
   --device-width: 848px
   --device-height: 480px
-  --device-scale: 0.75
+  --device-scale: 1.0
+  @media only screen and (max-width: 1900px)
+    --device-scale: 0.75
   @media only screen and (max-width: 1200px)
     --device-scale: 0.5
   @media only screen and (max-width: 800px)
@@ -25,10 +25,15 @@ html, body
 h3, h5
   margin: 0
 
-body
+main
+  width: 100%
+  height: 100%
   display: grid
   grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr / 1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr
   overflow: hidden
+  background-position: center
+  background-size: cover
+  background-image: url("../background.jpg")
 
   > div.info
     grid-area: 2 / 1
@@ -45,6 +50,13 @@ body
     > *
       width: fit-content
       background-color: rgba(black, 0.5)
+
+div.preloader
+  top: 50%
+  left: 50%
+  font-size: 18px
+  transform: translate(-50%, -50%)
+  position: absolute
 
 .hidden
   display: none !important
