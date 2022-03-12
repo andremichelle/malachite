@@ -89,7 +89,7 @@ export class FilterBankResponseRenderer {
             filter.getFrequencyResponse(this.frequencyHz, this.magResponse, this.phaseResponse)
             const xc = Math.floor(screen.unitToX(filter.frequency()))
             const apexDb = filter.apexDecibel()
-            const db0 = 0 == xc ? apexDb : this.magResponse[0]
+            const db0 = 0 == xc && !isNaN(apexDb) ? apexDb : this.magResponse[0]
             this.magSum[0] += db0
             const y0 = screen.unitToY(db0)
             context.beginPath()
@@ -101,13 +101,19 @@ export class FilterBankResponseRenderer {
                 const y1 = screen.unitToY(db)
                 context.lineTo(x, y1)
             }
-            if (0 != xc) {
-                const db = filter.apexDecibel()
-                this.magSum[xc] += db
-                const y1 = screen.unitToY(db)
-                context.lineTo(xc, y1)
+            const db = filter.apexDecibel()
+            let x
+            if (isNaN(db)) {
+                x = xc
+            } else {
+                x = xc + 1
+                if (0 != xc) {
+                    this.magSum[xc] += db
+                    const y1 = screen.unitToY(db)
+                    context.lineTo(xc, y1)
+                }
             }
-            for (let x = xc + 1; x < xn; ++x) {
+            for (; x < xn; ++x) {
                 const db = this.magResponse[x]
                 this.magSum[x] += db
                 const y1 = screen.unitToY(db)

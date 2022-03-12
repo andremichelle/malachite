@@ -17,24 +17,23 @@ import {NoUIMeterWorklet} from "../meter/worklet.js"
 const LogDb = Math.log(10.0) / 20.0
 export const dbToGain = (db: number): number => Math.exp(db * LogDb)
 export const gainToDb = (gain: number): number => Math.log(gain) / LogDb
-export const SILENCE_GAIN = dbToGain(-192.0)
-export const DEFAULT_INTERPOLATION_TIME: number = 0.005
+export const SILENCE_GAIN = dbToGain(-192.0) // if gain is zero the waa will set streams to undefined
+export const DEFAULT_INTERPOLATION_TIME: number = 0.100
 export const interpolateIfNecessary = (context: BaseAudioContext, audioParam: AudioParam, value: number): void => {
     if (context.state === "running") {
-        audioParam.cancelScheduledValues(context.currentTime)
         audioParam.linearRampToValueAtTime(value, context.currentTime + DEFAULT_INTERPOLATION_TIME)
     } else {
         audioParam.value = value
     }
 }
 
-const connectWithBypassSwitch = (context: AudioContext, input: AudioNode, processor: AudioNode, output: AudioNode): (bypass: boolean) => void => {
+const connectBypassSwitch = (context: AudioContext, drySignal: AudioNode, wetSignal: AudioNode, output: AudioNode): (bypass: boolean) => void => {
     const dryNode: GainNode = context.createGain()
     const wetNode: GainNode = context.createGain()
     dryNode.gain.value = SILENCE_GAIN
     wetNode.gain.value = 1.0
-    input.connect(dryNode).connect(output)
-    input.connect(wetNode).connect(processor).connect(output)
+    drySignal.connect(dryNode).connect(output)
+    wetSignal.connect(wetNode).connect(output)
     return bypass => {
         interpolateIfNecessary(context, dryNode.gain, bypass ? 1.0 : SILENCE_GAIN)
         interpolateIfNecessary(context, wetNode.gain, bypass ? SILENCE_GAIN : 1.0)
@@ -101,13 +100,13 @@ class FilterNodeFactory {
             }
 
             apexDecibel(): number {
-                return parameters.q.get() * parameters.order.get()
+                return NaN
             }
 
             connect(input: AudioNode): AudioNode {
                 this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => {
                     const output = context.createGain()
-                    const bypassSwitch = connectWithBypassSwitch(context, input, node, output)
+                    const bypassSwitch = connectBypassSwitch(context, input, input.connect(node), output)
                     input = output
                     return bypassSwitch
                 }))
@@ -188,7 +187,7 @@ class FilterNodeFactory {
             }
 
             connect(input: AudioNode): AudioNode {
-                this.bypassSwitch = Options.valueOf(connectWithBypassSwitch(context, input, this.node, this.output))
+                this.bypassSwitch = Options.valueOf(connectBypassSwitch(context, input, input.connect(this.node), this.output))
                 return this.output
             }
 
@@ -259,7 +258,7 @@ class FilterNodeFactory {
             }
 
             connect(input: AudioNode): AudioNode {
-                this.bypassSwitch = Options.valueOf(connectWithBypassSwitch(context, input, this.node, this.output))
+                this.bypassSwitch = Options.valueOf(connectBypassSwitch(context, input, input.connect(this.node), this.output))
                 return this.output
             }
 
@@ -301,6 +300,7 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
     private readonly peakingFilter: FilterNode
     private readonly highShelfFilter: FilterNode
     private readonly lowPassFilter: FilterNode
+    private readonly bypassSwitch: (bypass: boolean) => void
 
     private readonly anyChangeCallback = () => this.observable.notify(this)
 
@@ -322,16 +322,19 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
         this.analyser.minDecibels = -72.0
         this.analyser.maxDecibels = -9.0
         this.analyser.fftSize = 2048
-        this.connect(this.inputGain).connect(this.meterNode).connect(this.analyser).connect(this.outputGain)
+
+        this.bypassSwitch = connectBypassSwitch(context, this.inputGain, this.connect(this.inputGain).connect(this.meterNode).connect(this.analyser).connect(this.outputGain), context.destination)
+
+        const dryNode = context.createGain()
+        dryNode.gain.value = 1.0
+        const wetNode = context.createGain()
+        wetNode.gain.value = 0.0
+
         this.controlVolume(preset.main)
     }
 
     input(): AudioNode {
         return this.inputGain
-    }
-
-    output(): AudioNode {
-        return this.outputGain
     }
 
     getFilters(): FilterNode[] {
@@ -368,11 +371,9 @@ export class FilterBankNodes implements Observable<FilterBankNodes> {
         gain: Parameter<number>,
         bypass: Parameter<boolean>
     }) {
-        const update = () => {
-            interpolateIfNecessary(this.context, this.outputGain.gain, setting.bypass.get() ? 0.0 : dbToGain(setting.gain.get()))
-        }
-        this.terminator.with(setting.gain.addObserver(update))
-        this.terminator.with(setting.bypass.addObserver(update))
-        update()
+        this.terminator.with(setting.gain.addObserver(() =>
+            interpolateIfNecessary(this.context, this.outputGain.gain, dbToGain(setting.gain.get()))))
+        interpolateIfNecessary(this.context, this.outputGain.gain, dbToGain(setting.gain.get()))
+        this.terminator.with(setting.bypass.addObserver((bypass: boolean) => this.bypassSwitch(bypass), true))
     }
 }

@@ -79,7 +79,6 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     const preset = initPreset();
     const nodes = yield FilterBankNodes.create(context, preset);
     yield initSources(context, nodes);
-    nodes.output().connect(context.destination);
     const ui = new FilterBankUI(nodes, preset);
     ui.run();
     document.querySelector(".preloader").remove();

@@ -13,23 +13,22 @@ const LogDb = Math.log(10.0) / 20.0;
 export const dbToGain = (db) => Math.exp(db * LogDb);
 export const gainToDb = (gain) => Math.log(gain) / LogDb;
 export const SILENCE_GAIN = dbToGain(-192.0);
-export const DEFAULT_INTERPOLATION_TIME = 0.005;
+export const DEFAULT_INTERPOLATION_TIME = 0.100;
 export const interpolateIfNecessary = (context, audioParam, value) => {
     if (context.state === "running") {
-        audioParam.cancelScheduledValues(context.currentTime);
         audioParam.linearRampToValueAtTime(value, context.currentTime + DEFAULT_INTERPOLATION_TIME);
     }
     else {
         audioParam.value = value;
     }
 };
-const connectWithBypassSwitch = (context, input, processor, output) => {
+const connectBypassSwitch = (context, drySignal, wetSignal, output) => {
     const dryNode = context.createGain();
     const wetNode = context.createGain();
     dryNode.gain.value = SILENCE_GAIN;
     wetNode.gain.value = 1.0;
-    input.connect(dryNode).connect(output);
-    input.connect(wetNode).connect(processor).connect(output);
+    drySignal.connect(dryNode).connect(output);
+    wetSignal.connect(wetNode).connect(output);
     return bypass => {
         interpolateIfNecessary(context, dryNode.gain, bypass ? 1.0 : SILENCE_GAIN);
         interpolateIfNecessary(context, wetNode.gain, bypass ? SILENCE_GAIN : 1.0);
@@ -71,12 +70,12 @@ class FilterNodeFactory {
                 return parameters.frequency.get();
             }
             apexDecibel() {
-                return parameters.q.get() * parameters.order.get();
+                return NaN;
             }
             connect(input) {
                 this.bypassSwitches.push.apply(this.bypassSwitches, this.nodes.map(node => {
                     const output = context.createGain();
-                    const bypassSwitch = connectWithBypassSwitch(context, input, node, output);
+                    const bypassSwitch = connectBypassSwitch(context, input, input.connect(node), output);
                     input = output;
                     return bypassSwitch;
                 }));
@@ -142,7 +141,7 @@ class FilterNodeFactory {
                 return parameters.gain.get() * 0.5;
             }
             connect(input) {
-                this.bypassSwitch = Options.valueOf(connectWithBypassSwitch(context, input, this.node, this.output));
+                this.bypassSwitch = Options.valueOf(connectBypassSwitch(context, input, input.connect(this.node), this.output));
                 return this.output;
             }
             getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
@@ -195,7 +194,7 @@ class FilterNodeFactory {
                 return parameters.gain.get();
             }
             connect(input) {
-                this.bypassSwitch = Options.valueOf(connectWithBypassSwitch(context, input, this.node, this.output));
+                this.bypassSwitch = Options.valueOf(connectBypassSwitch(context, input, input.connect(this.node), this.output));
                 return this.output;
             }
             getFrequencyResponse(frequencyHz, magResponse, phaseResponse) {
@@ -237,7 +236,11 @@ export class FilterBankNodes {
         this.analyser.minDecibels = -72.0;
         this.analyser.maxDecibels = -9.0;
         this.analyser.fftSize = 2048;
-        this.connect(this.inputGain).connect(this.meterNode).connect(this.analyser).connect(this.outputGain);
+        this.bypassSwitch = connectBypassSwitch(context, this.inputGain, this.connect(this.inputGain).connect(this.meterNode).connect(this.analyser).connect(this.outputGain), context.destination);
+        const dryNode = context.createGain();
+        dryNode.gain.value = 1.0;
+        const wetNode = context.createGain();
+        wetNode.gain.value = 0.0;
         this.controlVolume(preset.main);
     }
     static create(context, preset) {
@@ -248,9 +251,6 @@ export class FilterBankNodes {
     }
     input() {
         return this.inputGain;
-    }
-    output() {
-        return this.outputGain;
     }
     getFilters() {
         return this.filters;
@@ -276,12 +276,9 @@ export class FilterBankNodes {
         return output;
     }
     controlVolume(setting) {
-        const update = () => {
-            interpolateIfNecessary(this.context, this.outputGain.gain, setting.bypass.get() ? 0.0 : dbToGain(setting.gain.get()));
-        };
-        this.terminator.with(setting.gain.addObserver(update));
-        this.terminator.with(setting.bypass.addObserver(update));
-        update();
+        this.terminator.with(setting.gain.addObserver(() => interpolateIfNecessary(this.context, this.outputGain.gain, dbToGain(setting.gain.get()))));
+        interpolateIfNecessary(this.context, this.outputGain.gain, dbToGain(setting.gain.get()));
+        this.terminator.with(setting.bypass.addObserver((bypass) => this.bypassSwitch(bypass), true));
     }
 }
 //# sourceMappingURL=nodes.js.map

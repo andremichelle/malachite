@@ -27,10 +27,10 @@ export declare class FilterBankNodes implements Observable<FilterBankNodes> {
     private readonly peakingFilter;
     private readonly highShelfFilter;
     private readonly lowPassFilter;
+    private readonly bypassSwitch;
     private readonly anyChangeCallback;
     constructor(context: AudioContext, preset: Preset);
     input(): AudioNode;
-    output(): AudioNode;
     getFilters(): FilterNode[];
     peaks(): Float32Array[];
     computeSpectrum(spectrum: Float32Array): number;

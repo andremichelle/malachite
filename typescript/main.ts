@@ -70,7 +70,6 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     const preset = initPreset()
     const nodes = await FilterBankNodes.create(context, preset)
     await initSources(context, nodes)
-    nodes.output().connect(context.destination)
     const ui = new FilterBankUI(nodes, preset)
     ui.run()
 
