@@ -74,5 +74,6 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     ui.run()
 
     document.querySelector(".preloader").remove()
+    document.addEventListener('touchmove', (event: TouchEvent) => event.preventDefault(), {passive: false})
     requestAnimationFrame(() => document.querySelector("main").classList.remove("invisible"))
 })()
