@@ -54,29 +54,29 @@ export class MalachiteSwitch extends MalachiteUIElement {
         super();
         this.element = element;
         this.inputElement = this.element.querySelector("input[type='checkbox']");
-        this.click = (event) => {
+        this.action = (event) => {
             event.preventDefault();
             this.ifParameter(parameter => parameter.setUnipolar(parameter.getUnipolar() < 0.5 ? 1.0 : 0.0));
         };
         this.installMouseInteraction();
     }
     terminate() {
-        this.element.removeEventListener("click", this.click);
+        this.element.removeEventListener("touchstart", this.action);
+        this.element.removeEventListener("mousedown", this.action);
     }
     onChanged(parameter) {
         this.inputElement.checked = parameter.getUnipolar() >= 0.5;
     }
     installMouseInteraction() {
-        this.element.addEventListener("click", this.click);
+        this.element.addEventListener("touchstart", this.action);
+        this.element.addEventListener("mousedown", this.action);
     }
 }
 class MouseModifier {
     static start(startEvent, startValue, modifier, multiplier = 0.003) {
         let position = startEvent.clientY;
         let value = startValue;
-        const move = (event) => {
-            modifier(value + (position - event.clientY) * multiplier);
-        };
+        const move = (event) => modifier(value + (position - event.clientY) * multiplier);
         const up = () => {
             position = NaN;
             value = NaN;
@@ -89,7 +89,7 @@ class MouseModifier {
     }
 }
 class TouchModifier {
-    static start(startEvent, startValue, modifier, multiplier = 0.003) {
+    static start(startEvent, startValue, modifier, multiplier) {
         startEvent.preventDefault();
         const target = startEvent.target;
         const touches = startEvent.targetTouches;
@@ -111,9 +111,10 @@ class TouchModifier {
     }
 }
 export class MalachiteKnob extends MalachiteUIElement {
-    constructor(element) {
+    constructor(element, modifyStrength = MalachiteKnob.MODIFY_STRENGTH_DEFAULT) {
         super();
         this.element = element;
+        this.modifyStrength = modifyStrength;
         this.terminator = new Terminator();
         this.filmstrip = this.element.querySelector("img.filmstrip");
         this.textField = this.element.querySelector("input[type='text']");
@@ -135,10 +136,10 @@ export class MalachiteKnob extends MalachiteUIElement {
             const startValue = this.getUnipolar();
             const modifier = value => this.ifParameter(parameter => parameter.setUnipolar(Math.max(0.0, Math.min(1.0, value))));
             if (event.type === "touchstart") {
-                TouchModifier.start(event, startValue, modifier);
+                TouchModifier.start(event, startValue, modifier, this.modifyStrength);
             }
             else if (event.type === "mousedown") {
-                MouseModifier.start(event, startValue, modifier);
+                MouseModifier.start(event, startValue, modifier, this.modifyStrength);
             }
         };
         this.element.addEventListener("mousedown", onActionStart);
@@ -190,6 +191,8 @@ export class MalachiteKnob extends MalachiteUIElement {
         }));
     }
 }
+MalachiteKnob.MODIFY_STRENGTH_DEFAULT = 0.003;
+MalachiteKnob.MODIFY_STRENGTH_QUICK = 0.010;
 export class MalachiteMeter {
     constructor(element) {
         this.element = element;

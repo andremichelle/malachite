@@ -148,7 +148,7 @@ export class FilterBankUI {
                 .with(preset.filter.highPass.enabled);
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='frequency']")))
                 .with(preset.filter.highPass.frequency);
-            this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='order']")))
+            this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='order']"), MalachiteKnob.MODIFY_STRENGTH_QUICK))
                 .with(preset.filter.highPass.order);
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='q']")))
                 .with(preset.filter.highPass.q);
@@ -188,7 +188,7 @@ export class FilterBankUI {
                 .with(preset.filter.lowPass.enabled);
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='frequency']")))
                 .with(preset.filter.lowPass.frequency);
-            this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='order']")))
+            this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='order']"), MalachiteKnob.MODIFY_STRENGTH_QUICK))
                 .with(preset.filter.lowPass.order);
             this.terminator.with(new MalachiteKnob(element.querySelector("div.knob[data-parameter='q']")))
                 .with(preset.filter.lowPass.q);

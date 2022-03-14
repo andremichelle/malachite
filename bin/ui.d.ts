@@ -21,15 +21,18 @@ export declare class MalachiteSwitch extends MalachiteUIElement {
     constructor(element: Element);
     terminate(): void;
     protected onChanged(parameter: Parameter<any>): void;
-    private click;
+    private action;
     private installMouseInteraction;
 }
 export declare class MalachiteKnob extends MalachiteUIElement {
     private readonly element;
+    private readonly modifyStrength;
+    static MODIFY_STRENGTH_DEFAULT: number;
+    static MODIFY_STRENGTH_QUICK: number;
     private readonly terminator;
     private readonly filmstrip;
     private readonly textField;
-    constructor(element: Element);
+    constructor(element: Element, modifyStrength?: number);
     protected onChanged(parameter: Parameter<any>): void;
     terminate(): void;
     private installInteraction;

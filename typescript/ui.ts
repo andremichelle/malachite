@@ -60,20 +60,22 @@ export class MalachiteSwitch extends MalachiteUIElement {
     }
 
     terminate(): void {
-        this.element.removeEventListener("click", this.click)
+        this.element.removeEventListener("touchstart", this.action)
+        this.element.removeEventListener("mousedown", this.action)
     }
 
     protected onChanged(parameter: Parameter<any>) {
         this.inputElement.checked = parameter.getUnipolar() >= 0.5
     }
 
-    private click = (event: Event): void => {
+    private action = (event: Event): void => {
         event.preventDefault()
         this.ifParameter(parameter => parameter.setUnipolar(parameter.getUnipolar() < 0.5 ? 1.0 : 0.0))
     }
 
     private installMouseInteraction(): void {
-        this.element.addEventListener("click", this.click)
+        this.element.addEventListener("touchstart", this.action)
+        this.element.addEventListener("mousedown", this.action)
     }
 }
 
@@ -81,9 +83,7 @@ class MouseModifier {
     static start(startEvent: MouseEvent, startValue: number, modifier: (delta: number) => void, multiplier: number = 0.003) {
         let position = startEvent.clientY
         let value = startValue
-        const move = (event: MouseEvent) => {
-            modifier(value + (position - event.clientY) * multiplier)
-        }
+        const move = (event: MouseEvent) => modifier(value + (position - event.clientY) * multiplier)
         const up = () => {
             position = NaN
             value = NaN
@@ -98,7 +98,7 @@ class MouseModifier {
 }
 
 class TouchModifier {
-    static start(startEvent: TouchEvent, startValue: number, modifier: (delta: number) => void, multiplier: number = 0.003) {
+    static start(startEvent: TouchEvent, startValue: number, modifier: (delta: number) => void, multiplier: number) {
         startEvent.preventDefault()
         const target = startEvent.target
         const touches = startEvent.targetTouches
@@ -123,11 +123,14 @@ class TouchModifier {
 }
 
 export class MalachiteKnob extends MalachiteUIElement {
+    static MODIFY_STRENGTH_DEFAULT: number = 0.003
+    static MODIFY_STRENGTH_QUICK: number = 0.010
+
     private readonly terminator = new Terminator()
     private readonly filmstrip: HTMLImageElement = this.element.querySelector("img.filmstrip")
     private readonly textField: HTMLInputElement = this.element.querySelector("input[type='text']")
 
-    constructor(private readonly element: Element) {
+    constructor(private readonly element: Element, private readonly modifyStrength: number = MalachiteKnob.MODIFY_STRENGTH_DEFAULT) {
         super()
         this.installInteraction()
     }
@@ -150,9 +153,9 @@ export class MalachiteKnob extends MalachiteUIElement {
             const modifier = value => this.ifParameter(parameter =>
                 parameter.setUnipolar(Math.max(0.0, Math.min(1.0, value))))
             if (event.type === "touchstart") {
-                TouchModifier.start(event as TouchEvent, startValue, modifier)
+                TouchModifier.start(event as TouchEvent, startValue, modifier, this.modifyStrength)
             } else if (event.type === "mousedown") {
-                MouseModifier.start(event as MouseEvent, startValue, modifier)
+                MouseModifier.start(event as MouseEvent, startValue, modifier, this.modifyStrength)
             }
         }
         this.element.addEventListener("mousedown", onActionStart)
