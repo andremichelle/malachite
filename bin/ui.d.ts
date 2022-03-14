@@ -29,14 +29,9 @@ export declare class MalachiteKnob extends MalachiteUIElement {
     private readonly terminator;
     private readonly filmstrip;
     private readonly textField;
-    private position;
-    private unipolar;
     constructor(element: Element);
     protected onChanged(parameter: Parameter<any>): void;
     terminate(): void;
-    private mouseUp;
-    private mouseMove;
-    private mouseDown;
     private installInteraction;
 }
 export declare class MalachiteMeter {

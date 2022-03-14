@@ -1,8 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
-import {ArrayUtils} from "../lib/common.js"
+import {ArrayUtils, dbToGain, gainToDb} from "../lib/common.js"
 import {UpdateMeterMessage} from "./message.js"
-import {dbToGain, gainToDb} from "../filterbank/nodes.js"
 
 export class NoUIMeterWorklet extends AudioWorkletNode {
     static readonly PEAK_HOLD_DURATION: number = 1000.0

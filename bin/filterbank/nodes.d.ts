@@ -1,8 +1,5 @@
 import { Observable, Observer, Terminable } from "../lib/common.js";
 import { Preset } from "./preset.js";
-export declare const dbToGain: (db: number) => number;
-export declare const gainToDb: (gain: number) => number;
-export declare const SILENCE_GAIN: number;
 export declare const DEFAULT_INTERPOLATION_TIME: number;
 export declare const interpolateIfNecessary: (context: BaseAudioContext, audioParam: AudioParam, value: number) => void;
 export interface FilterNode extends Terminable {

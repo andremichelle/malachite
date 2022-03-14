@@ -1,4 +1,7 @@
 import { ValueMapping } from "./mapping.js";
+export declare const dbToGain: (db: number) => number;
+export declare const gainToDb: (gain: number) => number;
+export declare const SILENCE_GAIN: number;
 export declare const preloadImagesOfCssFile: (path: string) => Promise<void>;
 export declare const cosine: (y1: number, y2: number, mu: number) => number;
 export interface Terminable {

@@ -7,12 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { ArrayUtils, ObservableImpl, Options, Terminator } from "../lib/common.js";
+import { ArrayUtils, dbToGain, gainToDb, ObservableImpl, Options, SILENCE_GAIN, Terminator } from "../lib/common.js";
 import { NoUIMeterWorklet } from "../meter/worklet.js";
-const LogDb = Math.log(10.0) / 20.0;
-export const dbToGain = (db) => Math.exp(db * LogDb);
-export const gainToDb = (gain) => Math.log(gain) / LogDb;
-export const SILENCE_GAIN = dbToGain(-192.0);
 export const DEFAULT_INTERPOLATION_TIME = 0.100;
 export const interpolateIfNecessary = (context, audioParam, value) => {
     if (context.state === "running") {

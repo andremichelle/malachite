@@ -1,5 +1,10 @@
 import {ValueMapping} from "./mapping.js"
 
+const LogDb = Math.log(10.0) / 20.0
+export const dbToGain = (db: number): number => Math.exp(db * LogDb)
+export const gainToDb = (gain: number): number => Math.log(gain) / LogDb
+export const SILENCE_GAIN = dbToGain(-192.0) // if gain is zero the waa will set streams to undefined
+
 export const preloadImagesOfCssFile = async (path: string): Promise<void> => {
     const base = location.href + "bin/"
     console.log(`preloadImagesOfCssFile... base: ${base}`)

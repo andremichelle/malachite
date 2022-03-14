@@ -1,5 +1,4 @@
-import { ArrayUtils } from "../lib/common.js";
-import { dbToGain, gainToDb } from "../filterbank/nodes.js";
+import { ArrayUtils, dbToGain, gainToDb } from "../lib/common.js";
 export class NoUIMeterWorklet extends AudioWorkletNode {
     constructor(context, numLines, channelCount) {
         super(context, "dsp-meter", {

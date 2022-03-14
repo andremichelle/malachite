@@ -77,13 +77,50 @@ export class MalachiteSwitch extends MalachiteUIElement {
     }
 }
 
+class MouseModifier {
+    static start(startEvent: MouseEvent, startValue: number, modifier: (delta: number) => void, multiplier: number = 0.003) {
+        let position = startEvent.clientY
+        let value = startValue
+        const move = (event: MouseEvent) => {
+            modifier(value + (position - event.clientY) * multiplier)
+        }
+        const up = () => {
+            position = NaN
+            value = NaN
+            window.removeEventListener("mousemove", move)
+        }
+        window.addEventListener("mousemove", move)
+        window.addEventListener("mouseup", up, {once: true})
+    }
+
+    private constructor() {
+    }
+}
+
+class TouchModifier {
+    static start(startEvent: TouchEvent, startValue: number, modifier: (delta: number) => void, multiplier: number = 0.003) {
+        let position = startEvent.touches[0].clientY
+        let value = startValue
+        const move = (event: TouchEvent) => {
+            modifier(value + (position - event.touches[0].clientY) * multiplier)
+        }
+        const up = () => {
+            position = NaN
+            value = NaN
+            window.removeEventListener("touchmove", move)
+        }
+        window.addEventListener("touchmove", move)
+        window.addEventListener("touchend", up, {once: true})
+    }
+
+    private constructor() {
+    }
+}
+
 export class MalachiteKnob extends MalachiteUIElement {
     private readonly terminator = new Terminator()
     private readonly filmstrip: HTMLImageElement = this.element.querySelector("img.filmstrip")
     private readonly textField: HTMLInputElement = this.element.querySelector("input[type='text']")
-
-    private position: number = NaN
-    private unipolar: number = NaN
 
     constructor(private readonly element: Element) {
         super()
@@ -98,32 +135,23 @@ export class MalachiteKnob extends MalachiteUIElement {
     terminate(): void {
         super.terminate()
         this.terminator.terminate()
-        this.element.removeEventListener("mousedown", this.mouseDown)
         this.element.removeEventListener("dragstart", Events.preventDefault)
     }
 
-    private mouseUp = () => {
-        this.position = NaN
-        this.unipolar = NaN
-        window.removeEventListener("mousemove", this.mouseMove)
-    }
-
-    private mouseMove = (event: MouseEvent) => {
-        const delta = (this.position - event.clientY) * 0.004
-        this.ifParameter(parameter =>
-            parameter.setUnipolar(Math.max(0.0, Math.min(1.0, this.unipolar + delta))))
-    }
-
-    private mouseDown = (event: MouseEvent) => {
-        if (!this.hasParameter()) return
-        this.position = event.clientY
-        this.unipolar = this.getUnipolar()
-        window.addEventListener("mousemove", this.mouseMove)
-        window.addEventListener("mouseup", this.mouseUp, {once: true})
-    }
-
     private installInteraction() {
-        this.element.addEventListener("mousedown", this.mouseDown)
+        const onActionStart = (event: TouchEvent | MouseEvent) => {
+            if (!this.hasParameter()) return
+            const startValue = this.getUnipolar()
+            const modifier = value => this.ifParameter(parameter =>
+                parameter.setUnipolar(Math.max(0.0, Math.min(1.0, value))))
+            if (event.type === "touchstart") {
+                TouchModifier.start(event as TouchEvent, startValue, modifier)
+            } else if (event.type === "mousedown") {
+                MouseModifier.start(event as MouseEvent, startValue, modifier)
+            }
+        }
+        this.element.addEventListener("mousedown", onActionStart)
+        this.element.addEventListener("touchstart", onActionStart)
         this.element.addEventListener("dragstart", Events.preventDefault)
 
         this.terminator.with(Events.bindEventListener(this.textField, "focusin", (focusEvent: FocusEvent) => {

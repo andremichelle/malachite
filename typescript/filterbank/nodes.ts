@@ -2,22 +2,21 @@
 
 import {
     ArrayUtils,
+    dbToGain,
+    gainToDb,
     Observable,
     ObservableImpl,
     Observer,
     Option,
     Options,
     Parameter,
+    SILENCE_GAIN,
     Terminable,
     Terminator
 } from "../lib/common.js"
 import {Preset} from "./preset.js"
 import {NoUIMeterWorklet} from "../meter/worklet.js"
 
-const LogDb = Math.log(10.0) / 20.0
-export const dbToGain = (db: number): number => Math.exp(db * LogDb)
-export const gainToDb = (gain: number): number => Math.log(gain) / LogDb
-export const SILENCE_GAIN = dbToGain(-192.0) // if gain is zero the waa will set streams to undefined
 export const DEFAULT_INTERPOLATION_TIME: number = 0.100
 export const interpolateIfNecessary = (context: BaseAudioContext, audioParam: AudioParam, value: number): void => {
     if (context.state === "running") {

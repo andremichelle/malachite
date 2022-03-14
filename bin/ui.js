@@ -70,6 +70,42 @@ export class MalachiteSwitch extends MalachiteUIElement {
         this.element.addEventListener("click", this.click);
     }
 }
+class MouseModifier {
+    static start(startEvent, startValue, modifier, multiplier = 0.003) {
+        let position = startEvent.clientY;
+        let value = startValue;
+        const move = (event) => {
+            modifier(value + (position - event.clientY) * multiplier);
+        };
+        const up = () => {
+            position = NaN;
+            value = NaN;
+            window.removeEventListener("mousemove", move);
+        };
+        window.addEventListener("mousemove", move);
+        window.addEventListener("mouseup", up, { once: true });
+    }
+    constructor() {
+    }
+}
+class TouchModifier {
+    static start(startEvent, startValue, modifier, multiplier = 0.003) {
+        let position = startEvent.touches[0].clientY;
+        let value = startValue;
+        const move = (event) => {
+            modifier(value + (position - event.touches[0].clientY) * multiplier);
+        };
+        const up = () => {
+            position = NaN;
+            value = NaN;
+            window.removeEventListener("touchmove", move);
+        };
+        window.addEventListener("touchmove", move);
+        window.addEventListener("touchend", up, { once: true });
+    }
+    constructor() {
+    }
+}
 export class MalachiteKnob extends MalachiteUIElement {
     constructor(element) {
         super();
@@ -77,25 +113,6 @@ export class MalachiteKnob extends MalachiteUIElement {
         this.terminator = new Terminator();
         this.filmstrip = this.element.querySelector("img.filmstrip");
         this.textField = this.element.querySelector("input[type='text']");
-        this.position = NaN;
-        this.unipolar = NaN;
-        this.mouseUp = () => {
-            this.position = NaN;
-            this.unipolar = NaN;
-            window.removeEventListener("mousemove", this.mouseMove);
-        };
-        this.mouseMove = (event) => {
-            const delta = (this.position - event.clientY) * 0.004;
-            this.ifParameter(parameter => parameter.setUnipolar(Math.max(0.0, Math.min(1.0, this.unipolar + delta))));
-        };
-        this.mouseDown = (event) => {
-            if (!this.hasParameter())
-                return;
-            this.position = event.clientY;
-            this.unipolar = this.getUnipolar();
-            window.addEventListener("mousemove", this.mouseMove);
-            window.addEventListener("mouseup", this.mouseUp, { once: true });
-        };
         this.installInteraction();
     }
     onChanged(parameter) {
@@ -105,11 +122,23 @@ export class MalachiteKnob extends MalachiteUIElement {
     terminate() {
         super.terminate();
         this.terminator.terminate();
-        this.element.removeEventListener("mousedown", this.mouseDown);
         this.element.removeEventListener("dragstart", Events.preventDefault);
     }
     installInteraction() {
-        this.element.addEventListener("mousedown", this.mouseDown);
+        const onActionStart = (event) => {
+            if (!this.hasParameter())
+                return;
+            const startValue = this.getUnipolar();
+            const modifier = value => this.ifParameter(parameter => parameter.setUnipolar(Math.max(0.0, Math.min(1.0, value))));
+            if (event.type === "touchstart") {
+                TouchModifier.start(event, startValue, modifier);
+            }
+            else if (event.type === "mousedown") {
+                MouseModifier.start(event, startValue, modifier);
+            }
+        };
+        this.element.addEventListener("mousedown", onActionStart);
+        this.element.addEventListener("touchstart", onActionStart);
         this.element.addEventListener("dragstart", Events.preventDefault);
         this.terminator.with(Events.bindEventListener(this.textField, "focusin", (focusEvent) => {
             const blur = (() => {

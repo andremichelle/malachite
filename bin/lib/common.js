@@ -7,6 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+const LogDb = Math.log(10.0) / 20.0;
+export const dbToGain = (db) => Math.exp(db * LogDb);
+export const gainToDb = (gain) => Math.log(gain) / LogDb;
+export const SILENCE_GAIN = dbToGain(-192.0);
 export const preloadImagesOfCssFile = (path) => __awaiter(void 0, void 0, void 0, function* () {
     const base = location.href + "bin/";
     console.log(`preloadImagesOfCssFile... base: ${base}`);
