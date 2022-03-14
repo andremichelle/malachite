@@ -361,6 +361,7 @@ html, body {
   background-color: #1A1A1A;
   font-family: "Labrador A", serif;
   overflow: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 html a, body a {
   color: #8ad3b9;
