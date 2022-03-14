@@ -99,18 +99,23 @@ class MouseModifier {
 
 class TouchModifier {
     static start(startEvent: TouchEvent, startValue: number, modifier: (delta: number) => void, multiplier: number = 0.003) {
-        let position = startEvent.touches[0].clientY
+        startEvent.preventDefault()
+        const target = startEvent.target
+        const touches = startEvent.targetTouches
+
+        let position = touches[0].clientY
         let value = startValue
-        const move = (event: TouchEvent) => {
-            modifier(value + (position - event.touches[0].clientY) * multiplier)
-        }
-        const up = () => {
+        const move = (event: TouchEvent) => modifier(value + (position - event.targetTouches[0].clientY) * multiplier)
+        const stop = () => {
+            target.removeEventListener("touchmove", move)
+            target.removeEventListener("touchend", stop)
+            target.removeEventListener("touchcancel", stop)
             position = NaN
             value = NaN
-            window.removeEventListener("touchmove", move)
         }
-        window.addEventListener("touchmove", move)
-        window.addEventListener("touchend", up, {once: true})
+        target.addEventListener("touchmove", move)
+        target.addEventListener("touchend", stop)
+        target.addEventListener("touchcancel", stop)
     }
 
     private constructor() {
