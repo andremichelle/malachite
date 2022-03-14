@@ -82,6 +82,7 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     const ui = new FilterBankUI(nodes, preset);
     ui.run();
     document.querySelector(".preloader").remove();
+    document.addEventListener('touchmove', (event) => event.preventDefault(), { passive: false });
     requestAnimationFrame(() => document.querySelector("main").classList.remove("invisible"));
 }))();
 //# sourceMappingURL=main.js.map
