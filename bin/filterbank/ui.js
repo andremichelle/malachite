@@ -79,31 +79,18 @@ export class FilterBankResponseRenderer {
             context.fillStyle = FilterBankResponseRenderer.Colors[index];
             filter.getFrequencyResponse(this.frequencyHz, this.magResponse, this.phaseResponse);
             const xc = Math.floor(screen.unitToX(filter.frequency()));
-            const apexDb = filter.apexDecibel();
-            const db0 = 0 == xc && !isNaN(apexDb) ? apexDb : this.magResponse[0];
+            const db0 = this.magResponse[0];
             this.magSum[0] += db0;
             const y0 = screen.unitToY(db0);
             context.beginPath();
             context.moveTo(0, y0);
             const xn = this.frequencyHz.length;
-            for (let x = 1; x < xc; ++x) {
+            let x = 1;
+            for (; x < xc; ++x) {
                 const db = this.magResponse[x];
                 this.magSum[x] += db;
                 const y1 = screen.unitToY(db);
                 context.lineTo(x, y1);
-            }
-            const db = filter.apexDecibel();
-            let x;
-            if (isNaN(db)) {
-                x = xc;
-            }
-            else {
-                x = xc + 1;
-                if (0 != xc) {
-                    this.magSum[xc] += db;
-                    const y1 = screen.unitToY(db);
-                    context.lineTo(xc, y1);
-                }
             }
             for (; x < xn; ++x) {
                 const db = this.magResponse[x];

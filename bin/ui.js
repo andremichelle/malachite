@@ -63,6 +63,7 @@ export class MalachiteSwitch extends MalachiteUIElement {
     terminate() {
         this.element.removeEventListener("touchstart", this.action);
         this.element.removeEventListener("mousedown", this.action);
+        this.element.removeEventListener("click", Events.preventDefault);
     }
     onChanged(parameter) {
         this.inputElement.checked = parameter.getUnipolar() >= 0.5;
@@ -70,6 +71,7 @@ export class MalachiteSwitch extends MalachiteUIElement {
     installMouseInteraction() {
         this.element.addEventListener("touchstart", this.action);
         this.element.addEventListener("mousedown", this.action);
+        this.element.addEventListener("click", Events.preventDefault);
     }
 }
 class MouseModifier {

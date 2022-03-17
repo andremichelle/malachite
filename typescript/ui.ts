@@ -62,6 +62,7 @@ export class MalachiteSwitch extends MalachiteUIElement {
     terminate(): void {
         this.element.removeEventListener("touchstart", this.action)
         this.element.removeEventListener("mousedown", this.action)
+        this.element.removeEventListener("click", Events.preventDefault)
     }
 
     protected onChanged(parameter: Parameter<any>) {
@@ -76,6 +77,7 @@ export class MalachiteSwitch extends MalachiteUIElement {
     private installMouseInteraction(): void {
         this.element.addEventListener("touchstart", this.action)
         this.element.addEventListener("mousedown", this.action)
+        this.element.addEventListener("click", Events.preventDefault)
     }
 }
 
