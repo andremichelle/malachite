@@ -7,12 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Parameter, preloadImagesOfCssFile, PrintMapping } from "./lib/common.js";
-import { initPreset } from "./filterbank/preset.js";
 import { FilterBankNodes } from "./filterbank/nodes.js";
+import { initPreset } from "./filterbank/preset.js";
 import { FilterBankUI } from "./filterbank/ui.js";
-import { Events, MalachiteSwitch } from "./ui.js";
+import { Parameter, preloadImagesOfCssFile, PrintMapping } from "./lib/common.js";
 import { BooleanMapping } from "./lib/mapping.js";
+import { Events, MalachiteSwitch } from "./ui.js";
 const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, function* () {
     const demoAudio = new Audio();
     demoAudio.src = "kepz.126.mp3";
@@ -27,8 +27,8 @@ const initSources = (context, nodes) => __awaiter(void 0, void 0, void 0, functi
     const parameterMicro = new Parameter(BooleanMapping.Instance, booleanPrintMapping, false);
     const parameters = [parameterDemo, parameterMicro];
     const startAudioContext = () => {
+        document.querySelectorAll("svg.play-hint").forEach(svg => svg.remove());
         if (context.state !== "running") {
-            document.querySelectorAll("svg.play-hint").forEach(svg => svg.remove());
             context.resume();
         }
     };

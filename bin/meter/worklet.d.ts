@@ -28,7 +28,7 @@ export declare class StereoMeterWorklet extends NoUIMeterWorklet {
     private readonly updater;
     private scale;
     constructor(context: AudioContext);
-    readonly domElement: HTMLElement;
+    get domElement(): HTMLElement;
     update(): void;
     renderScale(): void;
     renderMeter(gain: number, y: number, h: number): void;

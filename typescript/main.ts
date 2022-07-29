@@ -1,9 +1,9 @@
-import {Parameter, preloadImagesOfCssFile, PrintMapping} from "./lib/common.js"
-import {initPreset} from "./filterbank/preset.js"
 import {FilterBankNodes} from "./filterbank/nodes.js"
+import {initPreset} from "./filterbank/preset.js"
 import {FilterBankUI} from "./filterbank/ui.js"
-import {Events, MalachiteSwitch} from "./ui.js"
+import {Parameter, preloadImagesOfCssFile, PrintMapping} from "./lib/common.js"
 import {BooleanMapping} from "./lib/mapping.js"
+import {Events, MalachiteSwitch} from "./ui.js"
 
 const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promise<void> => {
     const demoAudio = new Audio()
@@ -19,8 +19,8 @@ const initSources = async (context: AudioContext, nodes: FilterBankNodes): Promi
     const parameterMicro = new Parameter<boolean>(BooleanMapping.Instance, booleanPrintMapping, false)
     const parameters: Parameter<boolean>[] = [parameterDemo, parameterMicro]
     const startAudioContext = () => {
+        document.querySelectorAll("svg.play-hint").forEach(svg => svg.remove())
         if (context.state !== "running") {
-            document.querySelectorAll("svg.play-hint").forEach(svg => svg.remove())
             context.resume()
         }
     }

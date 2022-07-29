@@ -396,7 +396,7 @@ main {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr/1fr calc((var(--device-width) + 32px) * var(--device-scale)) 1fr;
+  grid-template: 1fr calc((var(--device-height) + 100px) * var(--device-scale)) 1fr/1fr calc((var(--device-width) + 32px) * var(--device-scale)) 40vmin;
   overflow: hidden;
   background-position: center;
   background-size: cover;
@@ -405,15 +405,16 @@ main {
 main > div.info {
   grid-area: 2/1;
   padding: 0 2.4vw 0 1.2vw;
+  font-size: 1vw;
+  display: flex;
+  flex-direction: column;
+  column-gap: 4px;
+  overflow: visible;
 }
 main > div.info svg {
   margin-top: 20px;
 }
-main > div.credits {
-  grid-area: 2/3;
-  padding: 0 1.2vw 0 2.4vw;
-}
-main > div.info > *, main > div.credits > * {
+main > div.info > * {
   width: fit-content;
   background-color: rgba(0, 0, 0, 0.5);
 }

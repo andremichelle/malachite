@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG</title>
+    <style>
+        html, body {
+            background-color: #333;
+        }
+
+        div {
+            width: 128px;
+            height: 128px;
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.3)),
+            radial-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.1)),
+            conic-gradient(white 0%, rgba(0, 0, 0, 0.6) 40%, white 66%, rgba(0, 0, 0, 0.6) 85%, white 100%);
+            background-repeat: repeat;
+            background-origin: content-box;
+            background-size: contain;
+        }
+    </style>
+</head>
+<body>
+<svg>
+    <clipPath id="clip">
+        <circle cx="64" cy="64" r="32"/>
+    </clipPath>
+    <foreignObject width="128" height="128" clip-path="url(#clip)">
+        <div></div>
+    </foreignObject>
+</svg>
+</body>
+</html>
